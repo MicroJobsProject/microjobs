@@ -82,10 +82,10 @@ function RegisterPage() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     if (!validateForm()) return;
 
     setIsLoading(true);
+    setErrors({});
 
     try {
       const { confirmPassword, ...userData } = formData;
@@ -94,7 +94,7 @@ function RegisterPage() {
         state: { message: "Registration successful. You can now log in" },
       });
     } catch (error: any) {
-      if (error.response && error.response.data) {
+      if (error.response?.data) {
         const backendErrors: BackendError = error.response.data;
 
         if (backendErrors.error) {
