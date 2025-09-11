@@ -9,7 +9,6 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="register" element={<RegisterPage />} />
-          <h2>Hello, World!</h2>
         </Routes>
       </div>
     </Router>
