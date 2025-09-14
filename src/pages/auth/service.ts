@@ -1,4 +1,3 @@
-//REACT
 import {
   client,
   removeAuthorizationHeader,

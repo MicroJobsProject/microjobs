@@ -1,166 +1,101 @@
 //DEPENDENCIES
-import { Navigate, Route, Routes } from "react-router";
-import { lazy, Suspense } from "react";
-import { useAuth } from "../../store/hooks";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type ChangeEvent,
+  type FormEvent,
+} from "react";
 
-const LoginPage = lazy(() => import("../auth/LoginPage"));
-/*
-const RequireAuth = lazy(() => import("./pages/auth/require-auth"));
+//REACT-REDUX FILES
+import { useLoginAction, useUiResetError } from "../../store/hooks";
+import { useAppSelector } from "../../store";
+import { getUi } from "../../store/selectors";
 
-const AdvertsPage = lazy(() => import("./pages/advert/adverts-page"));
-const AdvertPage = lazy(() => import("./pages/advert/advert-page"));
-const NewAdvertPage = lazy(() => import("./pages/advert/new-advert-page"));
+function LoginPage() {
+  const loginAction = useLoginAction();
 
-const NotFoundPage = lazy(() => import("./pages/HTTP-status-code/not-found"));
-const InternalServerError = lazy(() => import("./pages/HTTP-status-code/internal-server-error"));
+  const uiResetErrorAction = useUiResetError();
+  const { pending: isFetching, error } = useAppSelector(getUi);
 
-const Layout = lazy(() => import("./components/layout/layout"));
-*/
+  const [credentials, setCredentials] = useState({
+    email: "",
+    password: "",
+  });
+  const timeoutRef = useRef<number | null>(null);
 
-function HomePage() {
-  const handleLogout = () => {
-    localStorage.removeItem("auth");
-    sessionStorage.removeItem("auth");
-    window.location.reload();
-  };
+  const { email, password } = credentials;
+  const isDisabled = !email || !password || isFetching;
+
+  useEffect(() => {
+    timeoutRef.current = setTimeout(() => {
+      console.log("Timeout", timeoutRef.current);
+    }, 20000);
+    console.log("creating timeout", timeoutRef.current);
+
+    return () => {
+      if (timeoutRef.current) {
+        clearInterval(timeoutRef.current);
+      }
+    };
+  }, []);
+
+  function handleChange(event: ChangeEvent<HTMLInputElement>) {
+    setCredentials((prevCredentials) => ({
+      ...prevCredentials,
+      [event.target.name]: event.target.value,
+    }));
+  }
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    await loginAction(credentials);
+  }
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        backgroundColor: "#f3f4f6",
-        padding: "20px",
-      }}
-    >
-      <div
-        style={{
-          maxWidth: "800px",
-          margin: "0 auto",
-          backgroundColor: "white",
-          borderRadius: "8px",
-          padding: "40px",
-          boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-        }}
-      >
-        <header
-          style={{
-            borderBottom: "1px solid #e5e7eb",
-            paddingBottom: "20px",
-            marginBottom: "30px",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <h1 style={{ margin: 0, color: "#1f2937", fontSize: "32px" }}>
-            Home
-          </h1>
-          <button
-            onClick={handleLogout}
-            style={{
-              padding: "10px 20px",
-              backgroundColor: "#ef4444",
-              color: "white",
-              border: "none",
-              borderRadius: "4px",
-              cursor: "pointer",
-              fontSize: "14px",
-              fontWeight: "500",
-            }}
-          >
-            Cerrar Sesión
-          </button>
-        </header>
+    <div>
+      <form onSubmit={handleSubmit}>
+        <h1>Log in to your account</h1>
 
-        <main>
-          <div style={{ textAlign: "center", padding: "40px 20px" }}>
-            <h2
-              style={{
-                color: "#22c55e",
-                marginBottom: "20px",
-                fontSize: "28px",
-              }}
-            >
-              ¡Bienvenido!
-            </h2>
-            <p
-              style={{
-                fontSize: "18px",
-                color: "#6b7280",
-                marginBottom: "30px",
-              }}
-            >
-              Has iniciado sesión correctamente.
-            </p>
+        <div>
+          <label htmlFor="email">Email</label>
+          <input
+            id="email"
+            type="email"
+            name="email"
+            placeholder="e.g. user@example.com"
+            value={email}
+            onChange={handleChange}
+          />
+        </div>
 
-            <div
-              style={{
-                backgroundColor: "#f8fafc",
-                border: "1px solid #e2e8f0",
-                borderRadius: "8px",
-                padding: "20px",
-                textAlign: "left",
-              }}
-            >
-              <h3 style={{ marginTop: 0, color: "#1f2937" }}>
-                Estado del sistema:
-              </h3>
-              <ul style={{ color: "#6b7280", lineHeight: "1.6" }}>
-                <li>✅ Autenticación exitosa</li>
-                <li>✅ Estado de sesión activo</li>
-                <li>✅ Token de acceso válido</li>
-                <li>🕒 Sesión iniciada: {new Date().toLocaleString()}</li>
-              </ul>
-            </div>
+        <div>
+          <label htmlFor="password">Password</label>
+          <input
+            id="password"
+            type="password"
+            name="password"
+            placeholder="Your password"
+            value={password}
+            onChange={handleChange}
+          />
+        </div>
+
+        <button type="submit" disabled={isDisabled}>
+          {isFetching ? "Logging in..." : "Log In"}
+        </button>
+
+        {error && (
+          <div>
+            <span>{error.message}</span>
+            <button type="button" onClick={() => uiResetErrorAction()}>
+              ×
+            </button>
           </div>
-        </main>
-      </div>
+        )}
+      </form>
     </div>
   );
 }
 
-function App() {
-  const isAuthenticated = useAuth();
-
-  /*
-  // CÓDIGO ORIGINAL - Rutas completas con lazy loading
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route
-          path="/adverts"
-          element={
-            <RequireAuth>
-              <Layout />
-            </RequireAuth>
-          }
-        >
-          <Route index element={<AdvertsPage />} />
-          <Route path=":advertId" element={<AdvertPage />} />
-          <Route path="new" element={<NewAdvertPage />} />
-        </Route>
-        <Route path="/" element={<Navigate to="/adverts" />} />
-        <Route path="/not-found" element={<NotFoundPage />} />
-        <Route path="*" element={<Navigate to="/not-found" />} />
-        <Route path="/internal-server-error" element={<InternalServerError />} />
-      </Routes>
-    </Suspense>
-  );
-  */
-
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route
-          path="/"
-          element={isAuthenticated ? <HomePage /> : <Navigate to="/login" />}
-        />
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
-    </Suspense>
-  );
-}
-
-export default App;
+export default LoginPage;
