@@ -6,6 +6,20 @@ import type { Credentials } from "../pages/auth/types";
 
 //Action Types================================================================================================================
 // AUTH............................................
+
+type AuthRegisterPending = {
+  type: "auth/register/pending";
+};
+
+type AuthRegisterFulfilled = {
+  type: "auth/register/fulfilled";
+};
+
+type AuthRegisterRejected = {
+  type: "auth/register/rejected";
+  payload: Error;
+};
+
 type AuthLoginPending = {
   type: "auth/login/pending";
 };
@@ -30,6 +44,19 @@ type UiResetError = {
 
 //Action Creator (Synchronized Actions)============================================================================================
 // AUTH............................................
+export const authRegisterPending = (): AuthRegisterPending => ({
+  type: "auth/register/pending",
+});
+
+export const authRegisterFulfilled = (): AuthRegisterFulfilled => ({
+  type: "auth/register/fulfilled",
+});
+
+export const authRegisterRejected = (error: Error): AuthRegisterRejected => ({
+  type: "auth/register/rejected",
+  payload: error,
+});
+
 export const authLoginPending = (): AuthLoginPending => ({
   type: "auth/login/pending",
 });
@@ -54,6 +81,27 @@ export const uiResetError = (): UiResetError => ({
 
 //Thunks (Asynchronous Actions)================================================================================================
 // AUTH............................................
+
+export function authRegister(credentials: {
+  username: string;
+  email: string;
+  password: string;
+}): AppThunk<Promise<void>> {
+  return async function (dispatch, _getState, { api, router }) {
+    dispatch(authRegisterPending());
+    try {
+      await api.auth.register(credentials);
+      dispatch(authRegisterFulfilled());
+      router.navigate("/", { replace: true });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        dispatch(authRegisterRejected(error));
+      }
+      throw error;
+    }
+  };
+}
+
 export function authLogin(credentials: Credentials): AppThunk<Promise<void>> {
   return async function (dispatch, _getState, { api, router }) {
     dispatch(authLoginPending());
@@ -75,6 +123,9 @@ export function authLogin(credentials: Credentials): AppThunk<Promise<void>> {
 
 // prettier-ignore
 export type Actions = 
+| AuthRegisterPending
+| AuthRegisterFulfilled
+| AuthRegisterRejected
 | AuthLoginPending 
 | AuthLoginFulfilled 
 | AuthLoginRejected 
