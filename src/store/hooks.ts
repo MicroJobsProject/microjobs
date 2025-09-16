@@ -2,12 +2,23 @@
 import type { Credentials } from "../pages/auth/types";
 
 //REDUX
-import { authLogin, authLogout, uiResetError } from "./actions";
+import { authRegister, authLogin, authLogout, uiResetError } from "./actions";
 import { getIsLogged } from "./selectors";
 import { useAppDispatch, useAppSelector } from ".";
 
 export function useAuth() {
   return useAppSelector(getIsLogged);
+}
+
+export function useRegisterAction() {
+  const dispatch = useAppDispatch();
+  return function (credentials: {
+    username: string;
+    email: string;
+    password: string;
+  }) {
+    return dispatch(authRegister(credentials));
+  };
 }
 
 export function useLoginAction() {
