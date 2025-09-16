@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { useRegisterAction } from "../../store/hooks";
+import { useAppSelector } from "../../store";
+import { getUi } from "../../store/selectors";
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -8,6 +11,9 @@ export default function RegisterPage() {
     confirmPassword: "",
   });
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
+  const register = useRegisterAction();
+  const ui = useAppSelector(getUi);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -32,10 +38,19 @@ export default function RegisterPage() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
-    console.log("Formulario válido, ahora llamaríamos a Redux");
+
+    try {
+      await register({
+        username: formData.username,
+        email: formData.email,
+        password: formData.password,
+      });
+    } catch (error) {
+      console.error("Error registering:", error);
+    }
   };
 
   return (
@@ -81,7 +96,11 @@ export default function RegisterPage() {
           <p style={{ color: "red" }}>{errors.confirmPassword}</p>
         )}
 
-        <button type="submit">Create Account</button>
+        <button type="submit" disabled={ui.pending}>
+          {ui.pending ? "Creating account..." : "Create Account"}
+        </button>
+
+        {ui.error && <p style={{ color: "red" }}>{ui.error.message}</p>}
       </form>
     </main>
   );
