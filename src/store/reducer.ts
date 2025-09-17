@@ -23,6 +23,7 @@ export function auth(
 ): State["auth"] {
   switch (action.type) {
     case "auth/login/fulfilled":
+    case "auth/register/fulfilled":
       return true;
     case "auth/logout":
       return false;
@@ -36,10 +37,16 @@ function isRejectedAction(action: Actions): action is ActionsRejected {
 }
 
 export function ui(state = defaultState.ui, action: Actions): State["ui"] {
-  if (action.type === "auth/login/pending") {
+  if (
+    action.type === "auth/login/pending" ||
+    action.type === "auth/register/pending"
+  ) {
     return { pending: true, error: null };
   }
-  if (action.type === "auth/login/fulfilled") {
+  if (
+    action.type === "auth/login/fulfilled" ||
+    action.type === "auth/register/fulfilled"
+  ) {
     return { pending: false, error: null };
   }
   if (isRejectedAction(action)) {

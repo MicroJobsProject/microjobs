@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from "react-router";
 import { lazy, Suspense } from "react";
+import RegisterPage from "./pages/auth/RegisterPage";
 
 const LoginPage = lazy(() => import("./pages/auth/LoginPage"));
 const RequireAuth = lazy(() => import("./components/auth/RequireAuth"));
@@ -13,6 +14,7 @@ function App() {
     <Suspense fallback={<div>Loading...</div>}>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
         <Route
           path="/home"
           element={
