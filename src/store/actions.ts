@@ -102,13 +102,22 @@ export function authRegister(credentials: {
   };
 }
 
-export function authLogin(credentials: Credentials): AppThunk<Promise<void>> {
-  return async function (dispatch, _getState, { api, router }) {
+export function authLogin(
+  credentials: Credentials & { rememberMe?: boolean },
+): AppThunk<Promise<void>> {
+  return async function (dispatch, _getState, { api, router, storage }) {
     dispatch(authLoginPending());
     try {
-      await api.auth.login(credentials);
+      const { username, password, rememberMe = false } = credentials;
+
+      await api.auth.login({ username, password }, rememberMe);
+
       dispatch(authLoginFulfilled());
-      console.log(router);
+
+      if (import.meta.env.DEV) {
+        console.log("Login successful:", storage.getSessionInfo());
+      }
+
       const to = router.state.location.state?.from ?? "/";
       router.navigate(to, { replace: true });
     } catch (error: unknown) {
@@ -117,6 +126,41 @@ export function authLogin(credentials: Credentials): AppThunk<Promise<void>> {
       }
       console.log(error);
       throw error;
+    }
+  };
+}
+
+export function authLogoutThunk(): AppThunk<Promise<void>> {
+  return async function (dispatch, _getState, { api, storage }) {
+    try {
+      await api.auth.logout();
+
+      dispatch(authLogout());
+
+      if (import.meta.env.DEV) {
+        console.log("Logout successful");
+      }
+    } catch (error: unknown) {
+      storage.clearAuth();
+      dispatch(authLogout());
+
+      if (error instanceof Error) {
+        console.error("Logout error:", error.message);
+      }
+    }
+  };
+}
+
+export function authInitializeFromStorage(): AppThunk<void> {
+  return function (dispatch, _getState, { storage }) {
+    const hasAuth = storage.hasAuth();
+
+    if (hasAuth) {
+      dispatch(authLoginFulfilled());
+
+      if (import.meta.env.DEV) {
+        console.log("Auth initialized from storage:", storage.getSessionInfo());
+      }
     }
   };
 }

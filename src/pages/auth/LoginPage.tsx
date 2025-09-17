@@ -1,13 +1,7 @@
 //DEPENDENCIES
-import {
-  useEffect,
-  useRef,
-  useState,
-  type ChangeEvent,
-  type FormEvent,
-} from "react";
+import { useState, type ChangeEvent, type FormEvent } from "react";
 
-//REACT-REDUX FILES
+//NATIVE
 import { useLoginAction, useUiResetError } from "../../store/hooks";
 import { useAppSelector } from "../../store";
 import { getUi } from "../../store/selectors";
@@ -19,52 +13,44 @@ function LoginPage() {
   const { pending: isFetching, error } = useAppSelector(getUi);
 
   const [credentials, setCredentials] = useState({
-    email: "",
+    username: "",
     password: "",
+    rememberMe: false,
   });
-  const timeoutRef = useRef<number | null>(null);
 
-  const { email, password } = credentials;
-  const isDisabled = !email || !password || isFetching;
-
-  useEffect(() => {
-    timeoutRef.current = setTimeout(() => {
-      console.log("Timeout", timeoutRef.current);
-    }, 20000);
-    console.log("creating timeout", timeoutRef.current);
-
-    return () => {
-      if (timeoutRef.current) {
-        clearInterval(timeoutRef.current);
-      }
-    };
-  }, []);
+  const { username, password, rememberMe } = credentials;
+  const isDisabled = !username || !password || isFetching;
 
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
+    const { name, value, type, checked } = event.target;
     setCredentials((prevCredentials) => ({
       ...prevCredentials,
-      [event.target.name]: event.target.value,
+      [name]: type === "checkbox" ? checked : value,
     }));
   }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    await loginAction(credentials);
+    await loginAction({ username, password, rememberMe });
   }
 
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <h1>Log in to your account</h1>
+        <h1>Log in to MicroJobs</h1>
 
         <div>
-          <label htmlFor="email">Email</label>
+          <p>Sign in by entering your username and password.</p>
+        </div>
+
+        <div>
+          <label htmlFor="username">Username</label>
           <input
-            id="email"
-            type="email"
-            name="email"
-            placeholder="e.g. user@example.com"
-            value={email}
+            id="username"
+            type="text"
+            name="username"
+            placeholder="Enter your username"
+            value={username}
             onChange={handleChange}
           />
         </div>
@@ -81,9 +67,28 @@ function LoginPage() {
           />
         </div>
 
+        <div>
+          <a href="#" onClick={(e) => e.preventDefault()}>
+            Forgot password?
+          </a>
+        </div>
+
         <button type="submit" disabled={isDisabled}>
           {isFetching ? "Logging in..." : "Log In"}
         </button>
+
+        <div>
+          <label htmlFor="rememberMe">
+            <input
+              id="rememberMe"
+              type="checkbox"
+              name="rememberMe"
+              checked={rememberMe}
+              onChange={handleChange}
+            />
+            Remember me
+          </label>
+        </div>
 
         {error && (
           <div>

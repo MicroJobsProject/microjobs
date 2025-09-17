@@ -1,9 +1,9 @@
-import { logout } from "../../pages/auth/service";
-import { useAuth, useLogoutAction } from "../../store/hooks";
-
+//DEPENDENCIES
 import { useNavigate } from "react-router";
 
+//NATIVE
 import Button from "../../components/ui/Button";
+import { useAuth, useLogoutAction } from "../../store/hooks";
 
 type AuthButtonProps = {
   className?: string;
@@ -15,8 +15,7 @@ export default function AuthButton({ className }: AuthButtonProps) {
   const navigate = useNavigate();
 
   const handleLogoutClick = async () => {
-    await logout();
-    logoutAction();
+    await logoutAction();
   };
 
   const handleLoginClick = () => {

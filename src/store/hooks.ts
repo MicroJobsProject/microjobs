@@ -2,7 +2,13 @@
 import type { Credentials } from "../pages/auth/types";
 
 //REDUX
-import { authRegister, authLogin, authLogout, uiResetError } from "./actions";
+import {
+  authRegister,
+  authLogin,
+  authLogoutThunk,
+  uiResetError,
+  authInitializeFromStorage,
+} from "./actions";
 import { getIsLogged } from "./selectors";
 import { useAppDispatch, useAppSelector } from ".";
 
@@ -23,7 +29,7 @@ export function useRegisterAction() {
 
 export function useLoginAction() {
   const dispatch = useAppDispatch();
-  return function (credentials: Credentials) {
+  return function (credentials: Credentials & { rememberMe?: boolean }) {
     return dispatch(authLogin(credentials));
   };
 }
@@ -31,7 +37,7 @@ export function useLoginAction() {
 export function useLogoutAction() {
   const dispatch = useAppDispatch();
   return function () {
-    return dispatch(authLogout());
+    return dispatch(authLogoutThunk());
   };
 }
 
@@ -39,5 +45,12 @@ export function useUiResetError() {
   const dispatch = useAppDispatch();
   return function () {
     return dispatch(uiResetError());
+  };
+}
+
+export function useInitializeAuth() {
+  const dispatch = useAppDispatch();
+  return function () {
+    return dispatch(authInitializeFromStorage());
   };
 }
