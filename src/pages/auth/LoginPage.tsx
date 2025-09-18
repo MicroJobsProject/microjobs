@@ -5,6 +5,7 @@ import { useState, type ChangeEvent, type FormEvent } from "react";
 import { useLoginAction, useUiResetError } from "../../store/hooks";
 import { useAppSelector } from "../../store";
 import { getUi } from "../../store/selectors";
+import { isValidGmail } from "../../utils/validation";
 
 function LoginPage() {
   const loginAction = useLoginAction();
@@ -13,13 +14,13 @@ function LoginPage() {
   const { pending: isFetching, error } = useAppSelector(getUi);
 
   const [credentials, setCredentials] = useState({
-    username: "",
+    email: "",
     password: "",
     rememberMe: false,
   });
 
-  const { username, password, rememberMe } = credentials;
-  const isDisabled = !username || !password || isFetching;
+  const { email, password, rememberMe } = credentials;
+  const isDisabled = !email || !password || isFetching;
 
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value, type, checked } = event.target;
@@ -31,7 +32,8 @@ function LoginPage() {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    await loginAction({ username, password, rememberMe });
+    if (!isValidGmail(email)) return;
+    await loginAction({ email, password, rememberMe });
   }
 
   return (
@@ -44,13 +46,13 @@ function LoginPage() {
         </div>
 
         <div>
-          <label htmlFor="username">Username</label>
+          <label htmlFor="email">Email</label>
           <input
-            id="username"
-            type="text"
-            name="username"
-            placeholder="Enter your username"
-            value={username}
+            id="email"
+            type="email"
+            name="email"
+            placeholder="yourname@gmail.com"
+            value={email}
             onChange={handleChange}
           />
         </div>

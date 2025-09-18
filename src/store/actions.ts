@@ -108,9 +108,9 @@ export function authLogin(
   return async function (dispatch, _getState, { api, router, storage }) {
     dispatch(authLoginPending());
     try {
-      const { username, password, rememberMe = false } = credentials;
+      const { email, password, rememberMe = false } = credentials;
 
-      await api.auth.login({ username, password }, rememberMe);
+      await api.auth.login({ email, password }, rememberMe);
 
       dispatch(authLoginFulfilled());
 
