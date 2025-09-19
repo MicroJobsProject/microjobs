@@ -1,4 +1,7 @@
+//DEPENDENCIES
 import { Outlet } from "react-router";
+
+//NATIVE
 import Footer from "./Footer";
 import Header from "./Header";
 

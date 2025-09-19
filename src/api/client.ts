@@ -1,15 +1,15 @@
+//DEPENDENCIES
 import axios from "axios";
+
+//NATIVE
+import storage from "../utils/storage";
 
 export const client = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
 });
 
 client.interceptors.request.use((config) => {
-  let auth = localStorage.getItem("auth");
-
-  if (!auth) {
-    auth = sessionStorage.getItem("auth");
-  }
+  const auth = storage.getAuth();
 
   if (auth) {
     config.headers = config.headers ?? {};

@@ -1,4 +1,4 @@
-//REDUX
+//NATIVE
 import { type Actions, type ActionsRejected } from "./actions";
 
 export type State = {

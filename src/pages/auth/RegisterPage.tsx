@@ -1,4 +1,7 @@
+//DEPENDENCIES
 import { useState } from "react";
+
+//NATIVE
 import { useRegisterAction } from "../../store/hooks";
 import { useAppSelector } from "../../store";
 import { getUi } from "../../store/selectors";
