@@ -7,33 +7,19 @@ import RegisterPage from "./pages/auth/RegisterPage";
 
 const LoginPage = lazy(() => import("./pages/auth/LoginPage"));
 //const RequireAuth = lazy(() => import("./components/auth/RequireAuth"));
-const RequireNoAuth = lazy(() => import("./components/auth/RequireNoAuth"));
 
 const Home = lazy(() => import("./pages/Home"));
 
-const Layout = lazy(() => import("./components/layout/layout"));
+const Layout = lazy(() => import("./components/layoutt/layout"));
 
 function App() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route
-            path="login"
-            element={
-              <RequireNoAuth>
-                <LoginPage />
-              </RequireNoAuth>
-            }
-          />
-          <Route
-            path="register"
-            element={
-              <RequireNoAuth>
-                <RegisterPage />
-              </RequireNoAuth>
-            }
-          />
+          <Route path="login" element={<LoginPage />} />
+          <Route path="register" element={<RegisterPage />} />
+
           <Route path="home" element={<Home />} />
 
           {/* 
@@ -46,6 +32,7 @@ function App() {
             }
           />
           */}
+
           <Route index element={<Navigate to="/home" />} />
           <Route path="*" element={<Navigate to="/home" replace />} />
         </Route>

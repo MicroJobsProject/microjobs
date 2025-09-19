@@ -11,7 +11,6 @@ import type { createBrowserRouter } from "react-router";
 import * as thunk from "redux-thunk";
 import type { ThunkDispatch } from "redux-thunk";
 
-//REACT-REDUX FILES
 import type { Actions } from "./actions";
 import * as reducers from "./reducer";
 
@@ -23,19 +22,6 @@ export type ExtraArgument = {
   api: { auth: typeof auth; adverts: typeof adverts };
   router: Router;
   storage: typeof storage;
-};
-
-// @ts-expect-error: any
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const timestamp = (store) => (next) => (action) => {
-  const nextAction = {
-    ...action,
-    meta: {
-      ...action.meta,
-      timestamp: new Date(),
-    },
-  };
-  return next(nextAction);
 };
 
 // @ts-expect-error: any
@@ -96,7 +82,6 @@ export default function configureStore(
       router,
       storage,
     }),
-    timestamp,
     failureRedirects(router),
   ];
 

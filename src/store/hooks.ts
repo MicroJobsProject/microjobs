@@ -1,7 +1,8 @@
-//REACT
-import type { Credentials } from "../pages/auth/types";
+//DEPENDENCIES
+import { useAppDispatch, useAppSelector } from ".";
 
-//REDUX
+//NATIVE
+import type { Credentials } from "../pages/auth/types";
 import {
   authRegister,
   authLogin,
@@ -10,7 +11,6 @@ import {
   authInitializeFromStorage,
 } from "./actions";
 import { getIsLogged } from "./selectors";
-import { useAppDispatch, useAppSelector } from ".";
 
 export function useAuth() {
   return useAppSelector(getIsLogged);

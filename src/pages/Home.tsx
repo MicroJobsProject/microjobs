@@ -1,4 +1,5 @@
-import Page from "../components/layout/Page";
+//NATIVE
+import Page from "../components/layoutt/Page";
 
 export default function Home() {
   return (

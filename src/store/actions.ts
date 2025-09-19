@@ -1,7 +1,7 @@
 //DEPENDENCIES
 import type { AppThunk } from ".";
 
-//REACT
+//NATIVE
 import type { Credentials } from "../pages/auth/types";
 
 //Action Types================================================================================================================
@@ -81,7 +81,6 @@ export const uiResetError = (): UiResetError => ({
 
 //Thunks (Asynchronous Actions)================================================================================================
 // AUTH............................................
-
 export function authRegister(credentials: {
   username: string;
   email: string;
