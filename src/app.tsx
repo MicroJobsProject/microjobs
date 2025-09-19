@@ -10,7 +10,7 @@ const LoginPage = lazy(() => import("./pages/auth/LoginPage"));
 
 const Home = lazy(() => import("./pages/Home"));
 
-const Layout = lazy(() => import("./components/layoutt/layout"));
+const Layout = lazy(() => import("./components/layout/layout"));
 
 function App() {
   return (
