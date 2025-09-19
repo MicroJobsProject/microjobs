@@ -18,6 +18,8 @@ export interface RegisterCredentials {
 }
 
 export interface LoginResponse {
+  message: string;
+  error: string;
   accessToken: string;
   refreshToken?: string;
   user: {
@@ -63,12 +65,12 @@ export async function login(
       },
     );
 
+    const data: LoginResponse = await response.json();
+
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || "Login failed");
+      throw new Error(data.message || data.error || "Login failed");
     }
 
-    const data: LoginResponse = await response.json();
     const { accessToken, refreshToken } = data;
 
     storage.setAuth(accessToken, rememberMe);
@@ -85,6 +87,10 @@ export async function login(
 
     return data;
   } catch (error) {
+    if (error instanceof TypeError && error.message.includes("fetch")) {
+      throw new Error("Network error. Please check your connection.");
+    }
+
     throw new Error(error instanceof Error ? error.message : "Login failed");
   }
 }
