@@ -104,7 +104,7 @@ export function authRegister(credentials: {
 export function authLogin(
   credentials: Credentials & { rememberMe?: boolean },
 ): AppThunk<Promise<void>> {
-  return async function (dispatch, _getState, { api, router, storage }) {
+  return async function (dispatch, _getState, { api, router }) {
     dispatch(authLoginPending());
     try {
       const { email, password, rememberMe = false } = credentials;
@@ -113,17 +113,13 @@ export function authLogin(
 
       dispatch(authLoginFulfilled());
 
-      if (import.meta.env.DEV) {
-        console.log("Login successful:", storage.getSessionInfo());
-      }
-
       const to = router.state.location.state?.from ?? "/";
       router.navigate(to, { replace: true });
     } catch (error: unknown) {
       if (error instanceof Error) {
         dispatch(authLoginRejected(error));
       }
-      console.log(error);
+      /* console.log(error); */
       throw error;
     }
   };
@@ -135,17 +131,14 @@ export function authLogoutThunk(): AppThunk<Promise<void>> {
       await api.auth.logout();
 
       dispatch(authLogout());
-
-      if (import.meta.env.DEV) {
-        console.log("Logout successful");
-      }
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error: unknown) {
       storage.clearAuth();
       dispatch(authLogout());
 
-      if (error instanceof Error) {
+      /* if (error instanceof Error) {
         console.error("Logout error:", error.message);
-      }
+      } */
     }
   };
 }
@@ -156,10 +149,6 @@ export function authInitializeFromStorage(): AppThunk<void> {
 
     if (hasAuth) {
       dispatch(authLoginFulfilled());
-
-      if (import.meta.env.DEV) {
-        console.log("Auth initialized from storage:", storage.getSessionInfo());
-      }
     }
   };
 }

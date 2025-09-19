@@ -33,7 +33,13 @@ function LoginPage() {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!isValidGmail(email)) return;
-    await loginAction({ email, password, rememberMe });
+
+    try {
+      await loginAction({ email, password, rememberMe });
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      /* empty */
+    }
   }
 
   return (

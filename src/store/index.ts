@@ -1,8 +1,3 @@
-//NATIVE
-import * as adverts from "../pages/advert/service";
-import * as auth from "../pages/auth/service";
-import storage from "../utils/storage";
-
 //DEPENDENCIES
 import { combineReducers, createStore, applyMiddleware } from "redux";
 import { composeWithDevTools } from "@redux-devtools/extension";
@@ -11,8 +6,13 @@ import type { createBrowserRouter } from "react-router";
 import * as thunk from "redux-thunk";
 import type { ThunkDispatch } from "redux-thunk";
 
+//NATIVE
 import type { Actions } from "./actions";
 import * as reducers from "./reducer";
+
+import * as adverts from "../pages/advert/service";
+import * as auth from "../pages/auth/service";
+import storage from "../utils/storage";
 
 // Combination of reducers-------------------------------------------------------------------------------------------------------
 const rootReducer = combineReducers(reducers);
@@ -52,11 +52,6 @@ const failureRedirects = (router: Router) => (store) => (next) => (action) => {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const sessionLogger = (store) => (next) => (action) => {
   const result = next(action);
-
-  if (import.meta.env.DEV && action.type.includes("auth")) {
-    console.log("Auth action:", action.type);
-    console.log("Session state:", storage.getSessionInfo());
-  }
 
   return result;
 };
