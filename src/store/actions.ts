@@ -3,6 +3,7 @@ import type { AppThunk } from ".";
 
 //REACT
 import type { Credentials } from "../pages/auth/types";
+import type { Advert, AdvertResponse } from "../pages/advert/types";
 
 //Action Types================================================================================================================
 // AUTH............................................
@@ -42,6 +43,22 @@ type UiResetError = {
   type: "ui/reset-error";
 };
 
+//ADVERTS (Load)...................................
+
+type AdvertsLoadPending = {
+  type: "adverts/load/pending";
+};
+
+type AdvertsLoadFulfilled = {
+  type: "adverts/load/fulfilled";
+  payload: AdvertResponse;
+};
+
+type AdvertsLoadRejected = {
+  type: "adverts/load/rejected";
+  payload: Error;
+};
+
 //Action Creator (Synchronized Actions)============================================================================================
 // AUTH............................................
 export const authRegisterPending = (): AuthRegisterPending => ({
@@ -77,6 +94,23 @@ export const authLogout = (): AuthLogout => ({
 // UI..............................................
 export const uiResetError = (): UiResetError => ({
   type: "ui/reset-error",
+});
+
+//ADVERTS (Load)...................................
+export const advertsLoadPending = (): AdvertsLoadPending => ({
+  type: "adverts/load/pending",
+});
+
+export const advertsLoadFulfilled = (
+  adverts: AdvertResponse,
+): AdvertsLoadFulfilled => ({
+  type: "adverts/load/fulfilled",
+  payload: adverts,
+});
+
+export const advertsLoadRejected = (error: Error): AdvertsLoadRejected => ({
+  type: "adverts/load/rejected",
+  payload: error,
 });
 
 //Thunks (Asynchronous Actions)================================================================================================
@@ -121,6 +155,30 @@ export function authLogin(credentials: Credentials): AppThunk<Promise<void>> {
   };
 }
 
+//ADVERTS (Load)...................................
+
+export function advertsLoad(
+  params?: Record<string, string>,
+): AppThunk<Promise<void>> {
+  return async function (dispatch, getState, { api }) {
+    const state = getState();
+    if (state.adverts.loaded) {
+      return;
+    }
+
+    try {
+      dispatch(advertsLoadPending());
+      const adverts = await api.adverts.getAdverts(params);
+      dispatch(advertsLoadFulfilled(adverts));
+    } catch (error) {
+      if (error instanceof Error) {
+        dispatch(advertsLoadRejected(error));
+      }
+      throw error;
+    }
+  };
+}
+
 // prettier-ignore
 export type Actions = 
 | AuthRegisterPending
@@ -130,8 +188,12 @@ export type Actions =
 | AuthLoginFulfilled 
 | AuthLoginRejected 
 | AuthLogout
-| UiResetError;
+| UiResetError
+| AdvertsLoadPending
+| AdvertsLoadFulfilled
+| AdvertsLoadRejected;
 
 // prettier-ignore
 export type ActionsRejected = 
 | AuthLoginRejected
+| AdvertsLoadRejected

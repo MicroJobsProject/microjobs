@@ -7,7 +7,7 @@ const RequireAuth = lazy(() => import("./components/auth/RequireAuth"));
 
 const Home = lazy(() => import("./pages/Home"));
 
-const Layout = lazy(() => import("./components/layout/layout"));
+const Layout = lazy(() => import("./components/Layout/layout"));
 
 function App() {
   return (

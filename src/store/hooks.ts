@@ -2,7 +2,13 @@
 import type { Credentials } from "../pages/auth/types";
 
 //REDUX
-import { authRegister, authLogin, authLogout, uiResetError } from "./actions";
+import {
+  authRegister,
+  authLogin,
+  authLogout,
+  uiResetError,
+  advertsLoad,
+} from "./actions";
 import { getIsLogged } from "./selectors";
 import { useAppDispatch, useAppSelector } from ".";
 
@@ -39,5 +45,12 @@ export function useUiResetError() {
   const dispatch = useAppDispatch();
   return function () {
     return dispatch(uiResetError());
+  };
+}
+
+export function useAdvertsLoadAction() {
+  const dispatch = useAppDispatch();
+  return function (params?: Record<string, string>) {
+    return dispatch(advertsLoad(params));
   };
 }
