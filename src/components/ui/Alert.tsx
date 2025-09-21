@@ -1,0 +1,59 @@
+import clsx from "clsx";
+
+interface AlertProps {
+  text: string | undefined;
+  variant?: "error" | "success" | "warning";
+  onClick: () => void;
+}
+
+const Alert = ({ text, variant, onClick, ...props }: AlertProps) => {
+  let icon: string | null = null;
+
+  switch (variant) {
+    case "error":
+      icon = "error";
+      break;
+    case "success":
+      icon = "check_circle";
+      break;
+    case "warning":
+      icon = "warning";
+      break;
+    default:
+      icon = null;
+  }
+
+  return (
+    <div className="fixed top-12 left-1/2 z-50 w-80 -translate-x-1/2">
+      <div
+        role="alert"
+        className={clsx(
+          "flex cursor-pointer justify-between rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition-opacity hover:opacity-50",
+          variant && `alert-${variant}`,
+        )}
+        {...props}
+      >
+        <div className="flex items-center">
+          {icon && (
+            <span className="material-symbols-outlined mr-3 flex items-center justify-center">
+              {icon}
+            </span>
+          )}
+          <span>{text}</span>
+        </div>
+        <button
+          type="button"
+          className="flex cursor-pointer items-center justify-center rounded-lg"
+          aria-label="Close"
+        >
+          <span className="sr-only">Close</span>
+          <span className="material-symbols-outlined !text-xl !font-medium">
+            close
+          </span>
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default Alert;
