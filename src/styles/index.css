@@ -45,8 +45,11 @@
   --color-primary: var(--color-primary);
   --color-primary-hover: var(--color-primary-hover);
   --color-destructive: var(--color-destructive);
+  --color-destructive-hover: var(--color-destructive-hover);
   --color-warning: var(--color-warning);
+  --color-warning-hover: var(--color-warning-hover);
   --color-success: var(--color-success);
+  --color-success-hover: var(--color-success-hover);
 }
 
 .dark {
@@ -95,4 +98,18 @@ h4 {
 }
 .btn-secondary {
   @apply hover:text-heading hover:bg-border bg-transparent;
+}
+
+/* ALERTS */
+.alert {
+  @apply border-border bg-container flex cursor-pointer justify-between rounded-xl border p-6 shadow-sm transition-opacity hover:opacity-50;
+}
+.alert-error {
+  @apply border-destructive text-destructive-hover;
+}
+.alert-warning {
+  @apply border-warning text-warning-hover;
+}
+.alert-success {
+  @apply border-success text-success-hover;
 }

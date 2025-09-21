@@ -27,10 +27,7 @@ const Alert = ({ text, variant, onClick, ...props }: AlertProps) => {
     <div className="fixed top-12 left-1/2 z-50 w-80 -translate-x-1/2">
       <div
         role="alert"
-        className={clsx(
-          "flex cursor-pointer justify-between rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition-opacity hover:opacity-50",
-          variant && `alert-${variant}`,
-        )}
+        className={clsx("alert", variant && `alert-${variant}`)}
         {...props}
       >
         <div className="flex items-center">
