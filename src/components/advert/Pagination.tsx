@@ -18,7 +18,7 @@ function Pagination({ current, total, onPageChange }: PaginationProps) {
       <button
         onClick={() => current > 1 && onPageChange(current - 1)}
         disabled={current === 1}
-        className="rounded-lg bg-transparent px-4 py-2 text-black hover:bg-gray-200"
+        className="btn btn-secondary"
       >
         {"<"}
       </button>
@@ -28,10 +28,8 @@ function Pagination({ current, total, onPageChange }: PaginationProps) {
           onClick={() => onPageChange(page)}
           disabled={page === current}
           className={clsx(
-            "rounded-lg px-4 py-2",
-            page === current
-              ? "bg-black text-white"
-              : "bg-transparent text-black hover:bg-gray-200",
+            "btn",
+            page === current ? "btn-primary" : "btn-secondary",
           )}
         >
           {page}
@@ -40,7 +38,7 @@ function Pagination({ current, total, onPageChange }: PaginationProps) {
       <button
         onClick={() => current < total && onPageChange(current + 1)}
         disabled={current === total}
-        className="rounded-lg bg-transparent px-4 py-2 text-black hover:bg-gray-200"
+        className="btn btn-secondary"
       >
         {">"}
       </button>
