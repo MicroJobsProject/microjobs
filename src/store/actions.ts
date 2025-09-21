@@ -3,7 +3,7 @@ import type { AppThunk } from ".";
 
 //REACT
 import type { Credentials } from "../pages/auth/types";
-import type { Advert, AdvertResponse } from "../pages/advert/types";
+import type { AdvertResponse } from "../pages/advert/types";
 
 //Action Types================================================================================================================
 // AUTH............................................
@@ -160,12 +160,7 @@ export function authLogin(credentials: Credentials): AppThunk<Promise<void>> {
 export function advertsLoad(
   params?: Record<string, string>,
 ): AppThunk<Promise<void>> {
-  return async function (dispatch, getState, { api }) {
-    const state = getState();
-    if (state.adverts.loaded) {
-      return;
-    }
-
+  return async function (dispatch, _getState, { api }) {
     try {
       dispatch(advertsLoadPending());
       const adverts = await api.adverts.getAdverts(params);

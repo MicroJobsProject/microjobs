@@ -1,5 +1,5 @@
 //DEPENDENCIES
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { Link } from "react-router";
 
 //NATIVE
@@ -11,21 +11,23 @@ import AdvertCard from "../components/advert/AdvertCard";
 import Pagination from "../components/advert/Pagination";
 
 export default function Home() {
-  const [currentPage, setCurrentPage] = useState("1");
   const advertsLoadAction = useAdvertsLoadAction();
   const uiResetErrorAction = useUiResetError();
   const adverts = useAppSelector(getAdverts);
   const { pending, error } = useAppSelector(getUi);
   const { page, totalPages } = useAppSelector(getPagination);
+  const didFetch = useRef(false);
 
   function handlePageChange(newPage: number) {
-    setCurrentPage(newPage.toString());
-    console.log(currentPage);
+    advertsLoadAction({ page: newPage.toString() });
   }
 
   useEffect(() => {
-    advertsLoadAction({ page: currentPage });
-  }, [currentPage]);
+    if (!didFetch.current) {
+      advertsLoadAction({ page: page.toString() });
+      didFetch.current = true;
+    }
+  }, [page]);
 
   return (
     <Page>
@@ -49,7 +51,7 @@ export default function Home() {
         )}
       </div>
       <Pagination
-        current={parseInt(currentPage)}
+        current={page}
         total={totalPages}
         onPageChange={handlePageChange}
       />
