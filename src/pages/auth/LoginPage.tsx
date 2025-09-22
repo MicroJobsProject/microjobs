@@ -1,16 +1,11 @@
 //DEPENDENCIES
-import {
-  useEffect,
-  useRef,
-  useState,
-  type ChangeEvent,
-  type FormEvent,
-} from "react";
+import { useState, type ChangeEvent, type FormEvent } from "react";
 
-//REACT-REDUX FILES
+//NATIVE
 import { useLoginAction, useUiResetError } from "../../store/hooks";
 import { useAppSelector } from "../../store";
 import { getUi } from "../../store/selectors";
+import { isValidGmail } from "../../utils/validation";
 
 function LoginPage() {
   const loginAction = useLoginAction();
@@ -21,41 +16,40 @@ function LoginPage() {
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
+    rememberMe: false,
   });
-  const timeoutRef = useRef<number | null>(null);
 
-  const { email, password } = credentials;
+  const { email, password, rememberMe } = credentials;
   const isDisabled = !email || !password || isFetching;
 
-  useEffect(() => {
-    timeoutRef.current = setTimeout(() => {
-      console.log("Timeout", timeoutRef.current);
-    }, 20000);
-    console.log("creating timeout", timeoutRef.current);
-
-    return () => {
-      if (timeoutRef.current) {
-        clearInterval(timeoutRef.current);
-      }
-    };
-  }, []);
-
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
+    const { name, value, type, checked } = event.target;
     setCredentials((prevCredentials) => ({
       ...prevCredentials,
-      [event.target.name]: event.target.value,
+      [name]: type === "checkbox" ? checked : value,
     }));
   }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    await loginAction(credentials);
+    if (!isValidGmail(email)) return;
+
+    try {
+      await loginAction({ email, password, rememberMe });
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      /* empty */
+    }
   }
 
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <h1>Log in to your account</h1>
+        <h1>Log in to MicroJobs</h1>
+
+        <div>
+          <p>Sign in by entering your username and password.</p>
+        </div>
 
         <div>
           <label htmlFor="email">Email</label>
@@ -63,7 +57,7 @@ function LoginPage() {
             id="email"
             type="email"
             name="email"
-            placeholder="e.g. user@example.com"
+            placeholder="yourname@gmail.com"
             value={email}
             onChange={handleChange}
           />
@@ -81,9 +75,28 @@ function LoginPage() {
           />
         </div>
 
+        <div>
+          <a href="#" onClick={(e) => e.preventDefault()}>
+            Forgot password?
+          </a>
+        </div>
+
         <button type="submit" disabled={isDisabled}>
           {isFetching ? "Logging in..." : "Log In"}
         </button>
+
+        <div>
+          <label htmlFor="rememberMe">
+            <input
+              id="rememberMe"
+              type="checkbox"
+              name="rememberMe"
+              checked={rememberMe}
+              onChange={handleChange}
+            />
+            Remember me
+          </label>
+        </div>
 
         {error && (
           <div>

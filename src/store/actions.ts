@@ -1,7 +1,7 @@
 //DEPENDENCIES
 import type { AppThunk } from ".";
 
-//REACT
+//NATIVE
 import type { Credentials } from "../pages/auth/types";
 
 //Action Types================================================================================================================
@@ -81,7 +81,6 @@ export const uiResetError = (): UiResetError => ({
 
 //Thunks (Asynchronous Actions)================================================================================================
 // AUTH............................................
-
 export function authRegister(credentials: {
   username: string;
   email: string;
@@ -102,21 +101,54 @@ export function authRegister(credentials: {
   };
 }
 
-export function authLogin(credentials: Credentials): AppThunk<Promise<void>> {
+export function authLogin(
+  credentials: Credentials & { rememberMe?: boolean },
+): AppThunk<Promise<void>> {
   return async function (dispatch, _getState, { api, router }) {
     dispatch(authLoginPending());
     try {
-      await api.auth.login(credentials);
+      const { email, password, rememberMe = false } = credentials;
+
+      await api.auth.login({ email, password }, rememberMe);
+
       dispatch(authLoginFulfilled());
-      console.log(router);
+
       const to = router.state.location.state?.from ?? "/";
       router.navigate(to, { replace: true });
     } catch (error: unknown) {
       if (error instanceof Error) {
         dispatch(authLoginRejected(error));
       }
-      console.log(error);
+      /* console.log(error); */
       throw error;
+    }
+  };
+}
+
+export function authLogoutThunk(): AppThunk<Promise<void>> {
+  return async function (dispatch, _getState, { api, storage }) {
+    try {
+      await api.auth.logout();
+
+      dispatch(authLogout());
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error: unknown) {
+      storage.clearAuth();
+      dispatch(authLogout());
+
+      /* if (error instanceof Error) {
+        console.error("Logout error:", error.message);
+      } */
+    }
+  };
+}
+
+export function authInitializeFromStorage(): AppThunk<void> {
+  return function (dispatch, _getState, { storage }) {
+    const hasAuth = storage.hasAuth();
+
+    if (hasAuth) {
+      dispatch(authLoginFulfilled());
     }
   };
 }
