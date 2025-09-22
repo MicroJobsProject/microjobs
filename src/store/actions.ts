@@ -42,6 +42,21 @@ type UiResetError = {
   type: "ui/reset-error";
 };
 
+// ERROR............................................
+type ErrorSetCritical = {
+  type: "error/setCritical";
+  payload: {
+    id: string;
+    code: number | string;
+    message: string;
+    timestamp: string;
+  };
+};
+
+type ErrorClearCritical = {
+  type: "error/clearCritical";
+};
+
 //Action Creator (Synchronized Actions)============================================================================================
 // AUTH............................................
 export const authRegisterPending = (): AuthRegisterPending => ({
@@ -153,6 +168,21 @@ export function authInitializeFromStorage(): AppThunk<void> {
   };
 }
 
+// ERROR............................................
+export const errorSetCritical = (error: {
+  id: string;
+  code: number | string;
+  message: string;
+  timestamp: string;
+}): ErrorSetCritical => ({
+  type: "error/setCritical",
+  payload: error,
+});
+
+export const errorClearCritical = (): ErrorClearCritical => ({
+  type: "error/clearCritical",
+});
+
 // prettier-ignore
 export type Actions = 
 | AuthRegisterPending
@@ -162,7 +192,9 @@ export type Actions =
 | AuthLoginFulfilled 
 | AuthLoginRejected 
 | AuthLogout
-| UiResetError;
+| UiResetError
+| ErrorSetCritical
+| ErrorClearCritical;
 
 // prettier-ignore
 export type ActionsRejected = 

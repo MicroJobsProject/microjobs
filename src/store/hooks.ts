@@ -9,8 +9,9 @@ import {
   authLogoutThunk,
   uiResetError,
   authInitializeFromStorage,
+  errorClearCritical,
 } from "./actions";
-import { getIsLogged } from "./selectors";
+import { getCriticalError, getIsLogged } from "./selectors";
 
 export function useAuth() {
   return useAppSelector(getIsLogged);
@@ -52,5 +53,16 @@ export function useInitializeAuth() {
   const dispatch = useAppDispatch();
   return function () {
     return dispatch(authInitializeFromStorage());
+  };
+}
+
+export function useCriticalError() {
+  return useAppSelector(getCriticalError);
+}
+
+export function useClearCriticalError() {
+  const dispatch = useAppDispatch();
+  return function () {
+    return dispatch(errorClearCritical());
   };
 }

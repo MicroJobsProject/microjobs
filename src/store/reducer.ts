@@ -1,12 +1,22 @@
 //NATIVE
 import { type Actions, type ActionsRejected } from "./actions";
 
+export interface ErrorState {
+  criticalError: {
+    id: string;
+    code: number | string;
+    message: string;
+    timestamp: string;
+  } | null;
+}
+
 export type State = {
   auth: boolean;
   ui: {
     pending: boolean;
     error: Error | null;
   };
+  error: ErrorState;
 };
 
 const defaultState: State = {
@@ -15,6 +25,7 @@ const defaultState: State = {
     pending: false,
     error: null,
   },
+  error: { criticalError: null },
 };
 
 export function auth(
@@ -56,4 +67,34 @@ export function ui(state = defaultState.ui, action: Actions): State["ui"] {
     return { ...state, error: null };
   }
   return state;
+}
+
+export interface ErrorState {
+  criticalError: {
+    id: string;
+    code: number | string;
+    message: string;
+    timestamp: string;
+  } | null;
+}
+
+const defaultErrorState: ErrorState = {
+  criticalError: null,
+};
+
+export function error(state = defaultErrorState, action: Actions): ErrorState {
+  switch (action.type) {
+    case "error/setCritical":
+      return {
+        ...state,
+        criticalError: action.payload,
+      };
+    case "error/clearCritical":
+      return {
+        ...state,
+        criticalError: null,
+      };
+    default:
+      return state;
+  }
 }

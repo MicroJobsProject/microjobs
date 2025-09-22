@@ -4,6 +4,7 @@ import { lazy, Suspense } from "react";
 
 //NATIVE
 import RegisterPage from "./pages/auth/RegisterPage";
+import { CriticalErrorPage, NotFoundPage } from "./pages/error/ErrorPages";
 
 const LoginPage = lazy(() => import("./pages/auth/LoginPage"));
 //const RequireAuth = lazy(() => import("./components/auth/RequireAuth"));
@@ -47,8 +48,11 @@ function App() {
           />
           */}
 
+          <Route path="error" element={<CriticalErrorPage />} />
+          <Route path="not-found" element={<NotFoundPage />} />
+
           <Route index element={<Navigate to="/home" />} />
-          <Route path="*" element={<Navigate to="/home" replace />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
     </Suspense>

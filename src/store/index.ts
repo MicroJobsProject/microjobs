@@ -25,27 +25,54 @@ export type ExtraArgument = {
 };
 
 // @ts-expect-error: any
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const failureRedirects = (router: Router) => (store) => (next) => (action) => {
+const errorMiddleware = (router: Router) => (store) => (next) => (action) => {
   const result = next(action);
+
   if (!action.type.endsWith("/rejected")) {
     return result;
   }
 
-  if (action.payload.status === 404) {
+  const status = action.payload?.status;
+  const message =
+    action.payload?.message ||
+    action.payload?.error ||
+    getDefaultErrorMessage(status);
+
+  if (status === 500 || status === 503) {
+    const error = {
+      id: Date.now().toString(),
+      code: status,
+      message,
+      timestamp: new Date().toISOString(),
+    };
+    store.dispatch({
+      type: "error/setCritical",
+      payload: error,
+    });
+    router.navigate(`/error?code=${status}`);
+    return result;
+  }
+
+  if (status === 404) {
     router.navigate("/not-found");
+    return result;
   }
 
-  if (action.payload.status === 401) {
-    storage.clearAuth();
-    router.navigate("/login");
-  }
-
-  if (action.payload.code === "ERR_NETWORK") {
-    router.navigate("/internal-server-error");
-  }
-
+  // Otros errores no se manejan automáticamente
   return result;
+};
+
+const getDefaultErrorMessage = (status?: number): string => {
+  switch (status) {
+    case 404:
+      return "Recurso no encontrado";
+    case 500:
+      return "Error interno del servidor";
+    case 503:
+      return "Servicio temporalmente no disponible";
+    default:
+      return "Error del servidor";
+  }
 };
 
 // @ts-expect-error: any
@@ -77,7 +104,7 @@ export default function configureStore(
       router,
       storage,
     }),
-    failureRedirects(router),
+    errorMiddleware(router),
   ];
 
   if (import.meta.env.DEV) {
