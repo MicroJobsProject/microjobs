@@ -14,19 +14,22 @@ function Pagination({ current, total, onPageChange }: PaginationProps) {
   const pages = Array.from({ length: total }, (_, i) => i + 1);
 
   return (
-    <div className="mb-6 flex justify-center gap-2">
+    <div className="mb-6 flex justify-center gap-2" aria-label="Pagination">
       <button
         onClick={() => current > 1 && onPageChange(current - 1)}
         disabled={current === 1}
         className="rounded-lg bg-transparent px-4 py-2 text-black hover:bg-gray-200"
+        aria-label="Go to the previous page"
       >
-        {"<"}
+        <span aria-hidden="true">{"<"}</span>
       </button>
       {pages.map((page) => (
         <button
           key={page}
           onClick={() => onPageChange(page)}
           disabled={page === current}
+          aria-label={`Go to page ${page}`}
+          aria-current={page === current ? "page" : undefined}
           className={clsx(
             "rounded-lg px-4 py-2",
             page === current
@@ -41,8 +44,9 @@ function Pagination({ current, total, onPageChange }: PaginationProps) {
         onClick={() => current < total && onPageChange(current + 1)}
         disabled={current === total}
         className="rounded-lg bg-transparent px-4 py-2 text-black hover:bg-gray-200"
+        aria-label="Go to the next page"
       >
-        {">"}
+        <span aria-hidden="true">{">"}</span>
       </button>
     </div>
   );
