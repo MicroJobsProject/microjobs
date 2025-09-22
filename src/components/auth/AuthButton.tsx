@@ -24,11 +24,11 @@ export default function AuthButton({ className }: AuthButtonProps) {
   };
 
   return isLogged ? (
-    <Button className={className} onClick={handleLogoutClick}>
+    <Button className="btn btn-destructive" onClick={handleLogoutClick}>
       Logout
     </Button>
   ) : (
-    <Button className={className} onClick={handleLoginClick}>
+    <Button className="btn btn-outlined" onClick={handleLoginClick}>
       Login
     </Button>
   );

@@ -65,7 +65,7 @@
 }
 
 .wrapper {
-  @apply mx-auto max-w-7xl px-6 py-8;
+  @apply mx-auto max-w-7xl px-6 py-4 sm:py-8;
 }
 
 header,
@@ -73,7 +73,7 @@ footer {
   @apply bg-container border-border;
 }
 header {
-  @apply border-b shadow-sm;
+  @apply fixed top-0 left-0 z-990 w-full border-b shadow-sm;
 }
 footer {
   @apply border-t;
@@ -88,7 +88,7 @@ h4 {
 
 /* BUTTONS */
 .btn {
-  @apply flex cursor-pointer items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition disabled:pointer-events-none lg:text-base;
+  @apply xs:px-4 flex h-10.5 cursor-pointer items-center justify-center gap-2 rounded-lg px-2 py-2 text-sm font-medium transition disabled:pointer-events-none lg:text-base;
 }
 .btn-primary {
   @apply bg-primary border-primary hover:bg-primary-hover border text-white;
@@ -98,6 +98,9 @@ h4 {
 }
 .btn-secondary {
   @apply hover:text-heading hover:bg-border bg-transparent;
+}
+.btn-destructive {
+  @apply bg-destructive border-destructive hover:bg-destructive-hover text-white;
 }
 
 /* ALERTS */
