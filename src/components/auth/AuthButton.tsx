@@ -5,11 +5,11 @@ import { useNavigate } from "react-router";
 import Button from "../../components/ui/Button";
 import { useAuth, useLogoutAction } from "../../store/hooks";
 
-type AuthButtonProps = {
+/* type AuthButtonProps = {
   className?: string;
-};
+}; */
 
-export default function AuthButton({ className }: AuthButtonProps) {
+export default function AuthButton(/* { className }: AuthButtonProps */) {
   const isLogged = useAuth();
   const logoutAction = useLogoutAction();
   const navigate = useNavigate();
@@ -23,11 +23,11 @@ export default function AuthButton({ className }: AuthButtonProps) {
   };
 
   return isLogged ? (
-    <Button className={className} onClick={handleLogoutClick}>
+    <Button className="btn btn-destructive" onClick={handleLogoutClick}>
       Logout
     </Button>
   ) : (
-    <Button className={className} onClick={handleLoginClick}>
+    <Button className="btn btn-outlined" onClick={handleLoginClick}>
       Login
     </Button>
   );
