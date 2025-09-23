@@ -1,1 +1,128 @@
 @import "tailwindcss";
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --font-heading: "Montserrat", sans-serif;
+  --color-heading: #444444;
+
+  --font-paragraph: "Source Sans 3", sans-serif;
+  --color-paragraph: #7a7a7a;
+
+  --color-background: #f7f7f7;
+  --color-container: #ffffff;
+
+  --color-border: #75757530;
+
+  --color-primary: #917127;
+  --color-primary-hover: #7a5e1f;
+  --color-destructive: #ef4444;
+  --color-destructive-hover: #c92d2d;
+  --color-warning: #efa544;
+  --color-warning-hover: #db7f07;
+  --color-success: #3edf44;
+  --color-success-hover: #15b91a;
+
+  font-family: var(--font-paragraph);
+  font-size: 1rem;
+  color: var(--color-paragraph);
+  background-color: var(--color-background);
+}
+
+@theme {
+  --breakpoint-xs: 24rem;
+
+  --font-heading: var(--font-heading);
+  --color-heading: var(--color-heading);
+
+  --font-paragraph: var(--font-paragraph);
+  --color-paragraph: var(--color-paragraph);
+
+  --color-background: var(--color-background);
+  --color-container: var(--color-container);
+  --color-border: var(--color-border);
+
+  --color-primary: var(--color-primary);
+  --color-primary-hover: var(--color-primary-hover);
+  --color-destructive: var(--color-destructive);
+  --color-destructive-hover: var(--color-destructive-hover);
+  --color-warning: var(--color-warning);
+  --color-warning-hover: var(--color-warning-hover);
+  --color-success: var(--color-success);
+  --color-success-hover: var(--color-success-hover);
+}
+
+.dark {
+  --color-heading: #ffffff;
+  --color-paragraph: #d6d6d6;
+
+  --color-background: #080808;
+  --color-container: #111111;
+}
+
+* {
+  @apply box-border;
+}
+
+.wrapper {
+  @apply mx-auto max-w-7xl px-6 py-4 sm:py-8;
+}
+
+header,
+footer {
+  @apply bg-container border-border;
+}
+header {
+  @apply fixed top-0 left-0 z-990 w-full border-b shadow-sm;
+}
+footer {
+  @apply border-t;
+}
+
+/* HEADINGS */
+h2,
+h3,
+h4 {
+  @apply font-heading text-heading mb-2;
+}
+h2 {
+  @apply text-3xl font-extrabold;
+}
+h3 {
+  @apply text-lg font-bold;
+}
+h4 {
+  @apply text-lg font-semibold;
+}
+
+/* BUTTONS */
+.btn {
+  @apply xs:px-4 flex h-10.5 cursor-pointer items-center justify-center gap-2 rounded-lg px-2 py-2 text-sm font-medium transition disabled:pointer-events-none lg:text-base;
+}
+.btn-primary {
+  @apply bg-primary border-primary hover:bg-primary-hover border text-white;
+}
+.btn-outlined {
+  @apply border-primary text-primary hover:bg-primary-hover border bg-transparent hover:text-white;
+}
+.btn-secondary {
+  @apply hover:text-heading hover:bg-border bg-transparent;
+}
+.btn-destructive {
+  @apply bg-destructive border-destructive hover:bg-destructive-hover text-white;
+}
+
+/* ALERTS */
+.alert {
+  @apply border-border bg-container flex cursor-pointer justify-between rounded-xl border p-6 shadow-sm transition-opacity hover:opacity-50;
+}
+.alert-error {
+  @apply border-destructive text-destructive-hover;
+}
+.alert-warning {
+  @apply border-warning text-warning-hover;
+}
+.alert-success {
+  @apply border-success text-success-hover;
+}
