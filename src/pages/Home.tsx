@@ -30,7 +30,6 @@ export default function Home() {
   function handlePageChange(newPage: number) {
     setPage(newPage);
   }
-
   useEffect(() => {
     const params: Record<string, string> = {
       page: page.toString(),
@@ -38,8 +37,12 @@ export default function Home() {
       ...(typeof filter.offer === "boolean"
         ? { offer: String(filter.offer) }
         : {}),
+      ...(typeof filter.min === "number" ? { min: filter.min.toString() } : {}),
+      ...(typeof filter.max === "number" ? { max: filter.max.toString() } : {}),
     };
+    const urlParams = new URLSearchParams(params);
 
+    window.history.pushState({}, "", `?${urlParams.toString()}`);
     advertsLoadAction(params);
   }, [page, filter]);
 
