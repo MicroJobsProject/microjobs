@@ -7,9 +7,10 @@ import Dropdown from "../ui/Dropdown";
 
 interface FilterProps {
   onSubmit: (filter: Filter) => void;
+  onReset: () => void;
 }
 
-function AdvertFilter({ onSubmit }: FilterProps) {
+function AdvertFilter({ onSubmit, onReset }: FilterProps) {
   const [filters, setFilters] = useState<Filter>({});
   const advertsCategoriesAction = useAdvertsCategoriesAction();
   const categories = useAppSelector(getAdvertsCategories);
@@ -68,6 +69,8 @@ function AdvertFilter({ onSubmit }: FilterProps) {
 
   function handleReset() {
     setFilters({});
+
+    onReset();
   }
 
   return (

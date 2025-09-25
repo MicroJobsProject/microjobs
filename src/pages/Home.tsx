@@ -27,6 +27,11 @@ export default function Home() {
     setPage(1);
   }
 
+  function handleFilterReset() {
+    setFilter({});
+    setPage(1);
+  }
+
   function handlePageChange(newPage: number) {
     setPage(newPage);
   }
@@ -55,7 +60,10 @@ export default function Home() {
         <h1>Welcome Home</h1>
         <p>This is the home page</p>
         <div className="mx-auto max-w-7xl px-6 py-8">
-          <AdvertFilter onSubmit={handleFilterSubmit} />
+          <AdvertFilter
+            onSubmit={handleFilterSubmit}
+            onReset={handleFilterReset}
+          />
           {pending ? (
             <p>Loading...</p>
           ) : adverts.length ? (
