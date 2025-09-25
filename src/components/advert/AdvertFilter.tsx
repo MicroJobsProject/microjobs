@@ -1,5 +1,9 @@
-import { useState, type ChangeEvent, type FormEvent } from "react";
+import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 import type { Filter } from "../../pages/advert/types";
+import { useAdvertsCategoriesAction } from "../../store/hooks";
+import { useAppSelector } from "../../store";
+import { getAdvertsCategories } from "../../store/selectors";
+import Dropdown from "../ui/Dropdown";
 
 interface FilterProps {
   onSubmit: (filter: Filter) => void;
@@ -7,9 +11,16 @@ interface FilterProps {
 
 function AdvertFilter({ onSubmit }: FilterProps) {
   const [filters, setFilters] = useState<Filter>({});
+  const advertsCategoriesAction = useAdvertsCategoriesAction();
+  const categories = useAppSelector(getAdvertsCategories);
+
+  useEffect(() => {
+    advertsCategoriesAction();
+  }, []);
 
   function handleSubmit(event: FormEvent) {
     event.preventDefault();
+
     onSubmit(filters);
   }
 
@@ -24,6 +35,19 @@ function AdvertFilter({ onSubmit }: FilterProps) {
       ...prev,
       offer: value === "" ? undefined : value === "true",
     }));
+  }
+
+  function handleCategoryChange(event: ChangeEvent<HTMLInputElement>) {
+    const { value, checked } = event.target;
+    setFilters((prev) => {
+      const current = prev.category ?? [];
+      return {
+        ...prev,
+        category: checked
+          ? [...current, value]
+          : current.filter((cat) => cat !== value),
+      };
+    });
   }
 
   function handleMinPriceChange(event: ChangeEvent<HTMLInputElement>) {
@@ -78,7 +102,7 @@ function AdvertFilter({ onSubmit }: FilterProps) {
             value={
               typeof filters.offer === "boolean" ? String(filters.offer) : ""
             }
-            className="h-10.5 rounded-lg border border-gray-200 px-3 py-2"
+            className="h-10.5 appearance-none rounded-lg border border-gray-200 px-3 py-2"
             onChange={handleTypeChange}
           >
             <option value="">All Types</option>
@@ -86,7 +110,40 @@ function AdvertFilter({ onSubmit }: FilterProps) {
             <option value="true">Offer Service</option>
           </select>
         </div>
-
+        <div className="flex flex-col">
+          <label htmlFor="category" className="mb-2 font-medium">
+            Category
+          </label>
+          <Dropdown
+            label="Select categories"
+            className="h-10.5 w-full rounded-lg border border-gray-200 px-3 py-2 text-left placeholder:text-gray-200"
+          >
+            {categories.map((category) => (
+              <div className="mb-1 flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  id={category.name.toLowerCase()}
+                  name="category"
+                  value={category.name.toLowerCase()}
+                  checked={
+                    filters.category?.includes(category.name.toLowerCase()) ??
+                    false
+                  }
+                  onChange={handleCategoryChange}
+                />
+                <span
+                  className="material-symbols-outlined -mb-0.5 !text-base"
+                  aria-hidden="true"
+                >
+                  {category.icon}
+                </span>
+                <label htmlFor={category.name.toLowerCase()} className="w-40">
+                  {category.name}
+                </label>
+              </div>
+            ))}
+          </Dropdown>
+        </div>
         <div className="flex flex-col">
           <label htmlFor="min-price" className="mb-2 font-medium">
             Min. Price

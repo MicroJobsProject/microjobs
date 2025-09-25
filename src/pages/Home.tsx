@@ -39,6 +39,9 @@ export default function Home() {
         : {}),
       ...(typeof filter.min === "number" ? { min: filter.min.toString() } : {}),
       ...(typeof filter.max === "number" ? { max: filter.max.toString() } : {}),
+      ...(filter.category && filter.category.length > 0
+        ? { category: filter.category.join(",") }
+        : {}),
     };
     const urlParams = new URLSearchParams(params);
 
