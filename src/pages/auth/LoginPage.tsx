@@ -1,5 +1,6 @@
 //DEPENDENCIES
 import { useState, type ChangeEvent, type FormEvent } from "react";
+import axios from "axios";
 
 //NATIVE
 import { useLoginAction, useUiResetError } from "../../store/hooks";
@@ -100,7 +101,11 @@ function LoginPage() {
 
         {error && (
           <div>
-            <span>{error.message}</span>
+            <span>
+              {axios.isAxiosError(error)
+                ? error.response?.data?.error || error.message
+                : error.message}
+            </span>
             <button type="button" onClick={() => uiResetErrorAction()}>
               ×
             </button>

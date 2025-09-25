@@ -1,5 +1,7 @@
 //DEPENDENCIES
 import type { AppThunk } from ".";
+import type { AxiosError } from "axios";
+import axios from "axios";
 
 //NATIVE
 import type { Credentials } from "../pages/auth/types";
@@ -7,7 +9,6 @@ import type { AdvertResponse } from "../pages/advert/types";
 
 //Action Types================================================================================================================
 // AUTH............................................
-
 type AuthRegisterPending = {
   type: "auth/register/pending";
 };
@@ -43,8 +44,17 @@ type UiResetError = {
   type: "ui/reset-error";
 };
 
-//ADVERTS (Load)...................................
+// ERROR............................................
+type ErrorSetCritical = {
+  type: "error/setCritical";
+  payload: AxiosError;
+};
 
+type ErrorClearCritical = {
+  type: "error/clearCritical";
+};
+
+//ADVERTS (Load)...................................
 type AdvertsLoadPending = {
   type: "adverts/load/pending";
 };
@@ -59,7 +69,7 @@ type AdvertsLoadRejected = {
   payload: Error;
 };
 
-//Action Creator (Synchronized Actions)============================================================================================
+//Action Creators (Synchronized Actions)============================================================================================
 // AUTH............................................
 export const authRegisterPending = (): AuthRegisterPending => ({
   type: "auth/register/pending",
@@ -94,6 +104,16 @@ export const authLogout = (): AuthLogout => ({
 // UI..............................................
 export const uiResetError = (): UiResetError => ({
   type: "ui/reset-error",
+});
+
+// ERROR............................................
+export const errorSetCritical = (error: AxiosError): ErrorSetCritical => ({
+  type: "error/setCritical",
+  payload: error,
+});
+
+export const errorClearCritical = (): ErrorClearCritical => ({
+  type: "error/clearCritical",
 });
 
 //ADVERTS (Load)...................................
@@ -144,16 +164,12 @@ export function authLogin(
       const { email, password, rememberMe = false } = credentials;
 
       await api.auth.login({ email, password }, rememberMe);
-
       dispatch(authLoginFulfilled());
-
-      const to = router.state.location.state?.from ?? "/";
-      router.navigate(to, { replace: true });
+      router.navigate("/", { replace: true });
     } catch (error: unknown) {
-      if (error instanceof Error) {
+      if (axios.isAxiosError(error)) {
         dispatch(authLoginRejected(error));
       }
-      /* console.log(error); */
       throw error;
     }
   };
@@ -165,14 +181,10 @@ export function authLogoutThunk(): AppThunk<Promise<void>> {
       await api.auth.logout();
 
       dispatch(authLogout());
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error: unknown) {
       storage.clearAuth();
       dispatch(authLogout());
-
-      /* if (error instanceof Error) {
-        console.error("Logout error:", error.message);
-      } */
+      throw error;
     }
   };
 }
@@ -217,7 +229,9 @@ export type Actions =
 | UiResetError
 | AdvertsLoadPending
 | AdvertsLoadFulfilled
-| AdvertsLoadRejected;
+| AdvertsLoadRejected
+| ErrorSetCritical
+| ErrorClearCritical;
 
 // prettier-ignore
 export type ActionsRejected = 

@@ -10,9 +10,10 @@ import {
   authLogin,
   authLogoutThunk,
   uiResetError,
+  errorClearCritical,
   advertsLoad,
 } from "./actions";
-import { getIsLogged } from "./selectors";
+import { getCriticalError, getIsLogged } from "./selectors";
 
 export function useAuth() {
   return useAppSelector(getIsLogged);
@@ -54,5 +55,16 @@ export function useAdvertsLoadAction() {
   const dispatch = useAppDispatch();
   return function (params?: Record<string, string>) {
     return dispatch(advertsLoad(params));
+  };
+}
+
+export function useCriticalError() {
+  return useAppSelector(getCriticalError);
+}
+
+export function useClearCriticalError() {
+  const dispatch = useAppDispatch();
+  return function () {
+    return dispatch(errorClearCritical());
   };
 }

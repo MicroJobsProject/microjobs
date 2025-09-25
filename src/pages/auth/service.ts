@@ -1,3 +1,6 @@
+//DEPENDENCIES
+import axios from "axios";
+
 //NATIVE
 import storage from "../../utils/storage";
 import {
@@ -50,49 +53,29 @@ export async function login(
   credentials: LoginCredentials,
   rememberMe: boolean = false,
 ): Promise<LoginResponse> {
-  try {
-    const response = await fetch(
-      `${import.meta.env.VITE_API_BASE_URL}/api/auth/login`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: credentials.email,
-          password: credentials.password,
-        }),
-      },
-    );
+  const response = await axios.post(
+    `${import.meta.env.VITE_API_BASE_URL}/api/auth/login`,
+    {
+      email: credentials.email,
+      password: credentials.password,
+    },
+  );
 
-    const data: LoginResponse = await response.json();
+  const { accessToken, refreshToken } = response.data;
 
-    if (!response.ok) {
-      throw new Error(data.message || data.error || "Login failed");
-    }
+  storage.setAuth(accessToken, rememberMe);
 
-    const { accessToken, refreshToken } = data;
-
-    storage.setAuth(accessToken, rememberMe);
-
-    if (refreshToken) {
-      storage.setRefreshToken(refreshToken, rememberMe);
-    }
-
-    setAuthorizationHeader(accessToken);
-
-    if (import.meta.env.DEV) {
-      console.log("Session saved:", storage.getSessionInfo());
-    }
-
-    return data;
-  } catch (error) {
-    if (error instanceof TypeError && error.message.includes("fetch")) {
-      throw new Error("Network error. Please check your connection.");
-    }
-
-    throw new Error(error instanceof Error ? error.message : "Login failed");
+  if (refreshToken) {
+    storage.setRefreshToken(refreshToken, rememberMe);
   }
+
+  setAuthorizationHeader(accessToken);
+
+  if (import.meta.env.DEV) {
+    console.log("Session saved:", storage.getSessionInfo());
+  }
+
+  return response.data;
 }
 
 //LOGOUT=====================================================================================

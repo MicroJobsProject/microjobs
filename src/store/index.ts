@@ -13,6 +13,7 @@ import * as reducers from "./reducer";
 import * as adverts from "../pages/advert/service";
 import * as auth from "../pages/auth/service";
 import storage from "../utils/storage";
+import { getErrorMessage } from "../utils/errorMessages";
 
 // Combination of reducers-------------------------------------------------------------------------------------------------------
 const rootReducer = combineReducers(reducers);
@@ -25,24 +26,37 @@ export type ExtraArgument = {
 };
 
 // @ts-expect-error: any
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const failureRedirects = (router: Router) => (store) => (next) => (action) => {
+const errorMiddleware = () => (store) => (next) => (action) => {
   const result = next(action);
+
   if (!action.type.endsWith("/rejected")) {
     return result;
   }
 
-  if (action.payload.status === 404) {
-    router.navigate("/not-found");
-  }
+  const status = action.payload?.response?.status;
+  const errorMessage =
+    action.payload?.response?.data?.error ||
+    action.payload?.message ||
+    getErrorMessage(status);
 
-  if (action.payload.status === 401) {
-    storage.clearAuth();
-    router.navigate("/login");
-  }
+  console.log("Error middleware:", {
+    status,
+    errorMessage,
+    payload: action.payload,
+  });
 
-  if (action.payload.code === "ERR_NETWORK") {
-    router.navigate("/internal-server-error");
+  if (status === 500 || status === 503) {
+    const error = {
+      id: Date.now().toString(),
+      code: status,
+      message: errorMessage,
+      timestamp: new Date().toISOString(),
+    };
+    store.dispatch({
+      type: "error/setCritical",
+      payload: error,
+    });
+    return result;
   }
 
   return result;
@@ -77,7 +91,7 @@ export default function configureStore(
       router,
       storage,
     }),
-    failureRedirects(router),
+    errorMiddleware(),
   ];
 
   if (import.meta.env.DEV) {
