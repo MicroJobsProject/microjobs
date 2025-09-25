@@ -3,7 +3,7 @@ import type { AppThunk } from ".";
 
 //REACT
 import type { Credentials } from "../pages/auth/types";
-import type { AdvertResponse } from "../pages/advert/types";
+import type { AdvertCategory, AdvertResponse } from "../pages/advert/types";
 
 //Action Types================================================================================================================
 // AUTH............................................
@@ -59,6 +59,22 @@ type AdvertsLoadRejected = {
   payload: Error;
 };
 
+//ADVERTS (Categories)...................................
+
+type AdvertsCategoriesPending = {
+  type: "adverts/categories/pending";
+};
+
+type AdvertsCategoriesFulfilled = {
+  type: "adverts/categories/fulfilled";
+  payload: AdvertCategory[];
+};
+
+type AdvertsCategoriesRejected = {
+  type: "adverts/categories/rejected";
+  payload: Error;
+};
+
 //Action Creator (Synchronized Actions)============================================================================================
 // AUTH............................................
 export const authRegisterPending = (): AuthRegisterPending => ({
@@ -110,6 +126,25 @@ export const advertsLoadFulfilled = (
 
 export const advertsLoadRejected = (error: Error): AdvertsLoadRejected => ({
   type: "adverts/load/rejected",
+  payload: error,
+});
+
+//ADVERTS (Categories)...................................
+export const advertsCategoriesPending = (): AdvertsCategoriesPending => ({
+  type: "adverts/categories/pending",
+});
+
+export const advertsCategoriesFulfilled = (
+  categories: AdvertCategory[],
+): AdvertsCategoriesFulfilled => ({
+  type: "adverts/categories/fulfilled",
+  payload: categories,
+});
+
+export const advertsCategoriesRejected = (
+  error: Error,
+): AdvertsCategoriesRejected => ({
+  type: "adverts/categories/rejected",
   payload: error,
 });
 
@@ -174,6 +209,23 @@ export function advertsLoad(
   };
 }
 
+//ADVERTS (Categories)...................................
+
+export function advertsCategories(): AppThunk<Promise<void>> {
+  return async function (dispatch, _getState, { api }) {
+    try {
+      dispatch(advertsCategoriesPending());
+      const categories = await api.adverts.getAdvertsCategories();
+      dispatch(advertsCategoriesFulfilled(categories));
+    } catch (error) {
+      if (error instanceof Error) {
+        dispatch(advertsCategoriesRejected(error));
+      }
+      throw error;
+    }
+  };
+}
+
 // prettier-ignore
 export type Actions = 
 | AuthRegisterPending
@@ -186,9 +238,13 @@ export type Actions =
 | UiResetError
 | AdvertsLoadPending
 | AdvertsLoadFulfilled
-| AdvertsLoadRejected;
+| AdvertsLoadRejected
+| AdvertsCategoriesPending
+| AdvertsCategoriesFulfilled
+| AdvertsCategoriesRejected;
 
 // prettier-ignore
 export type ActionsRejected = 
 | AuthLoginRejected
 | AdvertsLoadRejected
+| AdvertsCategoriesRejected

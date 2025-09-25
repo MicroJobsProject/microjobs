@@ -17,10 +17,15 @@ export interface AdvertResponse {
   totalPages: number;
 }
 
+export interface AdvertCategory {
+  name: string;
+  icon?: string;
+}
+
 export interface Filter {
   name?: string;
-  minPrice?: number;
-  maxPrice?: number;
+  min?: number;
+  max?: number;
   offer?: boolean;
   category?: string[];
 }

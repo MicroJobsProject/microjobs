@@ -1,5 +1,5 @@
 //REDUX
-import type { AdvertResponse } from "../pages/advert/types";
+import type { AdvertCategory, AdvertResponse } from "../pages/advert/types";
 import { type Actions, type ActionsRejected } from "./actions";
 
 export type State = {
@@ -9,7 +9,7 @@ export type State = {
     error: Error | null;
   };
   adverts: { loaded: boolean; data: AdvertResponse };
-  categories: string[];
+  categories: AdvertCategory[];
 };
 
 const defaultState: State = {
@@ -74,6 +74,16 @@ export function adverts(
 ): State["adverts"] {
   if (action.type === "adverts/load/fulfilled") {
     return { ...state, loaded: true, data: action.payload };
+  }
+  return state;
+}
+
+export function categories(
+  state = defaultState.categories,
+  action: Actions,
+): State["categories"] {
+  if (action.type === "adverts/categories/fulfilled") {
+    return action.payload;
   }
   return state;
 }

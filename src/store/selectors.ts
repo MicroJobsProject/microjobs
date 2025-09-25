@@ -10,3 +10,4 @@ export const getPagination = createSelector(
   (page, totalPages) => ({ page, totalPages }),
 );
 export const getAdverts = (state: RootState) => state.adverts.data.results;
+export const getAdvertsCategories = (state: RootState) => state.categories;

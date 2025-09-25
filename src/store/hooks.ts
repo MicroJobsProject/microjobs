@@ -8,6 +8,7 @@ import {
   authLogout,
   uiResetError,
   advertsLoad,
+  advertsCategories,
 } from "./actions";
 import { getIsLogged } from "./selectors";
 import { useAppDispatch, useAppSelector } from ".";
@@ -52,5 +53,12 @@ export function useAdvertsLoadAction() {
   const dispatch = useAppDispatch();
   return function (params?: Record<string, string>) {
     return dispatch(advertsLoad(params));
+  };
+}
+
+export function useAdvertsCategoriesAction() {
+  const dispatch = useAppDispatch();
+  return function () {
+    return dispatch(advertsCategories());
   };
 }
