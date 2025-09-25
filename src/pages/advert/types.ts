@@ -16,3 +16,11 @@ export interface AdvertResponse {
   totalAdverts: number;
   totalPages: number;
 }
+
+export interface Filter {
+  name?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  offer?: boolean;
+  category?: string[];
+}
