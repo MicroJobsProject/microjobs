@@ -12,6 +12,7 @@ import {
   uiResetError,
   errorClearCritical,
   advertsLoad,
+  advertsCategories,
 } from "./actions";
 import { getCriticalError, getIsLogged } from "./selectors";
 
@@ -58,6 +59,14 @@ export function useAdvertsLoadAction() {
   };
 }
 
+
+export function useAdvertsCategoriesAction() {
+  const dispatch = useAppDispatch();
+  return function () {
+    return dispatch(advertsCategories());
+  };
+}
+  
 export function useCriticalError() {
   return useAppSelector(getCriticalError);
 }

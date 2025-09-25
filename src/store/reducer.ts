@@ -2,7 +2,7 @@
 import type { AxiosError } from "axios";
 
 //NATIVE
-import type { AdvertResponse } from "../pages/advert/types";
+import type { AdvertCategory, AdvertResponse } from "../pages/advert/types";
 import { type Actions, type ActionsRejected } from "./actions";
 
 export interface ErrorState {
@@ -16,7 +16,7 @@ export type State = {
     error: Error | null;
   };
   adverts: { loaded: boolean; data: AdvertResponse };
-  categories: string[];
+  categories: AdvertCategory[];
   error: ErrorState;
 };
 
@@ -89,6 +89,15 @@ export function adverts(
   }
   return state;
 }
+
+export function categories(
+  state = defaultState.categories,
+  action: Actions,
+): State["categories"] {
+  if (action.type === "adverts/categories/fulfilled") {
+    return action.payload;
+  }
+  return state;
 
 const defaultErrorState: ErrorState = {
   criticalError: null,

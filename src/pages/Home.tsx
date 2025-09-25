@@ -1,6 +1,6 @@
 //DEPENDENCIES
 import { useEffect, useState } from "react";
-import { Link } from "react-router";
+import { Link, NavLink } from "react-router";
 
 //NATIVE
 import Page from "../components/layout/Page";
@@ -27,10 +27,13 @@ export default function Home() {
     setPage(1);
   }
 
+  function handleFilterReset() {
+    setFilter({});
+    setPage(1);
+
   function handlePageChange(newPage: number) {
     setPage(newPage);
   }
-
   useEffect(() => {
     const params: Record<string, string> = {
       page: page.toString(),
@@ -38,8 +41,15 @@ export default function Home() {
       ...(typeof filter.offer === "boolean"
         ? { offer: String(filter.offer) }
         : {}),
+      ...(typeof filter.min === "number" ? { min: filter.min.toString() } : {}),
+      ...(typeof filter.max === "number" ? { max: filter.max.toString() } : {}),
+      ...(filter.category && filter.category.length > 0
+        ? { category: filter.category.join(",") }
+        : {}),
     };
+    const urlParams = new URLSearchParams(params);
 
+    window.history.pushState({}, "", `?${urlParams.toString()}`);
     advertsLoadAction(params);
   }, [page, filter]);
 
@@ -49,7 +59,10 @@ export default function Home() {
         <h1>Welcome Home</h1>
         <p>This is the home page</p>
         <div className="mx-auto max-w-7xl px-6 py-8">
-          <AdvertFilter onSubmit={handleFilterSubmit} />
+          <AdvertFilter
+            onSubmit={handleFilterSubmit}
+            onReset={handleFilterReset}
+          />
           {pending ? (
             <p>Loading...</p>
           ) : adverts.length ? (
@@ -67,7 +80,20 @@ export default function Home() {
               )}
             </ul>
           ) : (
-            <p>Advert empty</p>
+            <div className="flex flex-col items-center justify-center gap-4">
+              <span className="material-symbols-outlined !text-7xl">
+                search_off
+              </span>
+              <h3 className="font-bold">Is anybody home?</h3>
+              <div className="text-center">
+                <p>Looks like we couldn't find what you wanted.</p>
+                <p>Why don't try another search or advertise yourself?</p>
+              </div>
+              <div className="flex gap-4">
+                <NavLink to="/advert/new">New Advert</NavLink>
+                <button onClick={handleFilterReset}>Reset Search</button>
+              </div>
+            </div>
           )}
         </div>
         <Pagination
