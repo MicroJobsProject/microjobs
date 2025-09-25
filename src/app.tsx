@@ -11,6 +11,7 @@ const RequireNoAuth = lazy(() => import("./components/auth/RequireNoAuth"));
 
 const Home = lazy(() => import("./pages/Home"));
 const Layout = lazy(() => import("./components/layout/layout"));
+const NewAdvertPage = lazy(() => import("./pages/advert/NewAdvert"));
 
 function App() {
   return (
@@ -49,6 +50,14 @@ function App() {
 
           <Route index element={<Navigate to="/home" />} />
           <Route path="*" element={<Navigate to="/home" replace />} />
+          <Route
+            path="newAdvert"
+            element={
+              // <RequireNoAuth>
+              <NewAdvertPage />
+              // </RequireNoAuth>
+            }
+          />
         </Route>
       </Routes>
     </Suspense>
