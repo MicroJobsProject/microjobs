@@ -1,6 +1,6 @@
 //DEPENDENCIES
 import { useEffect, useState } from "react";
-import { Link } from "react-router";
+import { Link, NavLink } from "react-router";
 
 //NATIVE
 import Page from "../components/Layout/Page";
@@ -68,20 +68,29 @@ export default function Home() {
             <p>Loading...</p>
           ) : adverts.length ? (
             <ul className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {adverts.length ? (
-                adverts.map((advert) => (
-                  <li key={advert._id}>
-                    <Link to={`/adverts/${advert._id}`}>
-                      <AdvertCard advert={advert} />
-                    </Link>
-                  </li>
-                ))
-              ) : (
-                <p>Adverts not found</p>
-              )}
+              {adverts.map((advert) => (
+                <li key={advert._id}>
+                  <Link to={`/adverts/${advert._id}`}>
+                    <AdvertCard advert={advert} />
+                  </Link>
+                </li>
+              ))}
             </ul>
           ) : (
-            <p>Advert empty</p>
+            <div className="flex flex-col items-center justify-center gap-4">
+              <span className="material-symbols-outlined !text-7xl">
+                search_off
+              </span>
+              <h3 className="font-bold">Is anybody home?</h3>
+              <div className="text-center">
+                <p>Looks like we couldn't find what you wanted.</p>
+                <p>Why don't try another search or advertise yourself?</p>
+              </div>
+              <div className="flex gap-4">
+                <NavLink to="/advert/new">New Advert</NavLink>
+                <button onClick={handleFilterReset}>Reset Search</button>
+              </div>
+            </div>
           )}
         </div>
         <Pagination
