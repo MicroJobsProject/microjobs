@@ -1,17 +1,20 @@
-//REACT
+//DEPENDENCIES
+import { useAppDispatch, useAppSelector } from ".";
+
+//NATIVE
 import type { Credentials } from "../pages/auth/types";
 
 //REDUX
 import {
   authRegister,
   authLogin,
-  authLogout,
+  authLogoutThunk,
   uiResetError,
+  errorClearCritical,
   advertsLoad,
   advertsCategories,
 } from "./actions";
-import { getIsLogged } from "./selectors";
-import { useAppDispatch, useAppSelector } from ".";
+import { getCriticalError, getIsLogged } from "./selectors";
 
 export function useAuth() {
   return useAppSelector(getIsLogged);
@@ -30,7 +33,7 @@ export function useRegisterAction() {
 
 export function useLoginAction() {
   const dispatch = useAppDispatch();
-  return function (credentials: Credentials) {
+  return function (credentials: Credentials & { rememberMe?: boolean }) {
     return dispatch(authLogin(credentials));
   };
 }
@@ -38,7 +41,7 @@ export function useLoginAction() {
 export function useLogoutAction() {
   const dispatch = useAppDispatch();
   return function () {
-    return dispatch(authLogout());
+    return dispatch(authLogoutThunk());
   };
 }
 
@@ -56,9 +59,21 @@ export function useAdvertsLoadAction() {
   };
 }
 
+
 export function useAdvertsCategoriesAction() {
   const dispatch = useAppDispatch();
   return function () {
     return dispatch(advertsCategories());
+  };
+}
+  
+export function useCriticalError() {
+  return useAppSelector(getCriticalError);
+}
+
+export function useClearCriticalError() {
+  const dispatch = useAppDispatch();
+  return function () {
+    return dispatch(errorClearCritical());
   };
 }

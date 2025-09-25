@@ -21,7 +21,7 @@ function AdvertFilter({ onSubmit, onReset }: FilterProps) {
 
   function handleSubmit(event: FormEvent) {
     event.preventDefault();
-
+    
     onSubmit(filters);
   }
 

@@ -1,13 +1,14 @@
 //DEPENDENCIES
 import type { AppThunk } from ".";
+import type { AxiosError } from "axios";
+import axios from "axios";
 
-//REACT
+//NATIVE
 import type { Credentials } from "../pages/auth/types";
 import type { AdvertCategory, AdvertResponse } from "../pages/advert/types";
 
 //Action Types================================================================================================================
 // AUTH............................................
-
 type AuthRegisterPending = {
   type: "auth/register/pending";
 };
@@ -43,8 +44,17 @@ type UiResetError = {
   type: "ui/reset-error";
 };
 
-//ADVERTS (Load)...................................
+// ERROR............................................
+type ErrorSetCritical = {
+  type: "error/setCritical";
+  payload: AxiosError;
+};
 
+type ErrorClearCritical = {
+  type: "error/clearCritical";
+};
+
+//ADVERTS (Load)...................................
 type AdvertsLoadPending = {
   type: "adverts/load/pending";
 };
@@ -75,7 +85,7 @@ type AdvertsCategoriesRejected = {
   payload: Error;
 };
 
-//Action Creator (Synchronized Actions)============================================================================================
+//Action Creators (Synchronized Actions)============================================================================================
 // AUTH............................................
 export const authRegisterPending = (): AuthRegisterPending => ({
   type: "auth/register/pending",
@@ -110,6 +120,16 @@ export const authLogout = (): AuthLogout => ({
 // UI..............................................
 export const uiResetError = (): UiResetError => ({
   type: "ui/reset-error",
+});
+
+// ERROR............................................
+export const errorSetCritical = (error: AxiosError): ErrorSetCritical => ({
+  type: "error/setCritical",
+  payload: error,
+});
+
+export const errorClearCritical = (): ErrorClearCritical => ({
+  type: "error/clearCritical",
 });
 
 //ADVERTS (Load)...................................
@@ -150,7 +170,6 @@ export const advertsCategoriesRejected = (
 
 //Thunks (Asynchronous Actions)================================================================================================
 // AUTH............................................
-
 export function authRegister(credentials: {
   username: string;
   email: string;
@@ -171,27 +190,51 @@ export function authRegister(credentials: {
   };
 }
 
-export function authLogin(credentials: Credentials): AppThunk<Promise<void>> {
+export function authLogin(
+  credentials: Credentials & { rememberMe?: boolean },
+): AppThunk<Promise<void>> {
   return async function (dispatch, _getState, { api, router }) {
     dispatch(authLoginPending());
     try {
-      await api.auth.login(credentials);
+      const { email, password, rememberMe = false } = credentials;
+
+      await api.auth.login({ email, password }, rememberMe);
       dispatch(authLoginFulfilled());
-      console.log(router);
-      const to = router.state.location.state?.from ?? "/";
-      router.navigate(to, { replace: true });
+      router.navigate("/", { replace: true });
     } catch (error: unknown) {
-      if (error instanceof Error) {
+      if (axios.isAxiosError(error)) {
         dispatch(authLoginRejected(error));
       }
-      console.log(error);
       throw error;
     }
   };
 }
 
-//ADVERTS (Load)...................................
+export function authLogoutThunk(): AppThunk<Promise<void>> {
+  return async function (dispatch, _getState, { api, storage }) {
+    try {
+      await api.auth.logout();
 
+      dispatch(authLogout());
+    } catch (error: unknown) {
+      storage.clearAuth();
+      dispatch(authLogout());
+      throw error;
+    }
+  };
+}
+
+export function authInitializeFromStorage(): AppThunk<void> {
+  return function (dispatch, _getState, { storage }) {
+    const hasAuth = storage.hasAuth();
+
+    if (hasAuth) {
+      dispatch(authLoginFulfilled());
+    }
+  };
+}
+
+//ADVERTS (Load)...................................
 export function advertsLoad(
   params?: Record<string, string>,
 ): AppThunk<Promise<void>> {
@@ -241,7 +284,9 @@ export type Actions =
 | AdvertsLoadRejected
 | AdvertsCategoriesPending
 | AdvertsCategoriesFulfilled
-| AdvertsCategoriesRejected;
+| AdvertsCategoriesRejected
+| ErrorSetCritical
+| ErrorClearCritical;
 
 // prettier-ignore
 export type ActionsRejected = 

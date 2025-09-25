@@ -1,12 +1,12 @@
 import clsx from "clsx";
+import type { ComponentProps } from "react";
 
-interface AlertProps {
+interface AlertProps extends ComponentProps<"div"> {
   text: string | undefined;
   variant?: "error" | "success" | "warning";
-  onClick: () => void;
 }
 
-const Alert = ({ text, variant, onClick, ...props }: AlertProps) => {
+const Alert = ({ text, variant, ...props }: AlertProps) => {
   let icon: string | null = null;
 
   switch (variant) {
@@ -24,13 +24,10 @@ const Alert = ({ text, variant, onClick, ...props }: AlertProps) => {
   }
 
   return (
-    <div className="fixed top-12 left-1/2 z-50 w-80 -translate-x-1/2">
+    <div className="fixed top-25 left-1/2 z-50 w-80 -translate-x-1/2 sm:top-30">
       <div
         role="alert"
-        className={clsx(
-          "flex cursor-pointer justify-between rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition-opacity hover:opacity-50",
-          variant && `alert-${variant}`,
-        )}
+        className={clsx("alert", variant && `alert-${variant}`)}
         {...props}
       >
         <div className="flex items-center">

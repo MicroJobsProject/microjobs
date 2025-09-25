@@ -1,6 +1,13 @@
-//REDUX
+//DEPENDENCIES
+import type { AxiosError } from "axios";
+
+//NATIVE
 import type { AdvertCategory, AdvertResponse } from "../pages/advert/types";
 import { type Actions, type ActionsRejected } from "./actions";
+
+export interface ErrorState {
+  criticalError: AxiosError | null;
+}
 
 export type State = {
   auth: boolean;
@@ -10,6 +17,7 @@ export type State = {
   };
   adverts: { loaded: boolean; data: AdvertResponse };
   categories: AdvertCategory[];
+  error: ErrorState;
 };
 
 const defaultState: State = {
@@ -23,6 +31,7 @@ const defaultState: State = {
     data: { results: [], total: 0, page: 1, totalAdverts: 0, totalPages: 1 },
   },
   categories: [],
+  error: { criticalError: null },
 };
 
 export function auth(
@@ -65,6 +74,9 @@ export function ui(state = defaultState.ui, action: Actions): State["ui"] {
   if (action.type === "ui/reset-error") {
     return { ...state, error: null };
   }
+  if (action.type === "error/setCritical") {
+    return { pending: false, error: null };
+  }
   return state;
 }
 
@@ -86,4 +98,24 @@ export function categories(
     return action.payload;
   }
   return state;
+
+const defaultErrorState: ErrorState = {
+  criticalError: null,
+};
+
+export function error(state = defaultErrorState, action: Actions): ErrorState {
+  switch (action.type) {
+    case "error/setCritical":
+      return {
+        ...state,
+        criticalError: action.payload,
+      };
+    case "error/clearCritical":
+      return {
+        ...state,
+        criticalError: null,
+      };
+    default:
+      return state;
+  }
 }

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router";
 
 //NATIVE
-import Page from "../components/Layout/Page";
+import Page from "../components/layout/Page";
 import { useAppSelector } from "../store";
 import { useAdvertsLoadAction, useUiResetError } from "../store/hooks";
 import { getAdverts, getPagination, getUi } from "../store/selectors";
@@ -30,7 +30,6 @@ export default function Home() {
   function handleFilterReset() {
     setFilter({});
     setPage(1);
-  }
 
   function handlePageChange(newPage: number) {
     setPage(newPage);
@@ -68,13 +67,17 @@ export default function Home() {
             <p>Loading...</p>
           ) : adverts.length ? (
             <ul className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {adverts.map((advert) => (
-                <li key={advert._id}>
-                  <Link to={`/adverts/${advert._id}`}>
-                    <AdvertCard advert={advert} />
-                  </Link>
-                </li>
-              ))}
+              {adverts.length ? (
+                adverts.map((advert) => (
+                  <li key={advert._id}>
+                    <Link to={`/adverts/${advert._id}`}>
+                      <AdvertCard advert={advert} />
+                    </Link>
+                  </li>
+                ))
+              ) : (
+                <p>Adverts not found</p>
+              )}
             </ul>
           ) : (
             <div className="flex flex-col items-center justify-center gap-4">

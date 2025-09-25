@@ -18,7 +18,7 @@ function Pagination({ current, total, onPageChange }: PaginationProps) {
       <button
         onClick={() => current > 1 && onPageChange(current - 1)}
         disabled={current === 1}
-        className="rounded-lg bg-transparent px-4 py-2 text-black hover:bg-gray-200"
+        className="btn btn-secondary"
         aria-label="Go to the previous page"
       >
         <span aria-hidden="true">{"<"}</span>
@@ -31,10 +31,8 @@ function Pagination({ current, total, onPageChange }: PaginationProps) {
           aria-label={`Go to page ${page}`}
           aria-current={page === current ? "page" : undefined}
           className={clsx(
-            "rounded-lg px-4 py-2",
-            page === current
-              ? "bg-black text-white"
-              : "bg-transparent text-black hover:bg-gray-200",
+            "btn",
+            page === current ? "btn-primary" : "btn-secondary",
           )}
         >
           {page}
@@ -43,7 +41,7 @@ function Pagination({ current, total, onPageChange }: PaginationProps) {
       <button
         onClick={() => current < total && onPageChange(current + 1)}
         disabled={current === total}
-        className="rounded-lg bg-transparent px-4 py-2 text-black hover:bg-gray-200"
+        className="btn btn-secondary"
         aria-label="Go to the next page"
       >
         <span aria-hidden="true">{">"}</span>
