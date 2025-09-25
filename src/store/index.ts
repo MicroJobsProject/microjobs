@@ -26,36 +26,48 @@ export type ExtraArgument = {
 };
 
 // @ts-expect-error: any
-const errorMiddleware = () => (store) => (next) => (action) => {
+const errorMiddleware = (router: Router) => (store) => (next) => (action) => {
   const result = next(action);
 
   if (!action.type.endsWith("/rejected")) {
     return result;
   }
 
-  const status = action.payload?.response?.status;
+  const error = action.payload;
+  const status = error?.response?.status || error?.status;
   const errorMessage =
-    action.payload?.response?.data?.error ||
-    action.payload?.message ||
-    getErrorMessage(status);
+    error?.response?.data?.error || error?.message || getErrorMessage(status);
 
   console.log("Error middleware:", {
+    actionType: action.type,
     status,
     errorMessage,
     payload: action.payload,
   });
 
   if (status === 500 || status === 503) {
-    const error = {
+    const criticalError = {
       id: Date.now().toString(),
-      code: status,
+      code: status.toString(),
       message: errorMessage,
       timestamp: new Date().toISOString(),
     };
+
+    console.log("Dispatching critical error and redirecting:", criticalError);
+
     store.dispatch({
       type: "error/setCritical",
-      payload: error,
+      payload: criticalError,
     });
+
+    router.navigate(`/error?code=${status}`);
+
+    return result;
+  }
+
+  if (status === 404) {
+    console.log("Resource not found, redirecting to 404");
+    router.navigate("/404");
     return result;
   }
 
@@ -91,7 +103,7 @@ export default function configureStore(
       router,
       storage,
     }),
-    errorMiddleware(),
+    errorMiddleware(router),
   ];
 
   if (import.meta.env.DEV) {
