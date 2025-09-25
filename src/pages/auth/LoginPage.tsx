@@ -1,5 +1,6 @@
 //DEPENDENCIES
 import { useState, type ChangeEvent, type FormEvent } from "react";
+import axios from "axios";
 
 //NATIVE
 import { useLoginAction, useUiResetError } from "../../store/hooks";
@@ -13,7 +14,6 @@ import PasswordIcon from "../../assets/lock-light.svg";
 
 function LoginPage() {
   const loginAction = useLoginAction();
-
   const uiResetErrorAction = useUiResetError();
   const { pending: isFetching, error } = useAppSelector(getUi);
 
@@ -22,6 +22,9 @@ function LoginPage() {
     password: "",
     rememberMe: false,
   });
+
+  const [emailError, setEmailError] = useState<string>("");
+  const [passwordError, setPasswordError] = useState<string>("");
 
   const { email, password, rememberMe } = credentials;
   const isDisabled = !email || !password || isFetching;
@@ -32,11 +35,28 @@ function LoginPage() {
       ...prevCredentials,
       [name]: type === "checkbox" ? checked : value,
     }));
+
+    if (name === "email" && emailError) {
+      setEmailError("");
+    }
   }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!isValidGmail(email)) return;
+    if (!isValidGmail(email)) {
+      setEmailError("Please enter a valid Gmail address (example@gmail.com)");
+      return;
+    }
+
+    if (password.length < 6) {
+      setPasswordError("Password must be at least 6 characters");
+      return;
+    }
+
+    if (password.length > 12) {
+      setPasswordError("Password must not exceed 12 characters");
+      return;
+    }
 
     try {
       await loginAction({ email, password, rememberMe });
@@ -52,7 +72,6 @@ function LoginPage() {
         <div className="w-full max-w-md">
           <div className="bg-container border-border rounded-xl border p-8 shadow-sm">
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Header */}
               <div className="text-center">
                 <h2 className="text-heading font-heading mb-2 text-3xl font-extrabold">
                   Log in to MicroJobs
@@ -62,7 +81,6 @@ function LoginPage() {
                 </p>
               </div>
 
-              {/* Email Field */}
               <div className="space-y-2">
                 <label
                   htmlFor="email"
@@ -85,12 +103,18 @@ function LoginPage() {
                     placeholder="yourname@gmail.com"
                     value={email}
                     onChange={handleChange}
-                    className="border-border bg-container text-paragraph placeholder:text-paragraph/60 focus:border-primary focus:ring-primary block w-full rounded-lg border py-2 pr-3 pl-10 text-sm focus:ring-1 focus:outline-none"
+                    className={`bg-container text-paragraph placeholder:text-paragraph/60 block w-full rounded-lg border py-2 pr-3 pl-10 text-sm focus:ring-1 focus:outline-none ${
+                      emailError
+                        ? "border-destructive focus:border-destructive focus:ring-destructive"
+                        : "border-border focus:border-primary focus:ring-primary"
+                    }`}
                   />
                 </div>
+                {emailError && (
+                  <p className="text-destructive text-sm">{emailError}</p>
+                )}
               </div>
 
-              {/* Password Field */}
               <div className="space-y-2">
                 <label
                   htmlFor="password"
@@ -113,12 +137,18 @@ function LoginPage() {
                     placeholder="Your password"
                     value={password}
                     onChange={handleChange}
-                    className="border-border bg-container text-paragraph placeholder:text-paragraph/60 focus:border-primary focus:ring-primary block w-full rounded-lg border py-2 pr-3 pl-10 text-sm focus:ring-1 focus:outline-none"
+                    className={`bg-container text-paragraph placeholder:text-paragraph/60 block w-full rounded-lg border py-2 pr-3 pl-10 text-sm focus:ring-1 focus:outline-none ${
+                      passwordError
+                        ? "border-destructive focus:border-destructive focus:ring-destructive"
+                        : "border-border focus:border-primary focus:ring-primary"
+                    }`}
                   />
                 </div>
+                {passwordError && (
+                  <p className="text-destructive text-sm">{passwordError}</p>
+                )}
               </div>
 
-              {/* Forgot Password */}
               <div className="text-left">
                 <a
                   href="#"
@@ -129,7 +159,6 @@ function LoginPage() {
                 </a>
               </div>
 
-              {/* Submit Button */}
               <button
                 type="submit"
                 disabled={isDisabled}
@@ -145,7 +174,6 @@ function LoginPage() {
                 )}
               </button>
 
-              {/* Remember Me - Toggle Switch */}
               <div className="flex items-center justify-between">
                 <label
                   htmlFor="rememberMe"
@@ -185,34 +213,35 @@ function LoginPage() {
                 </div>
               </div>
 
-              {/* Error Alert */}
               {error && (
                 <div className="alert alert-error">
-                  <span>{error.message}</span>
+                  <span className="flex-1 text-sm">
+                    {axios.isAxiosError(error)
+                      ? error.response?.data?.error || error.message
+                      : error.message}
+                  </span>
                   <button
                     type="button"
                     onClick={() => uiResetErrorAction()}
-                    className="text-destructive hover:text-destructive-hover ml-2 text-xl font-bold transition-colors"
-                    aria-label="Close error"
+                    className="hover:text-destructive text-destructive-hover text-xl font-bold transition"
                   >
                     ×
                   </button>
                 </div>
               )}
-            </form>
-          </div>
 
-          {/* Sign up link */}
-          <div className="mt-6 text-center">
-            <p className="text-paragraph text-sm">
-              Don't have an account?{" "}
-              <a
-                href="/register"
-                className="text-primary hover:text-primary-hover font-medium transition-colors"
-              >
-                Sign up here
-              </a>
-            </p>
+              <div className="text-center">
+                <p className="text-paragraph text-sm">
+                  Don't have an account?{" "}
+                  <a
+                    href="/register"
+                    className="text-primary hover:text-primary-hover font-medium transition-colors"
+                  >
+                    Sign up here
+                  </a>
+                </p>
+              </div>
+            </form>
           </div>
         </div>
       </div>

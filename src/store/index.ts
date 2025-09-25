@@ -13,6 +13,7 @@ import * as reducers from "./reducer";
 import * as adverts from "../pages/advert/service";
 import * as auth from "../pages/auth/service";
 import storage from "../utils/storage";
+import { getErrorMessage } from "../utils/errorMessages";
 
 // Combination of reducers-------------------------------------------------------------------------------------------------------
 const rootReducer = combineReducers(reducers);
@@ -25,24 +26,49 @@ export type ExtraArgument = {
 };
 
 // @ts-expect-error: any
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const failureRedirects = (router: Router) => (store) => (next) => (action) => {
+const errorMiddleware = (router: Router) => (store) => (next) => (action) => {
   const result = next(action);
+
   if (!action.type.endsWith("/rejected")) {
     return result;
   }
 
-  if (action.payload.status === 404) {
-    router.navigate("/not-found");
+  const error = action.payload;
+  const status = error?.response?.status || error?.status;
+  const errorMessage =
+    error?.response?.data?.error || error?.message || getErrorMessage(status);
+
+  console.log("Error middleware:", {
+    actionType: action.type,
+    status,
+    errorMessage,
+    payload: action.payload,
+  });
+
+  if (status === 500 || status === 503) {
+    const criticalError = {
+      id: Date.now().toString(),
+      code: status.toString(),
+      message: errorMessage,
+      timestamp: new Date().toISOString(),
+    };
+
+    console.log("Dispatching critical error and redirecting:", criticalError);
+
+    store.dispatch({
+      type: "error/setCritical",
+      payload: criticalError,
+    });
+
+    router.navigate(`/error?code=${status}`);
+
+    return result;
   }
 
-  if (action.payload.status === 401) {
-    storage.clearAuth();
-    router.navigate("/login");
-  }
-
-  if (action.payload.code === "ERR_NETWORK") {
-    router.navigate("/internal-server-error");
+  if (status === 404) {
+    console.log("Resource not found, redirecting to 404");
+    router.navigate("/404");
+    return result;
   }
 
   return result;
@@ -77,7 +103,7 @@ export default function configureStore(
       router,
       storage,
     }),
-    failureRedirects(router),
+    errorMiddleware(router),
   ];
 
   if (import.meta.env.DEV) {

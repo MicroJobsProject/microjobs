@@ -3,14 +3,17 @@ import { useAppDispatch, useAppSelector } from ".";
 
 //NATIVE
 import type { Credentials } from "../pages/auth/types";
+
+//REDUX
 import {
   authRegister,
   authLogin,
   authLogoutThunk,
   uiResetError,
-  authInitializeFromStorage,
+  errorClearCritical,
+  advertsLoad,
 } from "./actions";
-import { getIsLogged } from "./selectors";
+import { getCriticalError, getIsLogged } from "./selectors";
 
 export function useAuth() {
   return useAppSelector(getIsLogged);
@@ -48,9 +51,20 @@ export function useUiResetError() {
   };
 }
 
-export function useInitializeAuth() {
+export function useAdvertsLoadAction() {
+  const dispatch = useAppDispatch();
+  return function (params?: Record<string, string>) {
+    return dispatch(advertsLoad(params));
+  };
+}
+
+export function useCriticalError() {
+  return useAppSelector(getCriticalError);
+}
+
+export function useClearCriticalError() {
   const dispatch = useAppDispatch();
   return function () {
-    return dispatch(authInitializeFromStorage());
+    return dispatch(errorClearCritical());
   };
 }
