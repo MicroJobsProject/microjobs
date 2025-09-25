@@ -15,7 +15,6 @@ import App from "./app";
 import "./styles/index.css";
 
 const accessToken = storage.get("auth");
-const isRemembered = storage.isRememberMeActive();
 
 if (accessToken) {
   setAuthorizationHeader(accessToken);
@@ -33,13 +32,6 @@ const store = configureStore(
   },
   router,
 );
-
-if (import.meta.env.DEV && accessToken) {
-  console.log("App initialized with session:", {
-    hasAuth: !!accessToken,
-    rememberMe: isRemembered,
-  });
-}
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

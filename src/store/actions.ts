@@ -1,12 +1,14 @@
 //DEPENDENCIES
 import type { AppThunk } from ".";
+import type { AxiosError } from "axios";
+import axios from "axios";
 
 //NATIVE
 import type { Credentials } from "../pages/auth/types";
+import type { AdvertResponse } from "../pages/advert/types";
 
 //Action Types================================================================================================================
 // AUTH............................................
-
 type AuthRegisterPending = {
   type: "auth/register/pending";
 };
@@ -45,19 +47,29 @@ type UiResetError = {
 // ERROR............................................
 type ErrorSetCritical = {
   type: "error/setCritical";
-  payload: {
-    id: string;
-    code: number | string;
-    message: string;
-    timestamp: string;
-  };
+  payload: AxiosError;
 };
 
 type ErrorClearCritical = {
   type: "error/clearCritical";
 };
 
-//Action Creator (Synchronized Actions)============================================================================================
+//ADVERTS (Load)...................................
+type AdvertsLoadPending = {
+  type: "adverts/load/pending";
+};
+
+type AdvertsLoadFulfilled = {
+  type: "adverts/load/fulfilled";
+  payload: AdvertResponse;
+};
+
+type AdvertsLoadRejected = {
+  type: "adverts/load/rejected";
+  payload: Error;
+};
+
+//Action Creators (Synchronized Actions)============================================================================================
 // AUTH............................................
 export const authRegisterPending = (): AuthRegisterPending => ({
   type: "auth/register/pending",
@@ -94,6 +106,33 @@ export const uiResetError = (): UiResetError => ({
   type: "ui/reset-error",
 });
 
+// ERROR............................................
+export const errorSetCritical = (error: AxiosError): ErrorSetCritical => ({
+  type: "error/setCritical",
+  payload: error,
+});
+
+export const errorClearCritical = (): ErrorClearCritical => ({
+  type: "error/clearCritical",
+});
+
+//ADVERTS (Load)...................................
+export const advertsLoadPending = (): AdvertsLoadPending => ({
+  type: "adverts/load/pending",
+});
+
+export const advertsLoadFulfilled = (
+  adverts: AdvertResponse,
+): AdvertsLoadFulfilled => ({
+  type: "adverts/load/fulfilled",
+  payload: adverts,
+});
+
+export const advertsLoadRejected = (error: Error): AdvertsLoadRejected => ({
+  type: "adverts/load/rejected",
+  payload: error,
+});
+
 //Thunks (Asynchronous Actions)================================================================================================
 // AUTH............................................
 export function authRegister(credentials: {
@@ -125,16 +164,12 @@ export function authLogin(
       const { email, password, rememberMe = false } = credentials;
 
       await api.auth.login({ email, password }, rememberMe);
-
       dispatch(authLoginFulfilled());
-
-      const to = router.state.location.state?.from ?? "/";
-      router.navigate(to, { replace: true });
+      router.navigate("/", { replace: true });
     } catch (error: unknown) {
-      if (error instanceof Error) {
+      if (axios.isAxiosError(error)) {
         dispatch(authLoginRejected(error));
       }
-      /* console.log(error); */
       throw error;
     }
   };
@@ -146,14 +181,10 @@ export function authLogoutThunk(): AppThunk<Promise<void>> {
       await api.auth.logout();
 
       dispatch(authLogout());
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error: unknown) {
       storage.clearAuth();
       dispatch(authLogout());
-
-      /* if (error instanceof Error) {
-        console.error("Logout error:", error.message);
-      } */
+      throw error;
     }
   };
 }
@@ -168,20 +199,23 @@ export function authInitializeFromStorage(): AppThunk<void> {
   };
 }
 
-// ERROR............................................
-export const errorSetCritical = (error: {
-  id: string;
-  code: number | string;
-  message: string;
-  timestamp: string;
-}): ErrorSetCritical => ({
-  type: "error/setCritical",
-  payload: error,
-});
-
-export const errorClearCritical = (): ErrorClearCritical => ({
-  type: "error/clearCritical",
-});
+//ADVERTS (Load)...................................
+export function advertsLoad(
+  params?: Record<string, string>,
+): AppThunk<Promise<void>> {
+  return async function (dispatch, _getState, { api }) {
+    try {
+      dispatch(advertsLoadPending());
+      const adverts = await api.adverts.getAdverts(params);
+      dispatch(advertsLoadFulfilled(adverts));
+    } catch (error) {
+      if (error instanceof Error) {
+        dispatch(advertsLoadRejected(error));
+      }
+      throw error;
+    }
+  };
+}
 
 // prettier-ignore
 export type Actions = 
@@ -193,9 +227,13 @@ export type Actions =
 | AuthLoginRejected 
 | AuthLogout
 | UiResetError
+| AdvertsLoadPending
+| AdvertsLoadFulfilled
+| AdvertsLoadRejected
 | ErrorSetCritical
 | ErrorClearCritical;
 
 // prettier-ignore
 export type ActionsRejected = 
 | AuthLoginRejected
+| AdvertsLoadRejected

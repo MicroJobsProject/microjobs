@@ -13,6 +13,7 @@ import * as reducers from "./reducer";
 import * as adverts from "../pages/advert/service";
 import * as auth from "../pages/auth/service";
 import storage from "../utils/storage";
+import { getErrorMessage } from "../utils/errorMessages";
 
 // Combination of reducers-------------------------------------------------------------------------------------------------------
 const rootReducer = combineReducers(reducers);
@@ -25,54 +26,40 @@ export type ExtraArgument = {
 };
 
 // @ts-expect-error: any
-const errorMiddleware = (router: Router) => (store) => (next) => (action) => {
+const errorMiddleware = () => (store) => (next) => (action) => {
   const result = next(action);
 
   if (!action.type.endsWith("/rejected")) {
     return result;
   }
 
-  const status = action.payload?.status;
-  const message =
+  const status = action.payload?.response?.status;
+  const errorMessage =
+    action.payload?.response?.data?.error ||
     action.payload?.message ||
-    action.payload?.error ||
-    getDefaultErrorMessage(status);
+    getErrorMessage(status);
+
+  console.log("Error middleware:", {
+    status,
+    errorMessage,
+    payload: action.payload,
+  });
 
   if (status === 500 || status === 503) {
     const error = {
       id: Date.now().toString(),
       code: status,
-      message,
+      message: errorMessage,
       timestamp: new Date().toISOString(),
     };
     store.dispatch({
       type: "error/setCritical",
       payload: error,
     });
-    router.navigate(`/error?code=${status}`);
     return result;
   }
 
-  if (status === 404) {
-    router.navigate("/not-found");
-    return result;
-  }
-
-  // Otros errores no se manejan automáticamente
   return result;
-};
-
-const getDefaultErrorMessage = (status?: number): string => {
-  switch (status) {
-    case 404:
-      return "Recurso no encontrado";
-    case 500:
-      return "Error interno del servidor";
-    case 503:
-      return "Servicio temporalmente no disponible";
-    default:
-      return "Error del servidor";
-  }
 };
 
 // @ts-expect-error: any
@@ -104,7 +91,7 @@ export default function configureStore(
       router,
       storage,
     }),
-    errorMiddleware(router),
+    errorMiddleware(),
   ];
 
   if (import.meta.env.DEV) {
