@@ -31,9 +31,11 @@ export default function Home() {
     setFilter({});
     setPage(1);
   }
+
   function handlePageChange(newPage: number) {
     setPage(newPage);
   }
+
   useEffect(() => {
     const params: Record<string, string> = {
       page: page.toString(),
@@ -55,52 +57,69 @@ export default function Home() {
 
   return (
     <>
-      <Page>
-        <h1>Welcome Home</h1>
-        <p>This is the home page</p>
+      <Page title="What's new in town">
         <div className="mx-auto max-w-7xl px-6 py-8">
-          <AdvertFilter
-            onSubmit={handleFilterSubmit}
-            onReset={handleFilterReset}
-          />
-          {pending ? (
-            <p>Loading...</p>
-          ) : adverts.length ? (
-            <ul className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {adverts.length ? (
-                adverts.map((advert) => (
-                  <li key={advert._id}>
-                    <Link to={`/adverts/${advert._id}`}>
-                      <AdvertCard advert={advert} />
-                    </Link>
-                  </li>
-                ))
-              ) : (
-                <p>Adverts not found</p>
-              )}
-            </ul>
-          ) : (
-            <div className="flex flex-col items-center justify-center gap-4">
-              <span className="material-symbols-outlined !text-7xl">
-                search_off
-              </span>
-              <h3 className="font-bold">Is anybody home?</h3>
-              <div className="text-center">
-                <p>Looks like we couldn't find what you wanted.</p>
-                <p>Why don't try another search or advertise yourself?</p>
+          <section aria-labelledby="filters-heading">
+            <h2 id="filters-heading" className="sr-only">
+              Filter Adverts
+            </h2>
+            <AdvertFilter
+              onSubmit={handleFilterSubmit}
+              onReset={handleFilterReset}
+            />
+          </section>
+          <section aria-labelledby="results-heading">
+            <h2 id="results-heading" className="sr-only">
+              Advert Results
+            </h2>
+            {pending ? (
+              <p>Loading...</p>
+            ) : adverts.length ? (
+              <ul className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {adverts.length ? (
+                  adverts.map((advert) => (
+                    <li key={advert._id}>
+                      <Link to={`/adverts/${advert._id}`}>
+                        <AdvertCard advert={advert} />
+                      </Link>
+                    </li>
+                  ))
+                ) : (
+                  <p>Adverts not found</p>
+                )}
+              </ul>
+            ) : (
+              <div className="flex flex-col items-center justify-center gap-4">
+                <span className="material-symbols-outlined !text-7xl">
+                  search_off
+                </span>
+                <h3 className="font-bold" role="heading">
+                  Is anybody home?
+                </h3>
+                <div className="text-center">
+                  <p>Looks like we couldn't find what you wanted.</p>
+                  <p>Why don't try another search or advertise yourself?</p>
+                </div>
+                <div className="flex gap-4">
+                  <NavLink to="/advert/new">New Advert</NavLink>
+                  <button
+                    onClick={handleFilterReset}
+                    aria-label="Reset all filters and search again"
+                  >
+                    Reset Search
+                  </button>
+                </div>
               </div>
-              <div className="flex gap-4">
-                <NavLink to="/advert/new">New Advert</NavLink>
-                <button onClick={handleFilterReset}>Reset Search</button>
-              </div>
-            </div>
-          )}
+            )}
+          </section>
         </div>
-        <Pagination
-          current={page}
-          total={totalPages}
-          onPageChange={handlePageChange}
-        />
+        <section>
+          <Pagination
+            current={page}
+            total={totalPages}
+            onPageChange={handlePageChange}
+          />
+        </section>
       </Page>
       {error && (
         <Alert
