@@ -1,5 +1,5 @@
 import { client } from "../../api/client";
-import type { AdvertResponse } from "./types";
+import type { AdvertData, AdvertResponse } from "./types";
 
 export async function getAdverts(params?: Record<string, string>) {
   const query = new URLSearchParams(params).toString();
@@ -7,3 +7,10 @@ export async function getAdverts(params?: Record<string, string>) {
 
   return response.data;
 }
+
+export const createAdvert = async (advertData: AdvertData) => {
+  console.log("advertData in service:", advertData);
+  const response = await client.post("/api/adverts", advertData);
+
+  return response;
+};
