@@ -14,7 +14,11 @@ function Pagination({ current, total, onPageChange }: PaginationProps) {
   const pages = Array.from({ length: total }, (_, i) => i + 1);
 
   return (
-    <div className="mb-6 flex justify-center gap-2" aria-label="Pagination">
+    <div
+      className="mb-6 flex justify-center gap-2"
+      aria-label="Page navigation"
+      role="navigation"
+    >
       <button
         onClick={() => current > 1 && onPageChange(current - 1)}
         disabled={current === 1}
