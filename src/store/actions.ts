@@ -3,7 +3,7 @@ import type { AppThunk } from ".";
 
 //NATIVE
 import type { Credentials } from "../pages/auth/types";
-import type { AdvertResponse } from "../pages/advert/types";
+import type { Advert, AdvertData, AdvertResponse } from "../pages/advert/types";
 
 //Action Types================================================================================================================
 // AUTH............................................
@@ -59,6 +59,17 @@ type AdvertsLoadRejected = {
   payload: Error;
 };
 
+//ADVERTS (create)...................................
+type AdvertsCreatedFulfilled = {
+  type: "adverts/created/fulfilled";
+  payload: Advert;
+};
+
+type AdvertsCreatedRejected = {
+  type: "adverts/created/rejected";
+  payload: Error;
+};
+
 //Action Creator (Synchronized Actions)============================================================================================
 // AUTH............................................
 export const authRegisterPending = (): AuthRegisterPending => ({
@@ -110,6 +121,21 @@ export const advertsLoadFulfilled = (
 
 export const advertsLoadRejected = (error: Error): AdvertsLoadRejected => ({
   type: "adverts/load/rejected",
+  payload: error,
+});
+//ADVERTS (create)...................................
+
+export const advertsCreatedFulfilled = (
+  advert: Advert,
+): AdvertsCreatedFulfilled => ({
+  type: "adverts/created/fulfilled",
+  payload: advert,
+});
+
+export const advertsCreatedRejected = (
+  error: Error,
+): AdvertsCreatedRejected => ({
+  type: "adverts/created/rejected",
   payload: error,
 });
 
@@ -205,6 +231,28 @@ export function advertsLoad(
   };
 }
 
+//ADVERTS (create)...................................
+export function advertsCreate(
+  newAdvertData: AdvertData,
+): AppThunk<Promise<Advert>> {
+  return async function (dispatch, _getState, { api /*router*/ }) {
+    try {
+      // Manage advertsCreatePending
+      const createdAdvert = await api.adverts.createAdvert(newAdvertData);
+      // const advert = await api.adverts.getAdvert(createdAdvert.id.toString());
+      // dispatch(advertsCreatedFulfilled(advert));
+      // router.navigate(`/adverts/${createdAdvert.id}`);
+      return createdAdvert.data; //advert;
+    } catch (error) {
+      // Manage advertsCreateRejected
+      if (error instanceof Error) {
+        console.log(error);
+        dispatch(advertsCreatedRejected(error));
+      }
+      throw error;
+    }
+  };
+}
 // prettier-ignore
 export type Actions = 
 | AuthRegisterPending
@@ -217,7 +265,9 @@ export type Actions =
 | UiResetError
 | AdvertsLoadPending
 | AdvertsLoadFulfilled
-| AdvertsLoadRejected;
+| AdvertsLoadRejected
+| AdvertsCreatedFulfilled
+| AdvertsCreatedRejected;
 
 // prettier-ignore
 export type ActionsRejected = 
