@@ -13,7 +13,7 @@ function NewAdvertPage() {
     const newAdvertData: AdvertData = {
       name: data.get("name") as string,
       price: data.get("price") as string,
-      offer: data.get("offer") == "on" ? "true" : "false",
+      offer: data.get("serviceRadio") == "offer" ? "true" : "false",
       category: data.get("category") as string,
       description: data.get("description") as string,
     };
@@ -35,8 +35,18 @@ function NewAdvertPage() {
           <input type="number" name="price" placeholder="Price" required />
         </div>
         <div>
-          <label htmlFor="offer">Offer</label>
-          <input type="radio" name="offer" placeholder="offer" />
+          <label htmlFor="serviceFieldset">Service:</label>
+          <fieldset name="serviceFieldset">
+            <label htmlFor="offer">Need</label>
+            <input
+              type="radio"
+              name="serviceRadio"
+              value={"need"}
+              defaultChecked
+            />
+            <label htmlFor="offer">Offer</label>
+            <input type="radio" name="serviceRadio" value={"offer"} />
+          </fieldset>
         </div>
 
         <div>
@@ -58,7 +68,6 @@ function NewAdvertPage() {
     </main>
   );
 }
-//TODO: radiobutton for offer better visualization
 //TODO: add photo upload
 //TODO: add category select
 //TODO: style the page
