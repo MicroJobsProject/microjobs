@@ -98,6 +98,7 @@ export function categories(
     return action.payload;
   }
   return state;
+}
 
 const defaultErrorState: ErrorState = {
   criticalError: null,

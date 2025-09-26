@@ -30,7 +30,7 @@ export default function Home() {
   function handleFilterReset() {
     setFilter({});
     setPage(1);
-
+  }
   function handlePageChange(newPage: number) {
     setPage(newPage);
   }
