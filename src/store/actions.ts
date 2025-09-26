@@ -239,6 +239,8 @@ export function advertsCreate(
     try {
       // Manage advertsCreatePending
       const createdAdvert = await api.adverts.createAdvert(newAdvertData);
+
+      //TODO: navigate to advertDetail
       // const advert = await api.adverts.getAdvert(createdAdvert.id.toString());
       // dispatch(advertsCreatedFulfilled(advert));
       // router.navigate(`/adverts/${createdAdvert.id}`);
