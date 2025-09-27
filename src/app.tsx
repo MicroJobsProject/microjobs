@@ -55,11 +55,11 @@ function App() {
           <Route index element={<Navigate to="/home" />} />
           <Route path="*" element={<NotFoundPage />} />
           <Route
-            path="newAdvert"
+            path="advert/new"
             element={
-              // <RequireNoAuth>
+              // <RequireAuth>
               <NewAdvertPage />
-              // </RequireNoAuth>
+              // </RequireAuth>
             }
           />
         </Route>
