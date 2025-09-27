@@ -11,19 +11,19 @@ function AdvertCard({ advert }: { advert: Advert }) {
         className="h-48 w-full object-cover"
         alt={`Photo for ${advert.name}`}
       />
-      <div className="p-6">
+      <div className="h-60 p-6">
         <div className="mb-3 flex items-center justify-between">
           <span
-            className="rounded-full px-2.5 py-0.5 text-xs font-medium"
+            className="rounded-full bg-amber-300 px-2.5 py-0.5 text-xs font-medium"
             aria-label={`Service type: ${advert.offer ? "Offer" : "Need"}`}
           >
             {advert.offer ? "Offer Service" : "Need Service"}
           </span>
           <span
-            className="text-lg font-bold"
-            aria-label={`Price: ${advert.price} dollars per hour`}
+            className="text-primary text-lg font-bold"
+            aria-label={`Price: ${advert.price} euros per hour`}
           >
-            {advert.price}$/hr
+            {advert.price}€/hr
           </span>
         </div>
         <h3 className="mb-2 text-lg font-semibold">{advert.name}</h3>

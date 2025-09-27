@@ -127,7 +127,7 @@ function AdvertFilter({ onSubmit, onReset }: FilterProps) {
               </legend>
               {categories.map((category) => (
                 <div
-                  className="mb-1 flex items-center gap-2"
+                  className="border-border has-checked:bg-primary mb-2 flex items-center gap-2 rounded-md border px-2 py-1 has-checked:text-white"
                   key={category.name}
                 >
                   <input
@@ -140,6 +140,7 @@ function AdvertFilter({ onSubmit, onReset }: FilterProps) {
                       false
                     }
                     onChange={handleCategoryChange}
+                    className="checked:accent-primary"
                   />
                   <span
                     className="material-symbols-outlined -mb-0.5 !text-base"

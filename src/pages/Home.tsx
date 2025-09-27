@@ -68,7 +68,7 @@ export default function Home() {
               onReset={handleFilterReset}
             />
           </section>
-          <section aria-labelledby="results-heading">
+          <section aria-labelledby="results-heading" className="min-h-162">
             <h2 id="results-heading" className="sr-only">
               Advert Results
             </h2>
@@ -90,7 +90,7 @@ export default function Home() {
               </ul>
             ) : (
               <div className="flex flex-col items-center justify-center gap-4">
-                <span className="material-symbols-outlined !text-7xl">
+                <span className="material-symbols-outlined text-heading !text-7xl">
                   search_off
                 </span>
                 <h3 className="font-bold" role="heading">
@@ -101,9 +101,13 @@ export default function Home() {
                   <p>Why don't try another search or advertise yourself?</p>
                 </div>
                 <div className="flex gap-4">
-                  <NavLink to="/advert/new">New Advert</NavLink>
+                  <NavLink to="/advert/new" className="btn btn-primary">
+                    <span className="material-symbols-outlined">add</span>
+                    <span>New Advert</span>
+                  </NavLink>
                   <button
                     onClick={handleFilterReset}
+                    className="btn btn-outlined"
                     aria-label="Reset all filters and search again"
                   >
                     Reset Search
