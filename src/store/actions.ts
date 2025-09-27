@@ -5,7 +5,12 @@ import axios from "axios";
 
 //NATIVE
 import type { Credentials } from "../pages/auth/types";
-import type { AdvertCategory, AdvertResponse } from "../pages/advert/types";
+import type {
+  Advert,
+  AdvertData,
+  AdvertCategory,
+  AdvertResponse,
+} from "../pages/advert/types";
 
 //Action Types================================================================================================================
 // AUTH............................................
@@ -66,6 +71,17 @@ type AdvertsLoadFulfilled = {
 
 type AdvertsLoadRejected = {
   type: "adverts/load/rejected";
+  payload: Error;
+};
+
+//ADVERTS (create)...................................
+type AdvertsCreatedFulfilled = {
+  type: "adverts/created/fulfilled";
+  payload: Advert;
+};
+
+type AdvertsCreatedRejected = {
+  type: "adverts/created/rejected";
   payload: Error;
 };
 
@@ -146,25 +162,6 @@ export const advertsLoadFulfilled = (
 
 export const advertsLoadRejected = (error: Error): AdvertsLoadRejected => ({
   type: "adverts/load/rejected",
-  payload: error,
-});
-
-//ADVERTS (Categories)...................................
-export const advertsCategoriesPending = (): AdvertsCategoriesPending => ({
-  type: "adverts/categories/pending",
-});
-
-export const advertsCategoriesFulfilled = (
-  categories: AdvertCategory[],
-): AdvertsCategoriesFulfilled => ({
-  type: "adverts/categories/fulfilled",
-  payload: categories,
-});
-
-export const advertsCategoriesRejected = (
-  error: Error,
-): AdvertsCategoriesRejected => ({
-  type: "adverts/categories/rejected",
   payload: error,
 });
 
@@ -269,6 +266,30 @@ export function advertsCategories(): AppThunk<Promise<void>> {
   };
 }
 
+//ADVERTS (create)...................................
+export function advertsCreate(
+  newAdvertData: AdvertData,
+): AppThunk<Promise<Advert>> {
+  return async function (dispatch, _getState, { api /*router*/ }) {
+    try {
+      // Manage advertsCreatePending
+      const createdAdvert = await api.adverts.createAdvert(newAdvertData);
+
+      //TODO: navigate to advertDetail
+      // const advert = await api.adverts.getAdvert(createdAdvert.id.toString());
+      // dispatch(advertsCreatedFulfilled(advert));
+      // router.navigate(`/adverts/${createdAdvert.id}`);
+      return createdAdvert.data; //advert;
+    } catch (error) {
+      // Manage advertsCreateRejected
+      if (error instanceof Error) {
+        console.log(error);
+        dispatch(advertsCreatedRejected(error));
+      }
+      throw error;
+    }
+  };
+}
 // prettier-ignore
 export type Actions = 
 | AuthRegisterPending
@@ -281,12 +302,7 @@ export type Actions =
 | UiResetError
 | AdvertsLoadPending
 | AdvertsLoadFulfilled
-| AdvertsLoadRejected
-| AdvertsCategoriesPending
-| AdvertsCategoriesFulfilled
-| AdvertsCategoriesRejected
-| ErrorSetCritical
-| ErrorClearCritical;
+| AdvertsLoadRejected;
 
 // prettier-ignore
 export type ActionsRejected = 
