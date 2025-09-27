@@ -165,6 +165,25 @@ export const advertsLoadRejected = (error: Error): AdvertsLoadRejected => ({
   payload: error,
 });
 
+//ADVERTS (Categories)...................................
+export const advertsCategoriesPending = (): AdvertsCategoriesPending => ({
+  type: "adverts/categories/pending",
+});
+
+export const advertsCategoriesFulfilled = (
+  categories: AdvertCategory[],
+): AdvertsCategoriesFulfilled => ({
+  type: "adverts/categories/fulfilled",
+  payload: categories,
+});
+
+export const advertsCategoriesRejected = (
+  error: Error,
+): AdvertsCategoriesRejected => ({
+  type: "adverts/categories/rejected",
+  payload: error,
+});
+
 //Thunks (Asynchronous Actions)================================================================================================
 // AUTH............................................
 export function authRegister(credentials: {
@@ -304,7 +323,10 @@ export type Actions =
 | ErrorClearCritical
 | AdvertsLoadPending
 | AdvertsLoadFulfilled
-| AdvertsLoadRejected;
+| AdvertsLoadRejected
+| AdvertsCategoriesPending
+| AdvertsCategoriesFulfilled
+| AdvertsCategoriesRejected
 
 // prettier-ignore
 export type ActionsRejected = 
