@@ -202,7 +202,7 @@ export function authLogin(
       if (axios.isAxiosError(error)) {
         dispatch(authLoginRejected(error));
       }
-      throw error;
+      /* throw error; */
     }
   };
 }
@@ -300,6 +300,8 @@ export type Actions =
 | AuthLoginRejected 
 | AuthLogout
 | UiResetError
+| ErrorSetCritical
+| ErrorClearCritical
 | AdvertsLoadPending
 | AdvertsLoadFulfilled
 | AdvertsLoadRejected;

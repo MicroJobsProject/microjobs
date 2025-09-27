@@ -19,9 +19,19 @@ export const CriticalErrorPage: React.FC = () => {
   const [searchParams] = useSearchParams();
   const criticalError = useAppSelector(getCriticalError);
 
-  const errorCode = searchParams.get("code") || criticalError?.code || "500";
+  const errorCode =
+    searchParams.get("code") ||
+    criticalError?.response?.status?.toString() ||
+    "500";
 
-  const errorMessage = criticalError?.message || getErrorMessage(errorCode);
+  const errorMessage =
+    (criticalError?.response?.data &&
+    typeof criticalError.response.data === "object" &&
+    "error" in criticalError.response.data
+      ? (criticalError.response.data as { error?: string }).error
+      : undefined) ||
+    criticalError?.message ||
+    getErrorMessage(errorCode);
 
   const handleGoHome = () => {
     dispatch(errorClearCritical());

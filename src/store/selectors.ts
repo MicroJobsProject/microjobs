@@ -11,4 +11,6 @@ export const getPagination = createSelector(
 );
 export const getAdverts = (state: RootState) => state.adverts.data.results;
 export const getAdvertsCategories = (state: RootState) => state.categories;
-export const getCriticalError = (state: RootState) => state.error.criticalError;
+export const getCriticalError = (state: RootState) => {
+  return state.error?.criticalError;
+};

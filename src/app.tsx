@@ -1,8 +1,10 @@
 //DEPENDENCIES
-import { Navigate, Route, Routes } from "react-router";
-import { lazy, Suspense } from "react";
+import { Navigate, Route, Routes, useNavigate } from "react-router";
+import { lazy, Suspense, useEffect } from "react";
 
 //NATIVE
+import { useAppSelector } from "./store";
+import { getCriticalError } from "./store/selectors";
 import RegisterPage from "./pages/auth/RegisterPage";
 import { CriticalErrorPage, NotFoundPage } from "./pages/error/ErrorPages";
 
@@ -15,6 +17,16 @@ const Layout = lazy(() => import("./components/layout/layout"));
 const NewAdvertPage = lazy(() => import("./pages/advert/NewAdvert"));
 
 function App() {
+  const navigate = useNavigate();
+  const criticalError = useAppSelector(getCriticalError);
+
+  useEffect(() => {
+    if (criticalError) {
+      const errorCode = criticalError.response?.status || 500;
+      navigate(`/error?code=${errorCode}`, { replace: true });
+    }
+  }, [criticalError, navigate]);
+
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <Routes>
@@ -53,7 +65,7 @@ function App() {
           <Route path="not-found" element={<NotFoundPage />} />
 
           <Route index element={<Navigate to="/home" />} />
-          <Route path="*" element={<NotFoundPage />} />
+          <Route path="*" element={<Navigate to="/error?code=404" replace />} />
           <Route
             path="advert/new"
             element={

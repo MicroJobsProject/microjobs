@@ -13,10 +13,10 @@ import * as reducers from "./reducer";
 import * as adverts from "../pages/advert/service";
 import * as auth from "../pages/auth/service";
 import storage from "../utils/storage";
-import { getErrorMessage } from "../utils/errorMessages";
 
 // Combination of reducers-------------------------------------------------------------------------------------------------------
 const rootReducer = combineReducers(reducers);
+
 type Router = ReturnType<typeof createBrowserRouter>;
 
 export type ExtraArgument = {
@@ -26,7 +26,7 @@ export type ExtraArgument = {
 };
 
 // @ts-expect-error: any
-const errorMiddleware = (router: Router) => (store) => (next) => (action) => {
+const errorMiddleware = (store) => (next) => (action) => {
   const result = next(action);
 
   if (!action.type.endsWith("/rejected")) {
@@ -35,40 +35,12 @@ const errorMiddleware = (router: Router) => (store) => (next) => (action) => {
 
   const error = action.payload;
   const status = error?.response?.status || error?.status;
-  const errorMessage =
-    error?.response?.data?.error || error?.message || getErrorMessage(status);
-
-  console.log("Error middleware:", {
-    actionType: action.type,
-    status,
-    errorMessage,
-    payload: action.payload,
-  });
 
   if (status === 500 || status === 503) {
-    const criticalError = {
-      id: Date.now().toString(),
-      code: status.toString(),
-      message: errorMessage,
-      timestamp: new Date().toISOString(),
-    };
-
-    console.log("Dispatching critical error and redirecting:", criticalError);
-
     store.dispatch({
       type: "error/setCritical",
-      payload: criticalError,
+      payload: error,
     });
-
-    router.navigate(`/error?code=${status}`);
-
-    return result;
-  }
-
-  if (status === 404) {
-    console.log("Resource not found, redirecting to 404");
-    router.navigate("/404");
-    return result;
   }
 
   return result;
@@ -103,7 +75,7 @@ export default function configureStore(
       router,
       storage,
     }),
-    errorMiddleware(router),
+    errorMiddleware,
   ];
 
   if (import.meta.env.DEV) {
@@ -122,7 +94,7 @@ export default function configureStore(
 // Types for TypeScript--------------------------------------------------------------------------------------------------------
 export type AppStore = ReturnType<typeof configureStore>;
 export type AppGetState = AppStore["getState"];
-export type RootState = ReturnType<AppGetState>;
+export type RootState = ReturnType<typeof rootReducer>;
 
 export type AppDispatch = ThunkDispatch<RootState, ExtraArgument, Actions>;
 
