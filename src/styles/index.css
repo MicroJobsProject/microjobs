@@ -73,7 +73,7 @@ footer {
   @apply bg-container border-border;
 }
 header {
-  @apply fixed top-0 left-0 z-990 w-full border-b shadow-sm;
+  @apply fixed top-0 left-0 z-990 w-full shadow-sm;
 }
 footer {
   @apply border-t;
@@ -97,7 +97,7 @@ h4 {
 
 /* BUTTONS */
 .btn {
-  @apply xs:px-4 flex h-10.5 cursor-pointer items-center justify-center gap-2 rounded-lg px-2 py-2 text-sm font-medium transition disabled:pointer-events-none lg:text-base;
+  @apply xs:px-4 flex h-10.5 cursor-pointer items-center justify-center gap-2 rounded-lg px-2 py-2 font-medium transition disabled:pointer-events-none;
 }
 .btn-primary {
   @apply bg-primary border-primary hover:bg-primary-hover border text-white;

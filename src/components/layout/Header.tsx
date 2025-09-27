@@ -99,29 +99,29 @@ function Header() {
             </nav>
           </div>
         </div>
+        {showMenu && (
+          <ul className="border-border bg-container relative left-1/2 z-980 grid w-full -translate-x-1/2 gap-2 border border-b px-6 py-8 shadow-sm">
+            {isLogged && (
+              <li className="grid">
+                <NavLink to="/advert/new" className="btn btn-primary">
+                  <span className="material-symbols-outlined">add</span>
+                  <span>New Advert</span>
+                </NavLink>
+              </li>
+            )}
+            <li className="grid">
+              <AuthButton />
+            </li>
+            {!isLogged && (
+              <li className="grid">
+                <NavLink to="/register" className="btn btn-outlined">
+                  Register
+                </NavLink>
+              </li>
+            )}
+          </ul>
+        )}
       </header>
-      {showMenu && (
-        <ul className="border-border bg-container absolute top-20 left-1/2 z-980 mt-2 grid w-full max-w-sm -translate-x-1/2 gap-2 rounded-lg border border-b px-6 py-8 shadow-sm">
-          {isLogged && (
-            <li className="grid">
-              <NavLink to="/advert/new" className="btn btn-primary">
-                <span className="material-symbols-outlined">add</span>
-                <span>New Advert</span>
-              </NavLink>
-            </li>
-          )}
-          <li className="grid">
-            <AuthButton />
-          </li>
-          {!isLogged && (
-            <li className="grid">
-              <NavLink to="/register" className="btn btn-outlined">
-                Register
-              </NavLink>
-            </li>
-          )}
-        </ul>
-      )}
       <div className="h-25 sm:h-35"></div>
     </>
   );
