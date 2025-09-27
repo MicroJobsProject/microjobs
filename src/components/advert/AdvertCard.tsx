@@ -26,7 +26,9 @@ function AdvertCard({ advert }: { advert: Advert }) {
             {advert.price}€/hr
           </span>
         </div>
-        <h3 className="mb-2 text-lg font-semibold">{advert.name}</h3>
+        <h3 className="mb-2 line-clamp-2 text-lg font-semibold">
+          {advert.name}
+        </h3>
         <div className="mb-3 flex items-center">
           <span
             className="material-symbols-outlined mr-3 !text-4xl"
