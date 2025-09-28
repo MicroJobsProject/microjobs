@@ -23,49 +23,106 @@ function NewAdvertPage() {
   }
 
   return (
-    <main style={{ padding: 24 }}>
-      <h1>Create new Advert</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="name">Name</label>
-          <input type="text" name="name" placeholder="Name" required />
-        </div>
-        <div>
-          <label htmlFor="price">Price</label>
-          <input type="number" name="price" placeholder="Price" required />
-        </div>
-        <div>
-          <label htmlFor="serviceFieldset">Service:</label>
-          <fieldset name="serviceFieldset">
-            <label htmlFor="offer">Need</label>
-            <input
-              type="radio"
-              name="serviceRadio"
-              value={"need"}
-              defaultChecked
-            />
-            <label htmlFor="offer">Offer</label>
-            <input type="radio" name="serviceRadio" value={"offer"} />
-          </fieldset>
-        </div>
+    <>
+      <div className="wrapper">
+        <div className="flex min-h-screen items-center justify-center">
+          <div className="w-full max-w-md">
+            <div className="bg-container border-border rounded-xl border p-8 shadow-sm">
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="text-center">
+                  <h2 className="text-heading font-heading mb-2 text-3xl font-extrabold">
+                    Create new Advert
+                  </h2>
+                  <p className="text-paragraph">??????</p>
+                </div>
 
-        <div>
-          <label htmlFor="description">Description</label>
-          <input
-            type="text"
-            name="description"
-            placeholder="Description"
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="category">Category</label>
-          <input type="text" name="category" placeholder="Category" required />
-        </div>
+                <div className="space-y-2">
+                  <label
+                    htmlFor="name"
+                    className="text-heading block text-sm font-medium"
+                  >
+                    Name
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      name="name"
+                      placeholder="Name"
+                      required
+                      className={`bg-container text-paragraph placeholder:text-paragraph/60 block w-full rounded-lg border py-2 pr-3 pl-10 text-sm focus:ring-1 focus:outline-none`}
+                    />
+                  </div>
+                </div>
 
-        <button type="submit">Create Advert</button>
-      </form>
-    </main>
+                <div className="space-y-2">
+                  <label
+                    htmlFor="price"
+                    className="text-heading block text-sm font-medium"
+                  >
+                    Price
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="number"
+                      name="price"
+                      placeholder="Price"
+                      required
+                      className={`bg-container text-paragraph placeholder:text-paragraph/60 block w-full rounded-lg border py-2 pr-3 pl-10 text-sm focus:ring-1 focus:outline-none`}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label htmlFor="serviceFieldset">Service:</label>
+                  <fieldset name="serviceFieldset">
+                    <label htmlFor="offer">Need</label>
+                    <input
+                      type="radio"
+                      name="serviceRadio"
+                      value={"need"}
+                      defaultChecked
+                    />
+                    <label htmlFor="offer">Offer</label>
+                    <input type="radio" name="serviceRadio" value={"offer"} />
+                  </fieldset>
+                </div>
+
+                <div className="space-y-2">
+                  <label
+                    htmlFor="description"
+                    className="text-heading block text-sm font-medium"
+                  >
+                    Description
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      name="description"
+                      placeholder="Description"
+                      required
+                      className={`bg-container text-paragraph placeholder:text-paragraph/60 block w-full rounded-lg border py-2 pr-3 pl-10 text-sm focus:ring-1 focus:outline-none`}
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label htmlFor="category">Category</label>
+                  <input
+                    type="text"
+                    name="category"
+                    placeholder="Category"
+                    required
+                  />
+                </div>
+
+                <button type="submit" className={`btn btn-primary w-full`}>
+                  Create Advert
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
 //TODO: add photo upload
