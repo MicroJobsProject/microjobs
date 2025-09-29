@@ -123,6 +123,7 @@ function NewAdvertPage() {
             </div>
             <div className="flex justify-end">
               <button type="submit" className="btn btn-primary">
+                <span className="material-symbols-outlined">add_circle</span>
                 Create Advert
               </button>
             </div>
@@ -134,6 +135,5 @@ function NewAdvertPage() {
 }
 //TODO: add photo upload
 //TODO: add category select
-//TODO: style the page
 
 export default NewAdvertPage;
