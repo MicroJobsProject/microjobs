@@ -1,9 +1,12 @@
 //DEPENDENCIES
 import { Link, NavLink, useLocation } from "react-router";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 //NATIVE
 import AuthButton from "../auth/AuthButton";
+import Dropdown from "../ui/Dropdown";
+import LanguageSelector from "../ui/LanguageSelector";
 import { useAuth } from "../../store/hooks";
 
 //STATIC-FILES
@@ -14,6 +17,7 @@ function Header() {
   const isLogged = useAuth();
   const [showMenu, setShowMenu] = useState(false);
   const location = useLocation();
+  const { t } = useTranslation();
   const maxWidth = 640;
 
   useEffect(() => {
@@ -40,10 +44,18 @@ function Header() {
           <div className="flex items-center justify-between">
             <Link to="/" className="mr-2 transition-opacity hover:opacity-75">
               <div className="block md:hidden">
-                <AppIcon className="fill-heading" />
+                <AppIcon
+                  className="fill-heading"
+                  role="img"
+                  aria-label="Home"
+                />
               </div>
               <div className="hidden md:block">
-                <AppLogo className="fill-heading" />
+                <AppLogo
+                  className="fill-heading"
+                  role="img"
+                  aria-label="Home"
+                />
               </div>
             </Link>
             <nav>
@@ -55,8 +67,11 @@ function Header() {
                     }}
                     className="btn btn-secondary"
                   >
-                    <span className="sr-only">Open menu</span>
-                    <span className="material-symbols-outlined">
+                    <span className="sr-only">{t("openMenu")}</span>
+                    <span
+                      className="material-symbols-outlined"
+                      aria-hidden="true"
+                    >
                       {showMenu ? "close" : "menu"}
                     </span>
                   </button>
@@ -64,27 +79,40 @@ function Header() {
                 {isLogged && (
                   <li className="hidden sm:block">
                     <NavLink to="/advert/new" className="btn btn-primary">
-                      <span className="material-symbols-outlined">add</span>
-                      <span>New Advert</span>
+                      <span
+                        className="material-symbols-outlined"
+                        aria-hidden="true"
+                      >
+                        add
+                      </span>
+                      <span>{t("newAdvert")}</span>
                     </NavLink>
                   </li>
                 )}
                 <li>
                   <button className="btn btn-secondary">
-                    <span className="material-symbols-outlined">
+                    <span className="sr-only">{t("toggleTheme")}</span>
+                    <span
+                      className="material-symbols-outlined"
+                      aria-hidden="true"
+                    >
                       nightlight
                     </span>
                   </button>
                 </li>
                 <li>
-                  <button className="btn btn-secondary">
-                    <span className="material-symbols-outlined">language</span>
-                  </button>
+                  <Dropdown icon="language" className="btn btn-secondary">
+                    <span className="sr-only">{t("changeLanguage")}</span>
+                    <LanguageSelector />
+                  </Dropdown>
                 </li>
                 {isLogged && (
                   <li>
                     <button className="btn btn-secondary">
-                      <span className="material-symbols-outlined">
+                      <span
+                        className="material-symbols-outlined"
+                        aria-hidden="true"
+                      >
                         account_circle
                       </span>
                     </button>
@@ -96,7 +124,7 @@ function Header() {
                 {!isLogged && (
                   <li className="hidden sm:block">
                     <NavLink to="/register" className="btn btn-outlined">
-                      Register
+                      {t("register")}
                     </NavLink>
                   </li>
                 )}
@@ -114,8 +142,13 @@ function Header() {
               {isLogged && (
                 <li className="grid">
                   <NavLink to="/advert/new" className="btn btn-primary">
-                    <span className="material-symbols-outlined">add</span>
-                    <span>New Advert</span>
+                    <span
+                      className="material-symbols-outlined"
+                      aria-hidden="true"
+                    >
+                      add
+                    </span>
+                    <span>{t("newAdvert")}</span>
                   </NavLink>
                 </li>
               )}
@@ -125,7 +158,7 @@ function Header() {
               {!isLogged && (
                 <li className="grid">
                   <NavLink to="/register" className="btn btn-outlined">
-                    Register
+                    {t("register")}
                   </NavLink>
                 </li>
               )}

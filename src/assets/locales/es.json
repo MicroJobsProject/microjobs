@@ -1,4 +1,7 @@
 {
+  "openMenu": "Abrir menú",
+  "toggleTheme": "Cambiar tema",
+  "changeLanguage": "Cambiar idioma",
   "newAdvert": "Crear Anuncio",
   "login": "Iniciar Sesión",
   "logout": "Salir",

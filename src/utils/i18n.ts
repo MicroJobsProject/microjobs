@@ -11,7 +11,6 @@ i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-    debug: true,
     resources: {
       en: { translation: enJSON },
       es: { translation: esJSON },
