@@ -35,7 +35,7 @@ function NewAdvertPage() {
         <div className="bg-container border-border rounded-xl border p-6 shadow-sm">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="flex flex-col lg:col-span-2">
-              <label htmlFor="name" className="mb-2 font-medium">
+              <label htmlFor="name" className="input-label">
                 Title*
               </label>
               <div>
@@ -50,7 +50,7 @@ function NewAdvertPage() {
             </div>
 
             <div className="flex flex-col lg:col-span-2">
-              <label htmlFor="price" className="mb-2 font-medium">
+              <label htmlFor="price" className="input-label">
                 Price*
               </label>
               <input
@@ -67,7 +67,7 @@ function NewAdvertPage() {
                 name="serviceFieldset"
                 className="flex flex-row items-center justify-center gap-4"
               >
-                <legend className="mb-2 font-medium">Advert Type</legend>
+                <legend className="input-label">Advert Type</legend>
                 <div className="flex grow flex-row items-center justify-center">
                   <input
                     id="need"
@@ -77,7 +77,7 @@ function NewAdvertPage() {
                     defaultChecked
                     className="peer hidden"
                   />
-                  <label htmlFor="need" className="input-radio grow">
+                  <label htmlFor="need" className="input-radio-label grow">
                     Need Service
                   </label>
                 </div>
@@ -89,7 +89,7 @@ function NewAdvertPage() {
                     value="offer"
                     className="peer hidden"
                   />
-                  <label htmlFor="offer" className="input-radio grow">
+                  <label htmlFor="offer" className="input-radio-label grow">
                     Offer Service
                   </label>
                 </div>
@@ -97,7 +97,7 @@ function NewAdvertPage() {
             </div>
 
             <div className="flex flex-col lg:col-span-2">
-              <label htmlFor="description" className="mb-2 font-medium">
+              <label htmlFor="description" className="input-label">
                 Description
               </label>
 
@@ -106,22 +106,26 @@ function NewAdvertPage() {
                 name="description"
                 placeholder="Description"
                 required
-                className="h-10.5 w-full rounded-lg border border-gray-200 px-3 py-2 placeholder:text-gray-200"
+                className="input"
               />
             </div>
-            <div>
-              <label htmlFor="category">Category</label>
+            <div className="flex flex-col lg:col-span-2">
+              <label htmlFor="category" className="input-label">
+                Category
+              </label>
               <input
                 type="text"
                 name="category"
                 placeholder="Category"
                 required
+                className="input"
               />
             </div>
-
-            <button type="submit" className="btn btn-primary">
-              Create Advert
-            </button>
+            <div className="flex justify-end">
+              <button type="submit" className="btn btn-primary">
+                Create Advert
+              </button>
+            </div>
           </form>
         </div>
       </div>
