@@ -74,7 +74,7 @@ function AdvertFilter({ onSubmit, onReset }: FilterProps) {
   }
 
   return (
-    <div className="mb-8 rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+    <div className="border-border bg-container mb-8 rounded-xl border p-6 shadow-sm">
       <form
         role="search"
         onSubmit={handleSubmit}
@@ -82,7 +82,7 @@ function AdvertFilter({ onSubmit, onReset }: FilterProps) {
         className="grid grid-cols-1 gap-4 lg:grid-cols-6"
       >
         <div className="flex flex-col lg:col-span-2">
-          <label htmlFor="name" className="mb-2 font-medium">
+          <label htmlFor="name" className="label">
             Search
           </label>
           <input
@@ -94,11 +94,11 @@ function AdvertFilter({ onSubmit, onReset }: FilterProps) {
             maxLength={80}
             onChange={handleNameChange}
             autoComplete="off"
-            className="h-10.5 w-full rounded-lg border border-gray-200 px-3 py-2 placeholder:text-gray-200"
+            className="input"
           />
         </div>
         <div className="flex flex-col">
-          <label htmlFor="offer" className="mb-2 font-medium">
+          <label htmlFor="offer" className="label">
             Type
           </label>
           <select
@@ -107,7 +107,7 @@ function AdvertFilter({ onSubmit, onReset }: FilterProps) {
             value={
               typeof filters.offer === "boolean" ? String(filters.offer) : ""
             }
-            className="h-10.5 appearance-none rounded-lg border border-gray-200 px-3 py-2"
+            className="input"
             onChange={handleTypeChange}
           >
             <option value="">All Types</option>
@@ -116,20 +116,17 @@ function AdvertFilter({ onSubmit, onReset }: FilterProps) {
           </select>
         </div>
         <div className="flex flex-col">
-          <label className="mb-2 font-medium">Category</label>
+          <label className="label">Category</label>
           <Dropdown
             label="Select categories"
-            className="h-10.5 w-full truncate rounded-lg border border-gray-200 px-3 py-2 text-left placeholder:text-gray-200"
+            className="input truncate text-left"
           >
             <fieldset role="group" aria-labelledby="categories-label">
               <legend id="categories-label" className="sr-only">
                 Categories
               </legend>
               {categories.map((category) => (
-                <div
-                  className="border-border has-checked:bg-primary mb-2 flex items-center gap-2 rounded-md border px-2 py-1 has-checked:text-white"
-                  key={category.name}
-                >
+                <div className="input-checkbox" key={category.name}>
                   <input
                     type="checkbox"
                     id={category.name.toLowerCase()}
@@ -140,7 +137,6 @@ function AdvertFilter({ onSubmit, onReset }: FilterProps) {
                       false
                     }
                     onChange={handleCategoryChange}
-                    className="checked:accent-primary"
                   />
                   <span
                     className="material-symbols-outlined -mb-0.5 !text-base"
@@ -165,7 +161,7 @@ function AdvertFilter({ onSubmit, onReset }: FilterProps) {
             Price range
           </legend>
           <div className="flex w-full flex-col">
-            <label htmlFor="min-price" className="mb-2 truncate font-medium">
+            <label htmlFor="min-price" className="label">
               Min. Price
             </label>
             <input
@@ -177,11 +173,11 @@ function AdvertFilter({ onSubmit, onReset }: FilterProps) {
               min={0}
               max={99999}
               onChange={handleMinPriceChange}
-              className="h-10.5 w-full rounded-lg border border-gray-200 px-3 py-2 placeholder:text-gray-200"
+              className="input"
             />
           </div>
           <div className="flex w-full flex-col">
-            <label htmlFor="max-price" className="mb-2 truncate font-medium">
+            <label htmlFor="max-price" className="label">
               Max. Price
             </label>
             <input
@@ -193,7 +189,7 @@ function AdvertFilter({ onSubmit, onReset }: FilterProps) {
               min={0}
               max={99999}
               onChange={handleMaxPriceChange}
-              className="h-10.5 w-full rounded-lg border border-gray-200 px-3 py-2 placeholder:text-gray-200"
+              className="input"
             />
           </div>
         </fieldset>
