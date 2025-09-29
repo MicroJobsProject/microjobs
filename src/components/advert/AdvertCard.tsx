@@ -1,27 +1,32 @@
+import { useTranslation } from "react-i18next";
 import type { Advert } from "../../pages/advert/types";
 
 function AdvertCard({ advert }: { advert: Advert }) {
+  const { t } = useTranslation();
+
   return (
     <article
       className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition hover:scale-102 hover:shadow-md"
-      aria-label={`Advert for ${advert.name}`}
+      aria-label={t("ariaAdvertName", { name: advert.name })}
     >
       <img
         src={advert.photo ?? "/src/assets/placeholder.png"}
         className="h-48 w-full object-cover"
-        alt={`Photo for ${advert.name}`}
+        alt={t("ariaAdvertPhoto", { name: advert.name })}
       />
       <div className="h-60 p-6">
         <div className="mb-3 flex items-center justify-between">
           <span
             className="rounded-full bg-amber-300 px-2.5 py-0.5 text-xs font-medium"
-            aria-label={`Service type: ${advert.offer ? "Offer" : "Need"}`}
+            aria-label={t(
+              advert.offer ? "ariaAdvertTypeOffer" : "ariaAdvertTypeNeed",
+            )}
           >
-            {advert.offer ? "Offer Service" : "Need Service"}
+            {t(advert.offer ? "advertTypeOffer" : "advertTypeNeed")}
           </span>
           <span
             className="text-primary text-lg font-bold"
-            aria-label={`Price: ${advert.price} euros per hour`}
+            aria-label={t("ariaAdvertPrice", { price: advert.price })}
           >
             {advert.price}€/hr
           </span>
@@ -38,14 +43,16 @@ function AdvertCard({ advert }: { advert: Advert }) {
           </span>
           <span
             className="text-sm"
-            aria-label={`Advert owner: ${advert.owner.username}`}
+            aria-label={t("ariaAdvertOwner", { owner: advert.owner.username })}
           >
             {advert.owner.username}
           </span>
         </div>
         <p
           className="line-clamp-2 text-sm"
-          aria-label={`Description: ${advert.description}`}
+          aria-label={t("ariaAdvertDescription", {
+            description: advert.description,
+          })}
         >
           {advert.description}
         </p>

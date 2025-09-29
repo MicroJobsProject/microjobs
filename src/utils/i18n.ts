@@ -16,6 +16,7 @@ i18n
       es: { translation: esJSON },
     },
     fallbackLng: "en",
+    returnObjects: true,
   });
 
 export default i18n;
