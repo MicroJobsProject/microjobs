@@ -1,4 +1,7 @@
 {
+  "openMenu": "Open menu",
+  "toggleTheme": "Toggle theme",
+  "changeLanguage": "Change language",
   "newAdvert": "New Advert",
   "login": "Login",
   "logout": "Logout",
