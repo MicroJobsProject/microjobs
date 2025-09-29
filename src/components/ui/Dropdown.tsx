@@ -16,13 +16,15 @@ export default function Dropdown({
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (ref.current && !ref.current.contains(event.target as Node)) {
-        setOpen(false);
-      }
+  function handleClickOutside(event: MouseEvent) {
+    if (ref.current && !ref.current.contains(event.target as Node)) {
+      setOpen(false);
     }
+  }
+
+  useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
+
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -34,13 +36,24 @@ export default function Dropdown({
         type="button"
         onClick={() => setOpen((prev) => !prev)}
         className={className}
+        aria-haspopup="true"
+        aria-expanded={open}
       >
         {icon}
         {label && <span>{label}</span>}
       </button>
 
       {open && (
-        <div className="absolute z-10 mt-2 w-auto rounded-md border border-gray-200 bg-white p-3 shadow-md">
+        <div
+          className="border-border bg-container absolute z-10 mt-2 w-auto rounded-md border p-3 shadow-md"
+          onBlur={(child) => {
+            const nextChild = child.relatedTarget as HTMLElement | null;
+            if (ref.current && nextChild && !ref.current.contains(nextChild)) {
+              setOpen(false);
+            }
+          }}
+          tabIndex={-1}
+        >
           {children}
         </div>
       )}
