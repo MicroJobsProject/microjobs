@@ -52,5 +52,7 @@
   "ariaPagination": "Navegación entre páginas",
   "ariaPage": "Ir a la página {{page}}",
   "ariaPaginationPrev": "Ir a la página anterior",
-  "ariaPaginationNext": "Ir a la página siguiente"
+  "ariaPaginationNext": "Ir a la página siguiente",
+
+  "footer": "© {{year}} MicroJobs Project. Todos los derechos reservados."
 }
