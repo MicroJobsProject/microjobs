@@ -39,7 +39,9 @@ export default function Dropdown({
         aria-haspopup="true"
         aria-expanded={open}
       >
-        {icon}
+        {typeof icon === "string" && (
+          <span className="material-symbols-outlined">{icon}</span>
+        )}
         {label && <span>{label}</span>}
       </button>
 
