@@ -27,82 +27,93 @@ function NewAdvertPage() {
       <div className="wrapper">
         <div className="flex min-h-screen items-center justify-center">
           <div className="w-full max-w-md">
-            <div className="bg-container border-border rounded-xl border p-8 shadow-sm">
+            <h2 className="text-heading font-heading mb-2 text-3xl font-extrabold">
+              Create new Advert
+            </h2>
+            <p className="text-paragraph">
+              Post your service need or offer to connect with local
+              professionals and particulars.
+            </p>
+            <div className="bg-container border-border rounded-xl border p-6 shadow-sm">
               <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="text-center">
-                  <h2 className="text-heading font-heading mb-2 text-3xl font-extrabold">
-                    Create new Advert
-                  </h2>
-                  <p className="text-paragraph">??????</p>
-                </div>
-
-                <div className="space-y-2">
-                  <label
-                    htmlFor="name"
-                    className="text-heading block text-sm font-medium"
-                  >
-                    Name
+                <div className="flex flex-col lg:col-span-2">
+                  <label htmlFor="name" className="mb-2 font-medium">
+                    Title*
                   </label>
-                  <div className="relative">
+                  <div>
                     <input
                       type="text"
                       name="name"
-                      placeholder="Name"
+                      placeholder="eg., Need experienced plumber for kitchen renovation"
                       required
-                      className={`bg-container text-paragraph placeholder:text-paragraph/60 block w-full rounded-lg border py-2 pr-3 pl-10 text-sm focus:ring-1 focus:outline-none`}
+                      className="h-10.5 w-full rounded-lg border border-gray-200 px-3 py-2 placeholder:text-gray-200"
                     />
                   </div>
                 </div>
 
-                <div className="space-y-2">
-                  <label
-                    htmlFor="price"
-                    className="text-heading block text-sm font-medium"
-                  >
-                    Price
+                <div className="flex flex-col lg:col-span-2">
+                  <label htmlFor="price" className="mb-2 font-medium">
+                    Price*
                   </label>
-                  <div className="relative">
-                    <input
-                      type="number"
-                      name="price"
-                      placeholder="Price"
-                      required
-                      className={`bg-container text-paragraph placeholder:text-paragraph/60 block w-full rounded-lg border py-2 pr-3 pl-10 text-sm focus:ring-1 focus:outline-none`}
-                    />
-                  </div>
+
+                  <input
+                    type="number"
+                    name="price"
+                    placeholder="0.00€"
+                    required
+                    className="h-10.5 w-full rounded-lg border border-gray-200 px-3 py-2 placeholder:text-gray-200"
+                  />
                 </div>
 
                 <div>
-                  <label htmlFor="serviceFieldset">Service:</label>
                   <fieldset name="serviceFieldset">
-                    <label htmlFor="offer">Need</label>
-                    <input
-                      type="radio"
-                      name="serviceRadio"
-                      value={"need"}
-                      defaultChecked
-                    />
-                    <label htmlFor="offer">Offer</label>
-                    <input type="radio" name="serviceRadio" value={"offer"} />
+                    <legend>Service</legend>
+                    <div>
+                      <input
+                        id="needed"
+                        type="radio"
+                        name="serviceRadio"
+                        value="need"
+                        defaultChecked
+                        className="peer hidden"
+                      />
+                      <label
+                        htmlFor="needed"
+                        className="peer-checked:bg-primary border-border center mb-2 flex cursor-pointer items-center justify-center gap-2 rounded-md border px-2 py-1 peer-checked:text-white"
+                      >
+                        Needed
+                      </label>
+                    </div>
+                    <div>
+                      <input
+                        id="offer"
+                        type="radio"
+                        name="serviceRadio"
+                        value="offer"
+                        className="peer hidden"
+                      />
+                      <label
+                        htmlFor="offer"
+                        className="peer-checked:bg-primary border-border mb-2 flex cursor-pointer items-center justify-center gap-2 rounded-md border px-2 py-1 peer-checked:text-white"
+                      >
+                        Offered
+                      </label>
+                    </div>
                   </fieldset>
                 </div>
 
-                <div className="space-y-2">
-                  <label
-                    htmlFor="description"
-                    className="text-heading block text-sm font-medium"
-                  >
+                <div className="flex flex-col lg:col-span-2">
+                  <label htmlFor="description" className="mb-2 font-medium">
                     Description
                   </label>
-                  <div className="relative">
-                    <input
-                      type="text"
-                      name="description"
-                      placeholder="Description"
-                      required
-                      className={`bg-container text-paragraph placeholder:text-paragraph/60 block w-full rounded-lg border py-2 pr-3 pl-10 text-sm focus:ring-1 focus:outline-none`}
-                    />
-                  </div>
+
+                  <input
+                    type="text"
+                    name="description"
+                    placeholder="Description"
+                    required
+                    className="h-10.5 w-full rounded-lg border border-gray-200 px-3 py-2 placeholder:text-gray-200"
+                  />
                 </div>
                 <div>
                   <label htmlFor="category">Category</label>
@@ -114,7 +125,7 @@ function NewAdvertPage() {
                   />
                 </div>
 
-                <button type="submit" className={`btn btn-primary w-full`}>
+                <button type="submit" className="btn btn-primary">
                   Create Advert
                 </button>
               </form>
