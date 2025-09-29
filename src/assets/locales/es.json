@@ -6,6 +6,7 @@
   "login": "Iniciar Sesión",
   "logout": "Salir",
   "register": "Regístrate",
+
   "homeTitle": "Qué hay de nuevo por aquí",
   "filterAdverts": "Filtrado de Anuncios",
   "advertResults": "Resultados de Anuncios",
@@ -13,6 +14,7 @@
   "noAdvertsSubtitle": "Parece que no hemos podido encontrar lo que buscas.",
   "noAdvertsParagraph": "¿Por qué no pruebas con otra búsqueda o te anuncias?",
   "resetFilters": "Reiniciar búsqueda",
+
   "ariaAdvertName": "Anuncio para '{{name}}'",
   "ariaAdvertPhoto": "Imagen de '{{name}}'",
   "advertTypeOffer": "Ofrece Servicio",
@@ -21,5 +23,29 @@
   "ariaAvertTypeNeed": "Tipo: Necesita un servicio",
   "ariaAdvertPrice": "Precio: {{price}} euros por hora",
   "ariaAdvertOwner": "Creado por {{owner}}",
-  "ariaAdvertDescription": "Descripción: {{description}}"
+  "ariaAdvertDescription": "Descripción: {{description}}",
+
+  "filterSearch": "Buscar",
+  "filterSearchPlaceholder": "Buscar por nombre",
+  "filterType": "Tipo",
+  "advertTypeAll": "Todos",
+  "filterCategory": "Categorías",
+  "filterCategoryPlaceholder": "Seleccionar categorías",
+  "Caring": "Cuidados",
+  "Cleaning": "Limpieza",
+  "Electrician": "Electricista",
+  "Gardening": "Jardinería",
+  "Painting": "Pintura",
+  "Personal Training": "Cuidado Personal",
+  "Pets": "Mascotas",
+  "Plumbing": "Fontanería",
+  "Private Classes": "Clases Particulares",
+  "Technology": "Tecnología",
+  "Transport": "Transporte",
+  "Video & Photography": "Video y Fotografía",
+  "filterPrice": "Rango de precio",
+  "filterPriceMin": "Precio Mín.",
+  "filterPriceMax": "Precio Máx.",
+  "applyFilters": "Aplicar filtros seleccionados",
+  "reset": "Reiniciar"
 }

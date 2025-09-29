@@ -6,6 +6,7 @@
   "login": "Login",
   "logout": "Logout",
   "register": "Register",
+
   "homeTitle": "What's new in town",
   "filterAdverts": "Filter Adverts",
   "advertResults": "Advert Results",
@@ -13,6 +14,7 @@
   "noAdvertsSubtitle": "Looks like we couldn't find what you wanted.",
   "noAdvertsParagraph": "Why don't try another search or advertise yourself?",
   "resetFilters": "Reset Search",
+
   "ariaAdvertName": "Advert for {{name}}",
   "ariaAdvertPhoto": "Photo for {{name}}",
   "advertTypeOffer": "Offer Service",
@@ -21,5 +23,29 @@
   "ariaAvertTypeNeed": "Type: Offer a service",
   "ariaAdvertPrice": "Price: {{price}} euros per hour",
   "ariaAdvertOwner": "Owner: {{owner}}",
-  "ariaAdvertDescription": "Description: {{description}}"
+  "ariaAdvertDescription": "Description: {{description}}",
+
+  "filterSearch": "Search",
+  "filterSearchPlaceholder": "Search by name",
+  "filterType": "Type",
+  "advertTypeAll": "All Types",
+  "filterCategory": "Category",
+  "filterCategoryPlaceholder": "Select categories",
+  "Caring": "Caring",
+  "Cleaning": "Cleaning",
+  "Electrician": "Electrician",
+  "Gardening": "Gardening",
+  "Painting": "Painting",
+  "Personal Training": "Personal Training",
+  "Pets": "Pets",
+  "Plumbing": "Plumbing",
+  "Private Classes": "Private Classes",
+  "Technology": "Technology",
+  "Transport": "Transport",
+  "Video & Photography": "Video & Photography",
+  "filterPrice": "Price range",
+  "filterPriceMin": "Min. Price",
+  "filterPriceMax": "Max. Price",
+  "applyFilters": "Apply selected filters",
+  "reset": "Reset"
 }

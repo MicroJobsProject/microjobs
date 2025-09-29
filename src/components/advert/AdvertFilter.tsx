@@ -4,6 +4,7 @@ import { useAdvertsCategoriesAction } from "../../store/hooks";
 import { useAppSelector } from "../../store";
 import { getAdvertsCategories } from "../../store/selectors";
 import Dropdown from "../ui/Dropdown";
+import { useTranslation } from "react-i18next";
 
 interface FilterProps {
   onSubmit: (filter: Filter) => void;
@@ -14,6 +15,7 @@ function AdvertFilter({ onSubmit, onReset }: FilterProps) {
   const [filters, setFilters] = useState<Filter>({});
   const advertsCategoriesAction = useAdvertsCategoriesAction();
   const categories = useAppSelector(getAdvertsCategories);
+  const { t } = useTranslation();
 
   useEffect(() => {
     advertsCategoriesAction();
@@ -83,14 +85,14 @@ function AdvertFilter({ onSubmit, onReset }: FilterProps) {
       >
         <div className="flex flex-col lg:col-span-2">
           <label htmlFor="name" className="label">
-            Search
+            {t("filterSearch")}
           </label>
           <input
             type="search"
             id="name"
             name="name"
             value={filters.name ?? ""}
-            placeholder="Search by name"
+            placeholder={t("filterSearchPlaceholder")}
             maxLength={80}
             onChange={handleNameChange}
             autoComplete="off"
@@ -99,7 +101,7 @@ function AdvertFilter({ onSubmit, onReset }: FilterProps) {
         </div>
         <div className="flex flex-col">
           <label htmlFor="offer" className="label">
-            Type
+            {t("filterType")}
           </label>
           <select
             id="offer"
@@ -110,20 +112,20 @@ function AdvertFilter({ onSubmit, onReset }: FilterProps) {
             className="input"
             onChange={handleTypeChange}
           >
-            <option value="">All Types</option>
-            <option value="false">Need Service</option>
-            <option value="true">Offer Service</option>
+            <option value="">{t("advertTypeAll")}</option>
+            <option value="false">{t("advertTypeNeed")}</option>
+            <option value="true">{t("advertTypeOffer")}</option>
           </select>
         </div>
         <div className="flex flex-col">
-          <label className="label">Category</label>
+          <label className="label">{t("filterCategory")}</label>
           <Dropdown
-            label="Select categories"
+            label={t("filterCategoryPlaceholder")}
             className="input truncate text-left"
           >
             <fieldset role="group" aria-labelledby="categories-label">
               <legend id="categories-label" className="sr-only">
-                Categories
+                {t("filterCategory")}
               </legend>
               {categories.map((category) => (
                 <div className="input-checkbox" key={category.name}>
@@ -145,7 +147,7 @@ function AdvertFilter({ onSubmit, onReset }: FilterProps) {
                     {category.icon}
                   </span>
                   <label htmlFor={category.name.toLowerCase()} className="w-40">
-                    {category.name}
+                    {t(`${category.name}`)}
                   </label>
                 </div>
               ))}
@@ -158,11 +160,11 @@ function AdvertFilter({ onSubmit, onReset }: FilterProps) {
           aria-labelledby="price-range-label"
         >
           <legend id="price-range-label" className="sr-only">
-            Price range
+            {t("priceRange")}
           </legend>
           <div className="flex w-full flex-col">
             <label htmlFor="min-price" className="label">
-              Min. Price
+              {t("filterPriceMin")}
             </label>
             <input
               type="number"
@@ -178,7 +180,7 @@ function AdvertFilter({ onSubmit, onReset }: FilterProps) {
           </div>
           <div className="flex w-full flex-col">
             <label htmlFor="max-price" className="label">
-              Max. Price
+              {t("filterPriceMax")}
             </label>
             <input
               type="number"
@@ -197,16 +199,18 @@ function AdvertFilter({ onSubmit, onReset }: FilterProps) {
           <button
             type="submit"
             className="btn btn-secondary"
-            aria-label="Apply selected filters"
+            aria-label={t("applyFilters")}
           >
-            <span className="material-symbols-outlined">search</span>
+            <span className="material-symbols-outlined" aria-hidden="true">
+              search
+            </span>
           </button>
           <button
             type="reset"
             className="btn btn-destructive"
-            aria-label="Reset all filters"
+            aria-label={t("resetFilters")}
           >
-            Reset
+            {t("reset")}
           </button>
         </div>
       </form>
