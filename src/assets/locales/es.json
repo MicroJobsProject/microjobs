@@ -47,5 +47,10 @@
   "filterPriceMin": "Precio Mín.",
   "filterPriceMax": "Precio Máx.",
   "applyFilters": "Aplicar filtros seleccionados",
-  "reset": "Reiniciar"
+  "reset": "Reiniciar",
+
+  "ariaPagination": "Navegación entre páginas",
+  "ariaPage": "Ir a la página {{page}}",
+  "ariaPaginationPrev": "Ir a la página anterior",
+  "ariaPaginationNext": "Ir a la página siguiente"
 }
