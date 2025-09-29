@@ -6,5 +6,11 @@
   "login": "Login",
   "logout": "Logout",
   "register": "Register",
-  "homeTitle": "What's new in town"
+  "homeTitle": "What's new in town",
+  "filterAdverts": "Filter Adverts",
+  "advertResults": "Advert Results",
+  "noAdvertsTitle": "Is anybody home?",
+  "noAdvertsSubtitle": "Looks like we couldn't find what you wanted.",
+  "noAdvertsParagraph": "Why don't try another search or advertise yourself?",
+  "resetFilters": "Reset Search"
 }

@@ -6,5 +6,11 @@
   "login": "Iniciar Sesión",
   "logout": "Salir",
   "register": "Regístrate",
-  "homeTitle": "Qué hay de nuevo por aquí"
+  "homeTitle": "Qué hay de nuevo por aquí",
+  "filterAdverts": "Filtrado de Anuncios",
+  "advertResults": "Resultados de Anuncios",
+  "noAdvertsTitle": "¿Hay alguien ahí?",
+  "noAdvertsSubtitle": "Parece que no hemos podido encontrar lo que buscas.",
+  "noAdvertsParagraph": "¿Por qué no pruebas con otra búsqueda o te anuncias?",
+  "resetFilters": "Reiniciar búsqueda"
 }
