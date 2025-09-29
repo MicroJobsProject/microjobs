@@ -40,7 +40,9 @@ export default function Dropdown({
         aria-expanded={open}
       >
         {typeof icon === "string" && (
-          <span className="material-symbols-outlined">{icon}</span>
+          <span className="material-symbols-outlined" aria-hidden="true">
+            {icon}
+          </span>
         )}
         {label && <span>{label}</span>}
       </button>
