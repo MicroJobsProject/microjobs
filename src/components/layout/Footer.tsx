@@ -1,11 +1,14 @@
+import { useTranslation } from "react-i18next";
+
 function Footer() {
+  const { t } = useTranslation();
   const currentYear = new Date().getFullYear();
 
   return (
     <footer>
       <div className="wrapper">
         <div className="flex items-center justify-center">
-          <span>{`© ${currentYear} MicroJobs Project. All rights reserved.`}</span>
+          <span>{t("footer", { year: currentYear })}</span>
         </div>
       </div>
     </footer>
