@@ -13,6 +13,7 @@ import App from "./app";
 
 //STATIC-FILES
 import "./styles/index.css";
+import "./utils/i18n.ts";
 
 const accessToken = storage.get("auth");
 
