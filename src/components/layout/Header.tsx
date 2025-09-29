@@ -1,10 +1,17 @@
+//DEPENDENCIES
 import { Link, NavLink } from "react-router";
-import AuthButton from "../auth/AuthButton";
-import AppLogo from "../icon/AppLogo";
-import AppIcon from "../icon/AppIcon";
 import { useEffect, useState } from "react";
 
+//NATIVE
+import AuthButton from "../auth/AuthButton";
+import { useAuth } from "../../store/hooks";
+
+//STATIC-FILES
+import AppLogo from "../icon/AppLogo";
+import AppIcon from "../icon/AppIcon";
+
 function Header() {
+  const isLogged = useAuth();
   const [showMenu, setShowMenu] = useState(false);
   const maxWidth = 640;
 
@@ -49,12 +56,14 @@ function Header() {
                     </span>
                   </button>
                 </li>
-                <li className="hidden sm:block">
-                  <NavLink to="/advert/new" className="btn btn-primary">
-                    <span className="material-symbols-outlined">add</span>
-                    <span>New Advert</span>
-                  </NavLink>
-                </li>
+                {isLogged && (
+                  <li className="hidden sm:block">
+                    <NavLink to="/advert/new" className="btn btn-primary">
+                      <span className="material-symbols-outlined">add</span>
+                      <span>New Advert</span>
+                    </NavLink>
+                  </li>
+                )}
                 <li>
                   <button className="btn btn-secondary">
                     <span className="material-symbols-outlined">
@@ -67,44 +76,53 @@ function Header() {
                     <span className="material-symbols-outlined">language</span>
                   </button>
                 </li>
-                <li>
-                  <button className="btn btn-secondary">
-                    <span className="material-symbols-outlined">
-                      account_circle
-                    </span>
-                  </button>
-                </li>
+                {isLogged && (
+                  <li>
+                    <button className="btn btn-secondary">
+                      <span className="material-symbols-outlined">
+                        account_circle
+                      </span>
+                    </button>
+                  </li>
+                )}
                 <li className="hidden sm:block">
-                  <AuthButton className="btn btn-outlined" />
+                  <AuthButton />
                 </li>
-                <li className="hidden sm:block">
-                  <NavLink to="/register" className="btn btn-outlined">
-                    Register
-                  </NavLink>
-                </li>
+                {!isLogged && (
+                  <li className="hidden sm:block">
+                    <NavLink to="/register" className="btn btn-outlined">
+                      Register
+                    </NavLink>
+                  </li>
+                )}
               </ul>
             </nav>
           </div>
         </div>
+        {showMenu && (
+          <ul className="border-border bg-container relative left-1/2 z-980 grid w-full -translate-x-1/2 gap-2 border border-b px-6 py-8 shadow-sm">
+            {isLogged && (
+              <li className="grid">
+                <NavLink to="/advert/new" className="btn btn-primary">
+                  <span className="material-symbols-outlined">add</span>
+                  <span>New Advert</span>
+                </NavLink>
+              </li>
+            )}
+            <li className="grid">
+              <AuthButton />
+            </li>
+            {!isLogged && (
+              <li className="grid">
+                <NavLink to="/register" className="btn btn-outlined">
+                  Register
+                </NavLink>
+              </li>
+            )}
+          </ul>
+        )}
       </header>
-      {showMenu && (
-        <ul className="border-border bg-container absolute left-0 mx-auto flex w-full items-center justify-baseline gap-2 border-b px-6 py-3 shadow-sm">
-          <li>
-            <NavLink to="/advert/new" className="btn btn-primary">
-              <span className="material-symbols-outlined">add</span>
-              <span>New Advert</span>
-            </NavLink>
-          </li>
-          <li>
-            <AuthButton className="btn btn-outlined" />
-          </li>
-          <li>
-            <NavLink to="/register" className="btn btn-outlined">
-              Register
-            </NavLink>
-          </li>
-        </ul>
-      )}
+      <div className="h-25 sm:h-35"></div>
     </>
   );
 }

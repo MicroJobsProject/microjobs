@@ -9,10 +9,32 @@ export interface Advert {
   description: string;
 }
 
+export interface AdvertData {
+  name: string;
+  price: string;
+  offer: string;
+  category: string;
+  photo?: File;
+  description: string;
+}
+
 export interface AdvertResponse {
   results: Advert[];
   total: number;
   page: number;
   totalAdverts: number;
   totalPages: number;
+}
+
+export interface AdvertCategory {
+  name: string;
+  icon?: string;
+}
+
+export interface Filter {
+  name?: string;
+  min?: number;
+  max?: number;
+  offer?: boolean;
+  category?: string[];
 }

@@ -65,7 +65,7 @@
 }
 
 .wrapper {
-  @apply mx-auto max-w-7xl px-6 py-8;
+  @apply mx-auto max-w-7xl px-6 py-4 sm:py-8;
 }
 
 header,
@@ -73,7 +73,7 @@ footer {
   @apply bg-container border-border;
 }
 header {
-  @apply border-b shadow-sm;
+  @apply fixed top-0 left-0 z-950 w-full shadow-sm;
 }
 footer {
   @apply border-t;
@@ -83,12 +83,21 @@ footer {
 h2,
 h3,
 h4 {
-  @apply font-heading text-heading mb-2 font-extrabold;
+  @apply font-heading text-heading mb-2;
+}
+h2 {
+  @apply text-3xl font-extrabold;
+}
+h3 {
+  @apply text-lg font-bold;
+}
+h4 {
+  @apply text-lg font-semibold;
 }
 
 /* BUTTONS */
 .btn {
-  @apply flex cursor-pointer items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition disabled:pointer-events-none lg:text-base;
+  @apply xs:px-4 flex h-10.5 cursor-pointer items-center justify-center gap-2 rounded-lg px-2 py-2 font-medium transition disabled:pointer-events-none;
 }
 .btn-primary {
   @apply bg-primary border-primary hover:bg-primary-hover border text-white;
@@ -98,6 +107,9 @@ h4 {
 }
 .btn-secondary {
   @apply hover:text-heading hover:bg-border bg-transparent;
+}
+.btn-destructive {
+  @apply bg-destructive border-destructive hover:bg-destructive-hover text-white;
 }
 
 /* ALERTS */
@@ -112,4 +124,16 @@ h4 {
 }
 .alert-success {
   @apply border-success text-success-hover;
+}
+
+/* LABELS */
+
+.label {
+  @apply mb-2 truncate font-medium;
+}
+
+/* INPUTS */
+
+.input {
+  @apply border-border placeholder:text-border h-10.5 w-full rounded-lg border px-3 py-2;
 }
