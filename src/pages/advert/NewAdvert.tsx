@@ -55,7 +55,6 @@ function NewAdvertPage() {
                   <label htmlFor="price" className="mb-2 font-medium">
                     Price*
                   </label>
-
                   <input
                     type="number"
                     name="price"
@@ -66,11 +65,13 @@ function NewAdvertPage() {
                 </div>
 
                 <div>
-                  <fieldset name="serviceFieldset">
-                    <legend>Service</legend>
-                    <div>
+                  <fieldset
+                    name="serviceFieldset"
+                    className="flex flex-row items-center justify-center gap-4"
+                  >
+                    <div className="flex grow flex-row items-center justify-center">
                       <input
-                        id="needed"
+                        id="need"
                         type="radio"
                         name="serviceRadio"
                         value="need"
@@ -78,13 +79,13 @@ function NewAdvertPage() {
                         className="peer hidden"
                       />
                       <label
-                        htmlFor="needed"
-                        className="peer-checked:bg-primary border-border center mb-2 flex cursor-pointer items-center justify-center gap-2 rounded-md border px-2 py-1 peer-checked:text-white"
+                        htmlFor="need"
+                        className="peer-checked:bg-primary border-border grow cursor-pointer rounded-md border px-2 py-1 text-center peer-checked:text-white"
                       >
-                        Needed
+                        Need Service
                       </label>
                     </div>
-                    <div>
+                    <div className="flex grow flex-row items-center justify-center">
                       <input
                         id="offer"
                         type="radio"
@@ -94,9 +95,9 @@ function NewAdvertPage() {
                       />
                       <label
                         htmlFor="offer"
-                        className="peer-checked:bg-primary border-border mb-2 flex cursor-pointer items-center justify-center gap-2 rounded-md border px-2 py-1 peer-checked:text-white"
+                        className="peer-checked:bg-primary border-border grow cursor-pointer rounded-md border px-2 py-1 text-center peer-checked:text-white"
                       >
-                        Offered
+                        Offer Service
                       </label>
                     </div>
                   </fieldset>
