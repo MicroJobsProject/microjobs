@@ -166,7 +166,7 @@ function Header() {
           </>
         )}
       </header>
-      <div className="h-25 sm:h-35" />
+      <div className="h-22 sm:h-30" />
     </>
   );
 }

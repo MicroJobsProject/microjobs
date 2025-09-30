@@ -54,5 +54,27 @@
   "ariaPaginationPrev": "Go to the previous page",
   "ariaPaginationNext": "Go to the next page",
 
+  "loginTo": "Log In to MicroJobs",
+  "loginToSubtitle": "Sign in by entering your username and password.",
+  "email": "Email",
+  "emailPlaceholder": "youremail@gmail.com",
+  "password": "Password",
+  "passwordPlaceholder": "Your password",
+  "forgotPassword": "Forgot password?",
+  "loginFetching": "Logging in...",
+  "remember": "Remember me",
+  "signUpParagraph": "Don't have an account?",
+  "signUpLink": "Sign up here",
+  "errorValidGmail": "Please enter a valid Gmail address (example@gmail.com)",
+  "errorPasswordTooShort": "Password must be at least 6 characters",
+  "errorPasswordTooLong": "Password must not exceed 12 characters",
+  "Email and password are required": "Email and password are required",
+  "Invalid password or email": "Invalid password or email",
+  "Email not registered": "Email not registered",
+  "Successfully logged in": "Successfully logged in",
+  "Server error while logging in": "Server error while logging in",
+  "Successfully logged out": "Successfully logged out",
+  "Server error while logging out": "Server error while logging out",
+
   "footer": "© {{year}} MicroJobs Project. All rights reserved."
 }
