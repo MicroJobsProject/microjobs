@@ -6,7 +6,7 @@ import axios from "axios";
 import { useLoginAction, useUiResetError } from "../../store/hooks";
 import { useAppSelector } from "../../store";
 import { getUi } from "../../store/selectors";
-import { isValidGmail } from "../../utils/validation";
+import { isValidEmail } from "../../utils/validation";
 import Alert from "../../components/ui/Alert";
 
 //ASSETS
@@ -44,18 +44,13 @@ function LoginPage() {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!isValidGmail(email)) {
-      setEmailError("Please enter a valid Gmail address (example@gmail.com)");
+    if (!isValidEmail(email)) {
+      setEmailError("Please enter a valid email address");
       return;
     }
 
     if (password.length < 6) {
       setPasswordError("Password must be at least 6 characters");
-      return;
-    }
-
-    if (password.length > 12) {
-      setPasswordError("Password must not exceed 12 characters");
       return;
     }
 
