@@ -5,6 +5,8 @@ import axios from "axios";
 
 //NATIVE
 import type { Credentials } from "../pages/auth/types";
+import type { User, UpdateProfileData } from "../pages/user/types";
+
 import type {
   Advert,
   AdvertData,
@@ -42,6 +44,35 @@ type AuthLoginRejected = {
 
 type AuthLogout = {
   type: "auth/logout";
+};
+
+// USER............................................
+type UserLoadPending = {
+  type: "user/load/pending";
+};
+
+type UserLoadFulfilled = {
+  type: "user/load/fulfilled";
+  payload: User;
+};
+
+type UserLoadRejected = {
+  type: "user/load/rejected";
+  payload: Error;
+};
+
+type UserUpdatePending = {
+  type: "user/update/pending";
+};
+
+type UserUpdateFulfilled = {
+  type: "user/update/fulfilled";
+  payload: User;
+};
+
+type UserUpdateRejected = {
+  type: "user/update/rejected";
+  payload: Error;
 };
 
 // UI..............................................
@@ -131,6 +162,35 @@ export const authLoginRejected = (error: Error): AuthLoginRejected => ({
 
 export const authLogout = (): AuthLogout => ({
   type: "auth/logout",
+});
+
+// USER............................................
+export const userLoadPending = (): UserLoadPending => ({
+  type: "user/load/pending",
+});
+
+export const userLoadFulfilled = (user: User): UserLoadFulfilled => ({
+  type: "user/load/fulfilled",
+  payload: user,
+});
+
+export const userLoadRejected = (error: Error): UserLoadRejected => ({
+  type: "user/load/rejected",
+  payload: error,
+});
+
+export const userUpdatePending = (): UserUpdatePending => ({
+  type: "user/update/pending",
+});
+
+export const userUpdateFulfilled = (user: User): UserUpdateFulfilled => ({
+  type: "user/update/fulfilled",
+  payload: user,
+});
+
+export const userUpdateRejected = (error: Error): UserUpdateRejected => ({
+  type: "user/update/rejected",
+  payload: error,
 });
 
 // UI..............................................
@@ -240,12 +300,35 @@ export function authLogoutThunk(): AppThunk<Promise<void>> {
   };
 }
 
-export function authInitializeFromStorage(): AppThunk<void> {
-  return function (dispatch, _getState, { storage }) {
-    const hasAuth = storage.hasAuth();
+// USER............................................
+export function userLoad(): AppThunk<Promise<void>> {
+  return async function (dispatch, _getState, { api }) {
+    try {
+      dispatch(userLoadPending());
+      const user = await api.profile.getProfile();
+      dispatch(userLoadFulfilled(user));
+    } catch (error) {
+      if (error instanceof Error) {
+        dispatch(userLoadRejected(error));
+      }
+      throw error;
+    }
+  };
+}
 
-    if (hasAuth) {
-      dispatch(authLoginFulfilled());
+export function userUpdate(
+  profileData: UpdateProfileData,
+): AppThunk<Promise<void>> {
+  return async function (dispatch, _getState, { api }) {
+    try {
+      dispatch(userUpdatePending());
+      const user = await api.profile.updateProfile(profileData);
+      dispatch(userUpdateFulfilled(user));
+    } catch (error) {
+      if (error instanceof Error) {
+        dispatch(userUpdateRejected(error));
+      }
+      throw error;
     }
   };
 }
@@ -269,7 +352,6 @@ export function advertsLoad(
 }
 
 //ADVERTS (Categories)...................................
-
 export function advertsCategories(): AppThunk<Promise<void>> {
   return async function (dispatch, _getState, { api }) {
     try {
@@ -309,15 +391,33 @@ export function advertsCreate(
     }
   };
 }
+
+// INITIALIZE AUTH STATE FROM STORAGE (LOCAL OR SESSION)
+export function authInitializeFromStorage(): AppThunk<void> {
+  return function (dispatch, _getState, { storage }) {
+    const hasAuth = storage.hasAuth();
+
+    if (hasAuth) {
+      dispatch(authLoginFulfilled());
+    }
+  };
+}
+
 // prettier-ignore
 export type Actions = 
 | AuthRegisterPending
 | AuthRegisterFulfilled
 | AuthRegisterRejected
 | AuthLoginPending 
-| AuthLoginFulfilled 
-| AuthLoginRejected 
+| AuthLoginFulfilled
+| AuthLoginRejected
 | AuthLogout
+| UserLoadPending
+| UserLoadFulfilled
+| UserLoadRejected
+| UserUpdatePending
+| UserUpdateFulfilled
+| UserUpdateRejected
 | UiResetError
 | ErrorSetCritical
 | ErrorClearCritical
@@ -327,9 +427,21 @@ export type Actions =
 | AdvertsCategoriesPending
 | AdvertsCategoriesFulfilled
 | AdvertsCategoriesRejected
+| AdvertsCreatedFulfilled
+| AdvertsCreatedRejected;
 
 // prettier-ignore
 export type ActionsRejected = 
+| AuthRegisterRejected
 | AuthLoginRejected
+| UserLoadRejected
+| UserUpdateRejected
 | AdvertsLoadRejected
 | AdvertsCategoriesRejected
+| AdvertsCreatedRejected;
+
+// prettier-ignore
+export type ErrorActions =
+| UiResetError
+| ErrorSetCritical
+| ErrorClearCritical;

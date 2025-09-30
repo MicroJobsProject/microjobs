@@ -9,7 +9,9 @@ import RegisterPage from "./pages/auth/RegisterPage";
 import { CriticalErrorPage, NotFoundPage } from "./pages/error/ErrorPages";
 
 const LoginPage = lazy(() => import("./pages/auth/LoginPage"));
-//const RequireAuth = lazy(() => import("./components/auth/RequireAuth"));
+const ProfilePage = lazy(() => import("./pages/user/ProfilePage"));
+
+const RequireAuth = lazy(() => import("./components/auth/RequireAuth"));
 const RequireNoAuth = lazy(() => import("./components/auth/RequireNoAuth"));
 
 const Home = lazy(() => import("./pages/Home"));
@@ -50,7 +52,6 @@ function App() {
 
           <Route path="home" element={<Home />} />
 
-          {/* 
           <Route
             path="profile"
             element={
@@ -59,7 +60,6 @@ function App() {
               </RequireAuth>
             }
           />
-          */}
 
           <Route path="error" element={<CriticalErrorPage />} />
           <Route path="not-found" element={<NotFoundPage />} />

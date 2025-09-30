@@ -9,9 +9,9 @@ import type { ThunkDispatch } from "redux-thunk";
 //NATIVE
 import type { Actions } from "./actions";
 import * as reducers from "./reducer";
-
-import * as adverts from "../pages/advert/service";
 import * as auth from "../pages/auth/service";
+import * as profile from "../pages/user/service";
+import * as adverts from "../pages/advert/service";
 import storage from "../utils/storage";
 
 // Combination of reducers-------------------------------------------------------------------------------------------------------
@@ -20,7 +20,11 @@ const rootReducer = combineReducers(reducers);
 type Router = ReturnType<typeof createBrowserRouter>;
 
 export type ExtraArgument = {
-  api: { auth: typeof auth; adverts: typeof adverts };
+  api: {
+    auth: typeof auth;
+    adverts: typeof adverts;
+    profile: typeof profile;
+  };
   router: Router;
   storage: typeof storage;
 };
@@ -71,7 +75,7 @@ export default function configureStore(
 
   const middlewares = [
     thunk.withExtraArgument<reducers.State, Actions, ExtraArgument>({
-      api: { adverts, auth },
+      api: { adverts, auth, profile },
       router,
       storage,
     }),

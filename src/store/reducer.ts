@@ -2,9 +2,11 @@
 import type { AxiosError } from "axios";
 
 //NATIVE
+import type { User } from "../pages/user/types";
 import type { AdvertCategory, AdvertResponse } from "../pages/advert/types";
 import { type Actions, type ActionsRejected } from "./actions";
 
+//ERROR STATE TYPE=====================================================================================
 export interface ErrorState {
   criticalError: AxiosError | null;
 }
@@ -17,6 +19,10 @@ export type State = {
   };
   adverts: { loaded: boolean; data: AdvertResponse };
   categories: AdvertCategory[];
+  user: {
+    data: User | null;
+    loaded: boolean;
+  };
   error: ErrorState;
 };
 
@@ -31,9 +37,14 @@ const defaultState: State = {
     data: { results: [], total: 0, page: 1, totalAdverts: 0, totalPages: 1 },
   },
   categories: [],
+  user: {
+    data: null,
+    loaded: false,
+  },
   error: { criticalError: null },
 };
 
+//REDUCERS===================================================================================================
 export function auth(
   state = defaultState.auth,
   action: Actions,
@@ -49,35 +60,19 @@ export function auth(
   }
 }
 
-function isRejectedAction(action: Actions): action is ActionsRejected {
-  return action.type.endsWith("/rejected");
-}
-
-export function ui(state = defaultState.ui, action: Actions): State["ui"] {
-  if (
-    action.type === "auth/login/pending" ||
-    action.type === "auth/register/pending" ||
-    action.type === "adverts/load/pending"
-  ) {
-    return { pending: true, error: null };
+export function user(
+  state = defaultState.user,
+  action: Actions,
+): State["user"] {
+  switch (action.type) {
+    case "user/load/fulfilled":
+    case "user/update/fulfilled":
+      return { ...state, loaded: true, data: action.payload };
+    case "auth/logout":
+      return { data: null, loaded: false };
+    default:
+      return state;
   }
-  if (
-    action.type === "auth/login/fulfilled" ||
-    action.type === "auth/register/fulfilled" ||
-    action.type === "adverts/load/fulfilled"
-  ) {
-    return { pending: false, error: null };
-  }
-  if (isRejectedAction(action)) {
-    return { pending: false, error: action.payload };
-  }
-  if (action.type === "ui/reset-error") {
-    return { ...state, error: null };
-  }
-  if (action.type === "error/setCritical") {
-    return { pending: false, error: null };
-  }
-  return state;
 }
 
 export function adverts(
@@ -100,9 +95,44 @@ export function categories(
   return state;
 }
 
+//ERROR HANDLING============================================================================================
 const defaultErrorState: ErrorState = {
   criticalError: null,
 };
+
+function isRejectedAction(action: Actions): action is ActionsRejected {
+  return action.type.endsWith("/rejected");
+}
+
+export function ui(state = defaultState.ui, action: Actions): State["ui"] {
+  if (
+    action.type === "auth/login/pending" ||
+    action.type === "user/load/pending" ||
+    action.type === "auth/register/pending" ||
+    action.type === "adverts/load/pending"
+  ) {
+    return { pending: true, error: null };
+  }
+  if (
+    action.type === "auth/login/fulfilled" ||
+    action.type === "user/load/fulfilled" ||
+    action.type === "user/update/fulfilled" ||
+    action.type === "auth/register/fulfilled" ||
+    action.type === "adverts/load/fulfilled"
+  ) {
+    return { pending: false, error: null };
+  }
+  if (isRejectedAction(action)) {
+    return { pending: false, error: action.payload };
+  }
+  if (action.type === "ui/reset-error") {
+    return { ...state, error: null };
+  }
+  if (action.type === "error/setCritical") {
+    return { pending: false, error: null };
+  }
+  return state;
+}
 
 export function error(state = defaultErrorState, action: Actions): ErrorState {
   switch (action.type) {

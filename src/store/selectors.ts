@@ -3,6 +3,10 @@ import { createSelector } from "reselect";
 import type { RootState } from ".";
 
 export const getIsLogged = (state: RootState) => state.auth;
+
+export const getUser = (state: RootState) => state.user.data;
+export const getUserLoaded = (state: RootState) => state.user.loaded;
+
 export const getUi = (state: RootState) => state.ui;
 
 export const getPagination = createSelector(

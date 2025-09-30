@@ -3,23 +3,31 @@ import { useAppDispatch, useAppSelector } from ".";
 
 //NATIVE
 import type { Credentials } from "../pages/auth/types";
+import type { UpdateProfileData } from "../pages/user/types";
 
-//REDUX
 import {
   authRegister,
   authLogin,
   authLogoutThunk,
+  userLoad,
+  userUpdate,
   uiResetError,
   errorClearCritical,
   advertsLoad,
   advertsCategories,
 } from "./actions";
-import { getCriticalError, getIsLogged } from "./selectors";
+import {
+  getCriticalError,
+  getIsLogged,
+  getUser,
+  getUserLoaded,
+} from "./selectors";
 
 export function useAuth() {
   return useAppSelector(getIsLogged);
 }
 
+// AUTH............................................
 export function useRegisterAction() {
   const dispatch = useAppDispatch();
   return function (credentials: {
@@ -45,13 +53,30 @@ export function useLogoutAction() {
   };
 }
 
-export function useUiResetError() {
+// USER............................................
+export function useUser() {
+  return useAppSelector(getUser);
+}
+
+export function useUserLoaded() {
+  return useAppSelector(getUserLoaded);
+}
+
+export function useUserLoadAction() {
   const dispatch = useAppDispatch();
   return function () {
-    return dispatch(uiResetError());
+    return dispatch(userLoad());
   };
 }
 
+export function useUserUpdateAction() {
+  const dispatch = useAppDispatch();
+  return function (profileData: UpdateProfileData) {
+    return dispatch(userUpdate(profileData));
+  };
+}
+
+// ADVERTS............................................
 export function useAdvertsLoadAction() {
   const dispatch = useAppDispatch();
   return function (params?: Record<string, string>) {
@@ -59,14 +84,22 @@ export function useAdvertsLoadAction() {
   };
 }
 
-
 export function useAdvertsCategoriesAction() {
   const dispatch = useAppDispatch();
   return function () {
     return dispatch(advertsCategories());
   };
 }
-  
+
+// UI............................................
+export function useUiResetError() {
+  const dispatch = useAppDispatch();
+  return function () {
+    return dispatch(uiResetError());
+  };
+}
+
+// ERROR............................................
 export function useCriticalError() {
   return useAppSelector(getCriticalError);
 }
