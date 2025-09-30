@@ -1,5 +1,5 @@
 //DEPENDENCIES
-import { Link, NavLink } from "react-router";
+import { Link, NavLink, useLocation } from "react-router";
 import { useEffect, useState } from "react";
 
 //NATIVE
@@ -13,9 +13,12 @@ import AppIcon from "../icon/AppIcon";
 function Header() {
   const isLogged = useAuth();
   const [showMenu, setShowMenu] = useState(false);
+  const location = useLocation();
   const maxWidth = 640;
 
   useEffect(() => {
+    setShowMenu(false);
+
     const handleResize = () => {
       if (window.innerWidth >= maxWidth) {
         setShowMenu(false);
@@ -25,8 +28,10 @@ function Header() {
     window.addEventListener("resize", handleResize);
     handleResize();
 
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [location.pathname]);
 
   return (
     <>
@@ -100,29 +105,35 @@ function Header() {
           </div>
         </div>
         {showMenu && (
-          <ul className="border-border bg-container relative left-1/2 z-980 grid w-full -translate-x-1/2 gap-2 border border-b px-6 py-8 shadow-sm">
-            {isLogged && (
+          <>
+            <div
+              className="fixed inset-0 top-18.5 z-900 bg-black/15"
+              onClick={() => setShowMenu(false)}
+            />
+            <ul className="border-border bg-container absolute left-1/2 z-990 grid w-full -translate-x-1/2 gap-2 border border-b px-6 py-8 shadow-sm">
+              {isLogged && (
+                <li className="grid">
+                  <NavLink to="/advert/new" className="btn btn-primary">
+                    <span className="material-symbols-outlined">add</span>
+                    <span>New Advert</span>
+                  </NavLink>
+                </li>
+              )}
               <li className="grid">
-                <NavLink to="/advert/new" className="btn btn-primary">
-                  <span className="material-symbols-outlined">add</span>
-                  <span>New Advert</span>
-                </NavLink>
+                <AuthButton />
               </li>
-            )}
-            <li className="grid">
-              <AuthButton />
-            </li>
-            {!isLogged && (
-              <li className="grid">
-                <NavLink to="/register" className="btn btn-outlined">
-                  Register
-                </NavLink>
-              </li>
-            )}
-          </ul>
+              {!isLogged && (
+                <li className="grid">
+                  <NavLink to="/register" className="btn btn-outlined">
+                    Register
+                  </NavLink>
+                </li>
+              )}
+            </ul>
+          </>
         )}
       </header>
-      <div className="h-25 sm:h-35"></div>
+      <div className="h-25 sm:h-35" />
     </>
   );
 }
