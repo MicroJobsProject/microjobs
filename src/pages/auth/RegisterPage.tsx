@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useRegisterAction } from "../../store/hooks";
 import { useAppSelector } from "../../store";
 import { getUi } from "../../store/selectors";
-import { isValidGmail } from "../../utils/validation";
+import { isValidEmail } from "../../utils/validation";
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -28,7 +28,7 @@ export default function RegisterPage() {
 
     if (!formData.username) newErrors.username = "Username is required";
 
-    if (!isValidGmail(formData.email)) {
+    if (!isValidEmail(formData.email)) {
       newErrors.email =
         "Please enter a valid Gmail address (example@gmail.com)";
     }
