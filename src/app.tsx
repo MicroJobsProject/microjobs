@@ -15,6 +15,7 @@ const RequireNoAuth = lazy(() => import("./components/auth/RequireNoAuth"));
 const Home = lazy(() => import("./pages/Home"));
 const Layout = lazy(() => import("./components/layout/layout"));
 const NewAdvertPage = lazy(() => import("./pages/advert/NewAdvert"));
+const AdvertDetail = lazy(() => import("./pages/advert/AdvertDetail"));
 
 function App() {
   const navigate = useNavigate();
@@ -74,7 +75,14 @@ function App() {
               // </RequireAuth>
             }
           />
+          <Route
+            path=":advertId"
+            element={
+              <AdvertDetail/>
+            }
+          />
         </Route>
+
       </Routes>
     </Suspense>
   );
