@@ -2,8 +2,12 @@ import { useAppDispatch } from "../../store";
 import type { AdvertData } from "./types";
 import { advertsCreate } from "../../store/actions";
 import type { FormEvent } from "react";
+import { getAdvertsCategories } from "../../store/selectors";
+import { useAppSelector } from "../../store";
+import AdvertCategory from "../../components/advert/AdvertCategory";
 
 function NewAdvertPage() {
+  const categories = useAppSelector(getAdvertsCategories);
   const dispatch = useAppDispatch();
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -48,7 +52,6 @@ function NewAdvertPage() {
                 />
               </div>
             </div>
-
             <div className="flex flex-col lg:col-span-2">
               <label htmlFor="price" className="input-label">
                 Price*
@@ -61,7 +64,6 @@ function NewAdvertPage() {
                 className="input"
               />
             </div>
-
             <div>
               <fieldset
                 name="serviceFieldset"
@@ -95,7 +97,6 @@ function NewAdvertPage() {
                 </div>
               </fieldset>
             </div>
-
             <div className="flex flex-col lg:col-span-2">
               <label htmlFor="description" className="input-label">
                 Description
@@ -109,18 +110,27 @@ function NewAdvertPage() {
                 className="input"
               />
             </div>
-            <div className="flex flex-col lg:col-span-2">
-              <label htmlFor="category" className="input-label">
-                Category
-              </label>
-              <input
-                type="text"
-                name="category"
-                placeholder="Category"
-                required
-                className="input"
-              />
-            </div>
+
+            <fieldset
+              name="categoryFieldset"
+              className="flex flex-row items-center justify-center gap-4"
+            >
+              <legend className="input-label">Category*</legend>
+              <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {categories.length ? (
+                  categories.map((category) => (
+                    <AdvertCategory
+                      key={category.name}
+                      name={category.name}
+                      icon={category.icon}
+                    />
+                  ))
+                ) : (
+                  <p>Categories not found</p>
+                )}
+              </div>
+            </fieldset>
+
             <div className="flex justify-end">
               <button type="submit" className="btn btn-primary">
                 <span className="material-symbols-outlined">add_circle</span>
@@ -134,6 +144,6 @@ function NewAdvertPage() {
   );
 }
 //TODO: add photo upload
-//TODO: add category select
+//TODO: add category select, not charging after refresh page
 
 export default NewAdvertPage;
