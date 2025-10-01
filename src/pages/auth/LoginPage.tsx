@@ -47,7 +47,7 @@ function LoginPage() {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!isValidEmail(email)) {
-      setEmailError(t("errorValidGmail"));
+      setEmailError(t("errorValidEmail"));
       return;
     }
 

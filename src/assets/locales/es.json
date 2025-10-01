@@ -57,7 +57,7 @@
   "loginTo": "Accede a MicroJobs",
   "loginToSubtitle": "Inicia sesión con tu correo electrónico y contraseña.",
   "email": "Correo electrónico",
-  "emailPlaceholder": "tucorreo@gmail.com",
+  "emailPlaceholder": "tu@correo.com",
   "password": "Contraseña",
   "passwordPlaceholder": "Tu contraseña",
   "forgotPassword": "¿Olvidaste tu contraseña?",
@@ -65,9 +65,8 @@
   "remember": "Recordar sesión",
   "signUpParagraph": "¿No tienes cuenta aún?",
   "signUpLink": "Regístrate aquí",
-  "errorValidGmail": "Por favor, introduce una dirección de Gmail válida (ejemplo@gmail.com)",
+  "errorValidEmail": "Por favor, introduce una dirección de email válida",
   "errorPasswordTooShort": "La contraseña debe tener al menos 6 caracteres",
-  "errorPasswordTooLong": "La contraseña no debe exceder los 12 caracteres",
   "Email and password are required": "Correo y contraseña requeridos",
   "Invalid password or email": "Credenciales incorrectas",
   "Email not registered": "Correo no registrado",
@@ -75,6 +74,17 @@
   "Server error while logging in": "Error en el servidor al iniciar sesión",
   "Successfully logged out": "Cierre de sesión exitoso",
   "Server error while logging out": "Error en el servidor al cerrar sesión",
+
+  "signUpTo": "Bienvenido a MicroJobs",
+  "signUpSubtitle": "¡Regístrate ahora y disfruta de todo lo que tu comunidad puede ofrecer!",
+  "username": "Usuario",
+  "usernamePlaceholder": "Tu nombre de usuario",
+  "passwordHelp": "La contraseña debe tener al menos 6 caracteres",
+  "passwordRepeat": "Repite la contraseña",
+  "createAccount": "Crear Cuenta",
+  "createAccountFetching": "Creando Cuenta...",
+  "errorUsernameRequired": "Se requiere un nombre de usuario",
+  "errorPasswordNoMatch": "Las contraseñas no coinciden",
 
   "footer": "© {{year}} MicroJobs Project. Todos los derechos reservados."
 }
