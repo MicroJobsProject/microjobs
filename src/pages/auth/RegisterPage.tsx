@@ -63,14 +63,14 @@ export default function RegisterPage() {
 
   return (
     <>
-      <div className="absolute flex h-full w-full lg:grid lg:grid-cols-2">
+      <div className="flex h-full w-full lg:grid lg:grid-cols-2">
         {/* Contenedor del formulario */}
         <div className="wrapper flex flex-1 items-center justify-center">
           <div className="bg-container border-border w-full max-w-md rounded-xl border p-8 shadow-sm">
             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
               {/* Título de la página */}
               <div>
-                <h2>{t("signUpTo")}</h2>
+                <h2 className="text-center">{t("signUpTo")}</h2>
                 <p>{t("signUpSubtitle")}</p>
               </div>
               {/* Username */}

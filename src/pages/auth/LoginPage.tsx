@@ -67,10 +67,10 @@ function LoginPage() {
             <div className="bg-container border-border rounded-xl border p-8 shadow-sm">
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="text-center">
-                  <h2 className="text-heading font-heading mb-2 text-3xl font-extrabold">
-                    {t("loginTo")}
-                  </h2>
-                  <p className="text-paragraph">{t("loginToSubtitle")}</p>
+                  <h2>{t("loginTo")}</h2>
+                  <p className="text-paragraph text-left">
+                    {t("loginToSubtitle")}
+                  </p>
                 </div>
 
                 <div className="space-y-2">
