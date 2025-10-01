@@ -7,6 +7,7 @@ import { useAppSelector } from "./store";
 import { getCriticalError } from "./store/selectors";
 import RegisterPage from "./pages/auth/RegisterPage";
 import { CriticalErrorPage, NotFoundPage } from "./pages/error/ErrorPages";
+import RequireAuth from "./components/auth/RequireAuth";
 
 const LoginPage = lazy(() => import("./pages/auth/LoginPage"));
 //const RequireAuth = lazy(() => import("./components/auth/RequireAuth"));
@@ -70,9 +71,9 @@ function App() {
           <Route
             path="advert/new"
             element={
-              // <RequireAuth>
-              <NewAdvertPage />
-              // </RequireAuth>
+              <RequireAuth>
+                <NewAdvertPage />
+              </RequireAuth>
             }
           />
           <Route

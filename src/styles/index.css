@@ -135,13 +135,18 @@ h4 {
 /* INPUTS */
 
 .input {
-  @apply border-border placeholder:text-border h-10.5 w-full rounded-lg border px-3 py-2;
+  @apply border-border placeholder:text-border focus:border-primary focus:ring-primary text-heading h-10.5 w-full rounded-lg border px-3 py-2 outline-none focus:ring-1;
+}
+.input-error {
+  @apply border-destructive focus:border-destructive focus:ring-destructive;
+}
+.input-label {
+  @apply mb-2 font-medium;
 }
 
-.input-checkbox,
-.input-radio {
-  @apply border-border has-checked:bg-primary mb-2 flex items-center gap-2 rounded-md border px-2 py-1 has-checked:text-white;
-
+.input-checkbox-label,
+.input-radio-label {
+  @apply peer-checked:bg-primary border-border cursor-pointer rounded-md border px-2 py-1 text-center peer-checked:text-white;
   input {
     @apply checked:accent-primary;
   }
