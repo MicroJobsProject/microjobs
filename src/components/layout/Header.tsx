@@ -90,6 +90,12 @@ function Header() {
                   </li>
                 )}
                 <li>
+                  <Dropdown icon="language" className="btn btn-secondary">
+                    <span className="sr-only">{t("changeLanguage")}</span>
+                    <LanguageSelector />
+                  </Dropdown>
+                </li>
+                <li>
                   <button className="btn btn-secondary">
                     <span className="sr-only">{t("toggleTheme")}</span>
                     <span
@@ -99,12 +105,6 @@ function Header() {
                       nightlight
                     </span>
                   </button>
-                </li>
-                <li>
-                  <Dropdown icon="language" className="btn btn-secondary">
-                    <span className="sr-only">{t("changeLanguage")}</span>
-                    <LanguageSelector />
-                  </Dropdown>
                 </li>
                 {isLogged && (
                   <li>

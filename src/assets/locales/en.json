@@ -86,5 +86,14 @@
   "errorUsernameRequired": "Username is required",
   "errorPasswordNoMatch": "Passwords do not match",
 
+  "errorTitle": "Something went wrong",
+  "error500": "Internal server error. Please try again later.",
+  "error503": "Service temporarily unavailable. We are working on it.",
+  "errorDefault": "An unexpected error occurred on the server.",
+  "goBack": "Go Back",
+  "backToHomepage": "Back to Homepage",
+  "notFoundSubtitle": "This page took a day off!",
+  "notFoundParagraph": "Sorry, the page you were looking for doesn't exist or has been moved.",
+
   "footer": "© {{year}} MicroJobs Project. All rights reserved."
 }

@@ -86,5 +86,14 @@
   "errorUsernameRequired": "Se requiere un nombre de usuario",
   "errorPasswordNoMatch": "Las contraseñas no coinciden",
 
+  "errorTitle": "Algo ha ido mal",
+  "Internal server error. Please try again later.": "Error interno en el server. Por favor, inténtelo de nuevo más tarde.",
+  "Service temporarily unavailable. We are working on it.": "Fuera de servicio temporalmente. Estamos trabajando en ello.",
+  "An unexpected error occurred on the server.": "Surgió un error inesperado en el servidor.",
+  "goBack": "Volver",
+  "backToHomepage": "Ir a la página principal",
+  "notFoundSubtitle": "¡Esta página se tomó el día libre!",
+  "notFoundParagraph": "Lo sentimos, la página que estabas buscando no existe o su ruta ha sido modificada.",
+
   "footer": "© {{year}} MicroJobs Project. Todos los derechos reservados."
 }

@@ -49,7 +49,7 @@ export default function Dropdown({
 
       {open && (
         <div
-          className="border-border bg-container absolute -left-13.5 z-999 mt-2 w-auto rounded-md border p-3 shadow-md"
+          className="border-border bg-container absolute z-999 mt-2 w-auto rounded-md border p-3 shadow-md"
           onBlur={(child) => {
             const nextChild = child.relatedTarget as HTMLElement | null;
             if (ref.current && nextChild && !ref.current.contains(nextChild)) {
