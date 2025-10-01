@@ -140,6 +140,12 @@ h4 {
 .input-error {
   @apply border-destructive focus:border-destructive focus:ring-destructive;
 }
+.input-checkbox,
+.input-radio {
+  @apply border-border has-checked:bg-primary mb-2 flex items-center gap-2 rounded-md border px-2 py-1 has-checked:text-white;
+  @apply border-border has-checked:bg-primary mb-2 flex items-center gap-2 rounded-lg border px-2 py-1 has-checked:text-white;
+}
+
 .input-label {
   @apply mb-2 font-medium;
 }
