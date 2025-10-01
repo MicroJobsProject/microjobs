@@ -101,6 +101,21 @@ type AdvertsCategoriesRejected = {
   payload: Error;
 };
 
+//ADVERTS (detail)...................................
+type AdvertDetailPending = {
+  type: "adverts/detail/pending";
+};
+
+type AdvertDetailFulfilled = {
+  type: "adverts/detail/fulfilled";
+  payload: Advert;
+};
+
+type AdvertDetailRejected = {
+  type: "adverts/detail/rejected";
+  payload: Error;
+};
+
 //Action Creators (Synchronized Actions)============================================================================================
 // AUTH............................................
 export const authRegisterPending = (): AuthRegisterPending => ({
@@ -164,6 +179,7 @@ export const advertsLoadRejected = (error: Error): AdvertsLoadRejected => ({
   type: "adverts/load/rejected",
   payload: error,
 });
+
 //ADVERTS (create)...................................
 export const advertsCreatedFulfilled = (
   advert: Advert,
@@ -176,6 +192,13 @@ export const advertsCreatedRejected = (
   error: Error,
 ): AdvertsCreatedRejected => ({
   type: "adverts/created/rejected",
+  payload: error,
+});
+
+//ADVERTS (Details)...................................
+
+export const advertsDetailRejected = (error: Error): AdvertsLoadRejected => ({
+  type: "AdvertsDetailRejected",
   payload: error,
 });
 
@@ -197,6 +220,8 @@ export const advertsCategoriesRejected = (
   type: "adverts/categories/rejected",
   payload: error,
 });
+
+
 
 //Thunks (Asynchronous Actions)================================================================================================
 // AUTH............................................
@@ -323,6 +348,27 @@ export function advertsCreate(
     }
   };
 }
+
+//ADVERTS (Detail)...................................
+export function advertsDetail(
+  advertId:string,
+): AppThunk<Promise<void>> {
+  return async function (dispatch, _getState, { api }) {
+    try {
+      dispatch(advertsLoadPending());
+      const adverts = await api.adverts.getAdverts(params);
+      dispatch(advertsLoadFulfilled(adverts));
+    } catch (error) {
+      if (error instanceof Error) {
+        dispatch(advertsLoadRejected(error));
+      }
+      throw error;
+    }
+  };
+}
+
+// AdvertDetailPending
+
 // prettier-ignore
 export type Actions = 
 | AuthRegisterPending

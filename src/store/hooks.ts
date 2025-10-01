@@ -77,3 +77,10 @@ export function useClearCriticalError() {
     return dispatch(errorClearCritical());
   };
 }
+
+export function useLoadAdvert () {
+  const dispatch = useAppDispatch();
+  return function (advertId:string) {
+    return dispatch(advertsDetail(advertId));
+  };
+}
