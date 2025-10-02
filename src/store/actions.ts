@@ -333,7 +333,6 @@ export function authLogoutThunk(): AppThunk<Promise<void>> {
   return async function (dispatch, _getState, { api, storage }) {
     try {
       await api.auth.logout();
-
       dispatch(authLogout());
     } catch (error: unknown) {
       storage.clearAuth();
