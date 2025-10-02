@@ -69,9 +69,9 @@ function App() {
           <Route
             path="advert/new"
             element={
-              // <RequireAuth>
-              <NewAdvertPage />
-              // </RequireAuth>
+              <RequireAuth>
+                <NewAdvertPage />
+              </RequireAuth>
             }
           />
         </Route>

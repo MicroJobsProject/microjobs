@@ -12,11 +12,13 @@ import Alert from "../../components/ui/Alert";
 //ASSETS
 import EmailIcon from "../../assets/user-light.svg";
 import PasswordIcon from "../../assets/lock-light.svg";
+import { useTranslation } from "react-i18next";
 
 function LoginPage() {
   const loginAction = useLoginAction();
   const uiResetErrorAction = useUiResetError();
   const { pending: isFetching, error } = useAppSelector(getUi);
+  const { t } = useTranslation();
 
   const [credentials, setCredentials] = useState({
     email: "",
@@ -45,12 +47,12 @@ function LoginPage() {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!isValidEmail(email)) {
-      setEmailError("Please enter a valid email address");
+      setEmailError(t("errorValidEmail"));
       return;
     }
 
     if (password.length < 6) {
-      setPasswordError("Password must be at least 6 characters");
+      setPasswordError(t("errorPasswordTooShort"));
       return;
     }
 
@@ -60,16 +62,14 @@ function LoginPage() {
   return (
     <>
       <div className="wrapper">
-        <div className="flex min-h-screen items-center justify-center">
+        <div className="flex items-center justify-center">
           <div className="w-full max-w-md">
             <div className="bg-container border-border rounded-xl border p-8 shadow-sm">
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="text-center">
-                  <h2 className="text-heading font-heading mb-2 text-3xl font-extrabold">
-                    Log in to MicroJobs
-                  </h2>
-                  <p className="text-paragraph">
-                    Sign in by entering your username and password.
+                  <h2>{t("loginTo")}</h2>
+                  <p className="text-paragraph text-left">
+                    {t("loginToSubtitle")}
                   </p>
                 </div>
 
@@ -78,7 +78,7 @@ function LoginPage() {
                     htmlFor="email"
                     className="text-heading block text-sm font-medium"
                   >
-                    Email
+                    {t("email")}
                   </label>
                   <div className="relative">
                     <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
@@ -86,13 +86,14 @@ function LoginPage() {
                         src={EmailIcon}
                         alt=""
                         className="text-paragraph h-5 w-5 opacity-60"
+                        aria-hidden="true"
                       />
                     </div>
                     <input
                       id="email"
                       type="email"
                       name="email"
-                      placeholder="yourname@gmail.com"
+                      placeholder={t("emailPlaceholder")}
                       value={email}
                       onChange={handleChange}
                       className={`bg-container text-paragraph placeholder:text-paragraph/60 block w-full rounded-lg border py-2 pr-3 pl-10 text-sm focus:ring-1 focus:outline-none ${
@@ -112,7 +113,7 @@ function LoginPage() {
                     htmlFor="password"
                     className="text-heading block text-sm font-medium"
                   >
-                    Password
+                    {t("password")}
                   </label>
                   <div className="relative">
                     <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
@@ -120,13 +121,14 @@ function LoginPage() {
                         src={PasswordIcon}
                         alt=""
                         className="text-paragraph h-5 w-5 opacity-60"
+                        aria-hidden="true"
                       />
                     </div>
                     <input
                       id="password"
                       type="password"
                       name="password"
-                      placeholder="Your password"
+                      placeholder={t("passwordPlaceholder")}
                       value={password}
                       onChange={handleChange}
                       className={`bg-container text-paragraph placeholder:text-paragraph/60 block w-full rounded-lg border py-2 pr-3 pl-10 text-sm focus:ring-1 focus:outline-none ${
@@ -147,7 +149,7 @@ function LoginPage() {
                     onClick={(e) => e.preventDefault()}
                     className="text-paragraph hover:text-heading text-sm font-medium transition-colors"
                   >
-                    Forgot password?
+                    {t("forgotPassword")}
                   </a>
                 </div>
 
@@ -159,10 +161,10 @@ function LoginPage() {
                   {isFetching ? (
                     <div className="flex items-center gap-2">
                       <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
-                      Logging in...
+                      {t("loginFetching")}
                     </div>
                   ) : (
-                    "Log In"
+                    t("login")
                   )}
                 </button>
 
@@ -171,7 +173,7 @@ function LoginPage() {
                     htmlFor="rememberMe"
                     className="text-paragraph text-sm font-medium"
                   >
-                    Remember me
+                    {t("remember")}
                   </label>
                   <div className="relative">
                     <input
@@ -207,12 +209,12 @@ function LoginPage() {
 
                 <div className="text-center">
                   <p className="text-paragraph text-sm">
-                    Don't have an account?{" "}
+                    {t("signUpParagraph")}{" "}
                     <a
                       href="/register"
                       className="text-primary hover:text-primary-hover font-medium transition-colors"
                     >
-                      Sign up here
+                      {t("signUpLink")}
                     </a>
                   </p>
                 </div>
@@ -224,11 +226,11 @@ function LoginPage() {
 
       {error && (
         <Alert
-          text={
+          text={t(
             axios.isAxiosError(error)
               ? error.response?.data?.error || error.message
-              : error.message
-          }
+              : error.message,
+          )}
           variant="error"
           onClick={() => uiResetErrorAction()}
         />

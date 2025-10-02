@@ -39,13 +39,17 @@ export default function Dropdown({
         aria-haspopup="true"
         aria-expanded={open}
       >
-        {icon}
+        {typeof icon === "string" && (
+          <span className="material-symbols-outlined" aria-hidden="true">
+            {icon}
+          </span>
+        )}
         {label && <span>{label}</span>}
       </button>
 
       {open && (
         <div
-          className="border-border bg-container absolute z-10 mt-2 w-auto rounded-md border p-3 shadow-md"
+          className="border-border bg-container absolute z-999 mt-2 w-auto rounded-md border p-3 shadow-md"
           onBlur={(child) => {
             const nextChild = child.relatedTarget as HTMLElement | null;
             if (ref.current && nextChild && !ref.current.contains(nextChild)) {

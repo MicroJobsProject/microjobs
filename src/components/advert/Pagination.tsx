@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import { useTranslation } from "react-i18next";
 
 interface PaginationProps {
   current: number;
@@ -7,23 +8,24 @@ interface PaginationProps {
 }
 
 function Pagination({ current, total, onPageChange }: PaginationProps) {
+  const { t } = useTranslation();
+  const pages = Array.from({ length: total }, (_, i) => i + 1);
+
   if (total <= 1) {
     return null;
   }
 
-  const pages = Array.from({ length: total }, (_, i) => i + 1);
-
   return (
     <div
       className="mb-6 flex justify-center gap-2"
-      aria-label="Page navigation"
+      aria-label={t("ariaPagination")}
       role="navigation"
     >
       <button
         onClick={() => current > 1 && onPageChange(current - 1)}
         disabled={current === 1}
         className="btn btn-secondary"
-        aria-label="Go to the previous page"
+        aria-label={t("ariaPaginationPrev")}
       >
         <span aria-hidden="true">{"<"}</span>
       </button>
@@ -32,7 +34,7 @@ function Pagination({ current, total, onPageChange }: PaginationProps) {
           key={page}
           onClick={() => onPageChange(page)}
           disabled={page === current}
-          aria-label={`Go to page ${page}`}
+          aria-label={t("ariaPage", { page: page })}
           aria-current={page === current ? "page" : undefined}
           className={clsx(
             "btn",
@@ -46,7 +48,7 @@ function Pagination({ current, total, onPageChange }: PaginationProps) {
         onClick={() => current < total && onPageChange(current + 1)}
         disabled={current === total}
         className="btn btn-secondary"
-        aria-label="Go to the next page"
+        aria-label={t("ariaPaginationNext")}
       >
         <span aria-hidden="true">{">"}</span>
       </button>

@@ -6,6 +6,8 @@ import { useRegisterAction } from "../../store/hooks";
 import { useAppSelector } from "../../store";
 import { getUi } from "../../store/selectors";
 import { isValidEmail } from "../../utils/validation";
+import { useTranslation } from "react-i18next";
+import clsx from "clsx";
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -18,6 +20,7 @@ export default function RegisterPage() {
 
   const register = useRegisterAction();
   const ui = useAppSelector(getUi);
+  const { t } = useTranslation();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -26,18 +29,17 @@ export default function RegisterPage() {
   const validate = () => {
     const newErrors: { [key: string]: string } = {};
 
-    if (!formData.username) newErrors.username = "Username is required";
+    if (!formData.username) newErrors.username = t("errorUsernameRequired");
 
     if (!isValidEmail(formData.email)) {
-      newErrors.email =
-        "Please enter a valid Gmail address (example@gmail.com)";
+      newErrors.email = t("errorValidEmail");
     }
 
     if (formData.password.length < 6)
-      newErrors.password = "The password must be at least 6 characters long";
+      newErrors.password = t("errorPasswordTooShort");
 
     if (formData.password !== formData.confirmPassword)
-      newErrors.confirmPassword = "Passwords do not match";
+      newErrors.confirmPassword = t("errorPasswordNoMatch");
 
     setErrors(newErrors);
 
@@ -60,97 +62,119 @@ export default function RegisterPage() {
   };
 
   return (
-    <main className="bg-background flex min-h-screen flex-col items-center justify-center px-4 py-8">
-      {/* Título de la página */}
-      <h1 className="font-heading text-heading mb-8 text-center text-4xl font-extrabold">
-        Create Account
-      </h1>
+    <>
+      <div className="flex h-full w-full lg:grid lg:grid-cols-2">
+        {/* Contenedor del formulario */}
+        <div className="wrapper flex flex-1 items-center justify-center">
+          <div className="bg-container border-border w-full max-w-md rounded-xl border p-8 shadow-sm">
+            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+              {/* Título de la página */}
+              <div>
+                <h2 className="text-center">{t("signUpTo")}</h2>
+                <p>{t("signUpSubtitle")}</p>
+              </div>
+              {/* Username */}
+              <div className="flex flex-col">
+                <label htmlFor="confirmPassword" className="label">
+                  {t("username")}
+                </label>
+                <input
+                  type="text"
+                  name="username"
+                  placeholder={t("usernamePlaceholder")}
+                  value={formData.username}
+                  onChange={handleChange}
+                  className={clsx("input", errors.username && "input-error")}
+                />
+                {errors.username && (
+                  <p className="text-destructive text-sm">{errors.username}</p>
+                )}
+              </div>
 
-      {/* Card del formulario */}
-      <div className="bg-container w-full max-w-md rounded-2xl p-8 shadow-lg">
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          {/* Username */}
-          <div className="flex flex-col gap-1">
-            <input
-              type="text"
-              name="username"
-              placeholder="Username"
-              value={formData.username}
-              onChange={handleChange}
-              className="border-border bg-background text-paragraph focus:border-primary focus:ring-primary w-full rounded-lg border px-4 py-2 outline-none focus:ring-1"
-            />
-            {errors.username && (
-              <p className="text-destructive text-sm">{errors.username}</p>
-            )}
+              {/* Email */}
+              <div className="flex flex-col gap-1">
+                <label htmlFor="email" className="label">
+                  {t("email")}
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  id="email"
+                  placeholder={t("emailPlaceholder")}
+                  value={formData.email}
+                  onChange={handleChange}
+                  className={clsx("input", errors.email && "input-error")}
+                />
+                {errors.email && (
+                  <p className="text-destructive text-sm">{errors.email}</p>
+                )}
+              </div>
+
+              {/* Password */}
+              <div className="flex flex-col">
+                <label htmlFor="password" className="label">
+                  {t("password")}
+                </label>
+                <input
+                  type="password"
+                  name="password"
+                  id="password"
+                  placeholder={t("passwordPlaceholder")}
+                  value={formData.password}
+                  onChange={handleChange}
+                  className={clsx("input", errors.password && "input-error")}
+                />
+                {errors.password && (
+                  <p className="text-destructive text-sm">{errors.password}</p>
+                )}
+                <p className="text-sm">{t("passwordHelp")}</p>
+              </div>
+
+              {/* Confirm Password */}
+              <div className="flex flex-col gap-1">
+                <label htmlFor="confirmPassword" className="label">
+                  {t("passwordRepeat")}
+                </label>
+                <input
+                  type="password"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  placeholder={t("passwordPlaceholder")}
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  className={clsx(
+                    "input",
+                    errors.confirmPassword && "input-error",
+                  )}
+                />
+                {errors.confirmPassword && (
+                  <p className="text-destructive text-sm">
+                    {errors.confirmPassword}
+                  </p>
+                )}
+              </div>
+
+              {/* Botón */}
+              <button
+                type="submit"
+                disabled={ui.pending}
+                className="btn btn-primary w-full rounded-lg py-3 text-base font-semibold"
+              >
+                {ui.pending ? t("createAccountFetching") : t("createAccount")}
+              </button>
+
+              {/* Error general */}
+              {ui.error && (
+                <p className="text-destructive mt-2 text-center text-sm">
+                  {ui.error.message}
+                </p>
+              )}
+            </form>
           </div>
-
-          {/* Email */}
-          <div className="flex flex-col gap-1">
-            <input
-              type="email"
-              name="email"
-              placeholder="Email"
-              value={formData.email}
-              onChange={handleChange}
-              className="border-border bg-background text-paragraph focus:border-primary focus:ring-primary w-full rounded-lg border px-4 py-2 outline-none focus:ring-1"
-            />
-            {errors.email && (
-              <p className="text-destructive text-sm">{errors.email}</p>
-            )}
-          </div>
-
-          {/* Password */}
-          <div className="flex flex-col gap-1">
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              value={formData.password}
-              onChange={handleChange}
-              className="border-border bg-background text-paragraph focus:border-primary focus:ring-primary w-full rounded-lg border px-4 py-2 outline-none focus:ring-1"
-            />
-            {errors.password && (
-              <p className="text-destructive text-sm">{errors.password}</p>
-            )}
-            <p className="text-paragraph text-xs">
-              Password must be at least 6 characters.
-            </p>
-          </div>
-
-          {/* Confirm Password */}
-          <div className="flex flex-col gap-1">
-            <input
-              type="password"
-              name="confirmPassword"
-              placeholder="Confirm Password"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              className="border-border bg-background text-paragraph focus:border-primary focus:ring-primary w-full rounded-lg border px-4 py-2 outline-none focus:ring-1"
-            />
-            {errors.confirmPassword && (
-              <p className="text-destructive text-sm">
-                {errors.confirmPassword}
-              </p>
-            )}
-          </div>
-
-          {/* Botón */}
-          <button
-            type="submit"
-            disabled={ui.pending}
-            className="btn btn-primary w-full rounded-lg py-3 text-base font-semibold"
-          >
-            {ui.pending ? "Creating account..." : "Create Account"}
-          </button>
-
-          {/* Error general */}
-          {ui.error && (
-            <p className="text-destructive mt-2 text-center text-sm">
-              {ui.error.message}
-            </p>
-          )}
-        </form>
+        </div>
+        {/* Contenedor de la imagen */}
+        <div className="absolute top-0 right-0 -z-10 hidden h-[calc(100vh-64px)] w-1/2 bg-[url('./src/assets/register-image.jpg')] bg-cover bg-center bg-no-repeat lg:block"></div>
       </div>
-    </main>
+    </>
   );
 }

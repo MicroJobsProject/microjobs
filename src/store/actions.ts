@@ -224,6 +224,20 @@ export const advertsLoadRejected = (error: Error): AdvertsLoadRejected => ({
   type: "adverts/load/rejected",
   payload: error,
 });
+//ADVERTS (create)...................................
+export const advertsCreatedFulfilled = (
+  advert: Advert,
+): AdvertsCreatedFulfilled => ({
+  type: "adverts/created/fulfilled",
+  payload: advert,
+});
+
+export const advertsCreatedRejected = (
+  error: Error,
+): AdvertsCreatedRejected => ({
+  type: "adverts/created/rejected",
+  payload: error,
+});
 
 //ADVERTS (Categories)...................................
 export const advertsCategoriesPending = (): AdvertsCategoriesPending => ({
@@ -424,6 +438,8 @@ export type Actions =
 | AdvertsLoadPending
 | AdvertsLoadFulfilled
 | AdvertsLoadRejected
+| AdvertsCreatedFulfilled
+| AdvertsCreatedRejected
 | AdvertsCategoriesPending
 | AdvertsCategoriesFulfilled
 | AdvertsCategoriesRejected
@@ -437,6 +453,7 @@ export type ActionsRejected =
 | UserLoadRejected
 | UserUpdateRejected
 | AdvertsLoadRejected
+| AdvertsCreatedRejected
 | AdvertsCategoriesRejected
 | AdvertsCreatedRejected;
 

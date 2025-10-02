@@ -12,8 +12,10 @@ import Pagination from "../components/advert/Pagination";
 import Alert from "../components/ui/Alert";
 import AdvertFilter from "../components/advert/AdvertFilter";
 import type { Filter } from "./advert/types";
+import { useTranslation } from "react-i18next";
 
 export default function Home() {
+  const { t } = useTranslation();
   const advertsLoadAction = useAdvertsLoadAction();
   const uiResetErrorAction = useUiResetError();
   const adverts = useAppSelector(getAdverts);
@@ -57,11 +59,11 @@ export default function Home() {
 
   return (
     <>
-      <Page title="What's new in town">
+      <Page title={t("homeTitle")}>
         <div className="mx-auto max-w-7xl px-6 py-8">
           <section aria-labelledby="filters-heading">
             <h2 id="filters-heading" className="sr-only">
-              Filter Adverts
+              {t("filterAdverts")}
             </h2>
             <AdvertFilter
               onSubmit={handleFilterSubmit}
@@ -70,47 +72,51 @@ export default function Home() {
           </section>
           <section aria-labelledby="results-heading" className="min-h-162">
             <h2 id="results-heading" className="sr-only">
-              Advert Results
+              {t("advertResults")}
             </h2>
             {pending ? (
               <p>Loading...</p>
             ) : adverts.length ? (
               <ul className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {adverts.length ? (
-                  adverts.map((advert) => (
-                    <li key={advert._id}>
-                      <Link to={`/adverts/${advert._id}`}>
-                        <AdvertCard advert={advert} />
-                      </Link>
-                    </li>
-                  ))
-                ) : (
-                  <p>Adverts not found</p>
-                )}
+                {adverts.map((advert) => (
+                  <li key={advert._id}>
+                    <Link to={`/adverts/${advert._id}`}>
+                      <AdvertCard advert={advert} />
+                    </Link>
+                  </li>
+                ))}
               </ul>
             ) : (
               <div className="flex flex-col items-center justify-center gap-4">
-                <span className="material-symbols-outlined text-heading !text-7xl">
+                <span
+                  className="material-symbols-outlined text-heading !text-7xl"
+                  aria-hidden="true"
+                >
                   search_off
                 </span>
                 <h3 className="font-bold" role="heading">
-                  Is anybody home?
+                  {t("noAdvertsTitle")}
                 </h3>
                 <div className="text-center">
-                  <p>Looks like we couldn't find what you wanted.</p>
-                  <p>Why don't try another search or advertise yourself?</p>
+                  <p>{t("noAdvertsSubtitle")}</p>
+                  <p>{t("noAdvertsParagraph")}</p>
                 </div>
                 <div className="flex gap-4">
                   <NavLink to="/advert/new" className="btn btn-primary">
-                    <span className="material-symbols-outlined">add</span>
-                    <span>New Advert</span>
+                    <span
+                      className="material-symbols-outlined"
+                      aria-hidden="true"
+                    >
+                      add
+                    </span>
+                    <span>{t("newAdvert")}</span>
                   </NavLink>
                   <button
                     onClick={handleFilterReset}
                     className="btn btn-outlined"
                     aria-label="Reset all filters and search again"
                   >
-                    Reset Search
+                    {t("resetFilters")}
                   </button>
                 </div>
               </div>
