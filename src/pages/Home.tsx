@@ -76,7 +76,7 @@ export default function Home() {
             </h2>
             {pending ? (
               <p>Loading...</p>
-            ) : adverts.length ? (
+            ) : adverts?.length ? (
               <ul className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {adverts.map((advert) => (
                   <li key={advert._id}>

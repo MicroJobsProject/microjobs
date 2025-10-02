@@ -6,6 +6,7 @@ export const getIsLogged = (state: RootState) => state.auth;
 
 export const getUser = (state: RootState) => state.user.data;
 export const getUserLoaded = (state: RootState) => state.user.loaded;
+export const getUserStats = (state: RootState) => state.userStats;
 
 export const getUi = (state: RootState) => state.ui;
 

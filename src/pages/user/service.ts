@@ -7,6 +7,7 @@ import type {
   UpdateProfileData,
   ProfileResponse,
   ChangePasswordData,
+  UserStats,
 } from "./types";
 
 export async function getProfile(): Promise<User> {
@@ -31,6 +32,11 @@ export async function changePassword(
     currentPassword: passwordData.currentPassword,
     newPassword: passwordData.newPassword,
   });
+}
+
+export async function getUserStats(): Promise<UserStats> {
+  const { data } = await client.get("/api/user/stats");
+  return data;
 }
 
 export async function deleteAccount(password: string): Promise<void> {

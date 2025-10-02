@@ -108,14 +108,15 @@ function Header() {
                 </li>
                 {isLogged && (
                   <li>
-                    <button className="btn btn-secondary">
+                    <NavLink to="/profile" className="btn btn-secondary">
+                      <span className="sr-only">{t("profile")}</span>
                       <span
                         className="material-symbols-outlined"
                         aria-hidden="true"
                       >
                         account_circle
                       </span>
-                    </button>
+                    </NavLink>
                   </li>
                 )}
                 <li className="hidden sm:block">

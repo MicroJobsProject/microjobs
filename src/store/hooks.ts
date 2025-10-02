@@ -11,6 +11,7 @@ import {
   authLogoutThunk,
   userLoad,
   userUpdate,
+  userStatsLoad,
   uiResetError,
   errorClearCritical,
   advertsLoad,
@@ -21,6 +22,7 @@ import {
   getIsLogged,
   getUser,
   getUserLoaded,
+  getUserStats,
 } from "./selectors";
 
 export function useAuth() {
@@ -73,6 +75,17 @@ export function useUserUpdateAction() {
   const dispatch = useAppDispatch();
   return function (profileData: UpdateProfileData) {
     return dispatch(userUpdate(profileData));
+  };
+}
+
+export function useUserStats() {
+  return useAppSelector(getUserStats);
+}
+
+export function useUserStatsLoadAction() {
+  const dispatch = useAppDispatch();
+  return function () {
+    return dispatch(userStatsLoad());
   };
 }
 

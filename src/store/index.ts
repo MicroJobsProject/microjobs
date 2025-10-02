@@ -14,19 +14,14 @@ import * as profile from "../pages/user/service";
 import * as adverts from "../pages/advert/service";
 import storage from "../utils/storage";
 
-// Combination of reducers-------------------------------------------------------------------------------------------------------
 const rootReducer = combineReducers(reducers);
 
-type Router = ReturnType<typeof createBrowserRouter>;
+// @ts-expect-error: any
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const sessionLogger = (store) => (next) => (action) => {
+  const result = next(action);
 
-export type ExtraArgument = {
-  api: {
-    auth: typeof auth;
-    adverts: typeof adverts;
-    profile: typeof profile;
-  };
-  router: Router;
-  storage: typeof storage;
+  return result;
 };
 
 // @ts-expect-error: any
@@ -50,12 +45,17 @@ const errorMiddleware = (store) => (next) => (action) => {
   return result;
 };
 
-// @ts-expect-error: any
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const sessionLogger = (store) => (next) => (action) => {
-  const result = next(action);
+type Router = ReturnType<typeof createBrowserRouter>;
 
-  return result;
+// Extra argument for thunks------------------------------------------------------------------------------------------------------
+export type ExtraArgument = {
+  api: {
+    auth: typeof auth;
+    adverts: typeof adverts;
+    profile: typeof profile;
+  };
+  router: Router;
+  storage: typeof storage;
 };
 
 // Store configuration---------------------------------------------------------------------------------------------------------

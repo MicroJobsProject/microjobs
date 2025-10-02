@@ -5,7 +5,7 @@ import axios from "axios";
 
 //NATIVE
 import type { Credentials } from "../pages/auth/types";
-import type { User, UpdateProfileData } from "../pages/user/types";
+import type { User, UpdateProfileData, UserStats } from "../pages/user/types";
 
 import type {
   Advert,
@@ -72,6 +72,20 @@ type UserUpdateFulfilled = {
 
 type UserUpdateRejected = {
   type: "user/update/rejected";
+  payload: Error;
+};
+
+type UserStatsLoadPending = {
+  type: "user/stats/pending";
+};
+
+type UserStatsLoadFulfilled = {
+  type: "user/stats/fulfilled";
+  payload: UserStats;
+};
+
+type UserStatsLoadRejected = {
+  type: "user/stats/rejected";
   payload: Error;
 };
 
@@ -193,6 +207,21 @@ export const userUpdateRejected = (error: Error): UserUpdateRejected => ({
   payload: error,
 });
 
+export const userStatsLoadPending = (): UserStatsLoadPending => ({
+  type: "user/stats/pending",
+});
+
+export const userStatsLoadFulfilled = (
+  stats: UserStats,
+): UserStatsLoadFulfilled => ({
+  type: "user/stats/fulfilled",
+  payload: stats,
+});
+
+export const userStatsLoadRejected = (error: Error): UserStatsLoadRejected => ({
+  type: "user/stats/rejected",
+  payload: error,
+});
 // UI..............................................
 export const uiResetError = (): UiResetError => ({
   type: "ui/reset-error",
@@ -347,6 +376,21 @@ export function userUpdate(
   };
 }
 
+export function userStatsLoad(): AppThunk<Promise<void>> {
+  return async function (dispatch, _getState, { api }) {
+    try {
+      dispatch(userStatsLoadPending());
+      const stats = await api.profile.getUserStats();
+      dispatch(userStatsLoadFulfilled(stats));
+    } catch (error) {
+      if (error instanceof Error) {
+        dispatch(userStatsLoadRejected(error));
+      }
+      throw error;
+    }
+  };
+}
+
 //ADVERTS (Load)...................................
 export function advertsLoad(
   params?: Record<string, string>,
@@ -432,6 +476,9 @@ export type Actions =
 | UserUpdatePending
 | UserUpdateFulfilled
 | UserUpdateRejected
+| UserStatsLoadPending
+| UserStatsLoadFulfilled
+| UserStatsLoadRejected
 | UiResetError
 | ErrorSetCritical
 | ErrorClearCritical
@@ -452,6 +499,7 @@ export type ActionsRejected =
 | AuthLoginRejected
 | UserLoadRejected
 | UserUpdateRejected
+| UserStatsLoadRejected
 | AdvertsLoadRejected
 | AdvertsCreatedRejected
 | AdvertsCategoriesRejected

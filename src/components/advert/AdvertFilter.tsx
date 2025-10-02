@@ -127,30 +127,35 @@ function AdvertFilter({ onSubmit, onReset }: FilterProps) {
               <legend id="categories-label" className="sr-only">
                 {t("filterCategory")}
               </legend>
-              {categories.map((category) => (
-                <div className="input-checkbox" key={category.name}>
-                  <input
-                    type="checkbox"
-                    id={category.name.toLowerCase()}
-                    name="category"
-                    value={category.name.toLowerCase()}
-                    checked={
-                      filters.category?.includes(category.name.toLowerCase()) ??
-                      false
-                    }
-                    onChange={handleCategoryChange}
-                  />
-                  <span
-                    className="material-symbols-outlined -mb-0.5 !text-base"
-                    aria-hidden="true"
-                  >
-                    {category.icon}
-                  </span>
-                  <label htmlFor={category.name.toLowerCase()} className="w-40">
-                    {t(`${category.name}`)}
-                  </label>
-                </div>
-              ))}
+              {Array.isArray(categories) &&
+                categories.map((category) => (
+                  <div className="input-checkbox" key={category.name}>
+                    <input
+                      type="checkbox"
+                      id={category.name.toLowerCase()}
+                      name="category"
+                      value={category.name.toLowerCase()}
+                      checked={
+                        filters.category?.includes(
+                          category.name.toLowerCase(),
+                        ) ?? false
+                      }
+                      onChange={handleCategoryChange}
+                    />
+                    <span
+                      className="material-symbols-outlined -mb-0.5 !text-base"
+                      aria-hidden="true"
+                    >
+                      {category.icon}
+                    </span>
+                    <label
+                      htmlFor={category.name.toLowerCase()}
+                      className="w-40"
+                    >
+                      {t(`${category.name}`)}
+                    </label>
+                  </div>
+                ))}
             </fieldset>
           </Dropdown>
         </div>

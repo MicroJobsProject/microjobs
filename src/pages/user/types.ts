@@ -7,6 +7,10 @@ export interface User {
   updatedAt?: string;
 }
 
+export interface UserStats {
+  advertCount: number;
+}
+
 export interface UpdateProfileData {
   username?: string;
   email?: string;
