@@ -6,7 +6,7 @@ import type { User } from "../pages/user/types";
 import type { AdvertCategory, AdvertResponse } from "../pages/advert/types";
 import { type Actions, type ActionsRejected } from "./actions";
 
-//ERROR STATE TYPE=====================================================================================
+// TYPES===================================================================================================
 export interface ErrorState {
   criticalError: AxiosError | null;
 }
@@ -30,6 +30,7 @@ export type State = {
   error: ErrorState;
 };
 
+// DEFAULT STATE=========================================================================================
 const defaultState: State = {
   auth: false,
   ui: {
@@ -52,7 +53,8 @@ const defaultState: State = {
   error: { criticalError: null },
 };
 
-//REDUCERS===================================================================================================
+// REDUCERS===================================================================================================
+// AUTH............................................................
 export function auth(
   state = defaultState.auth,
   action: Actions,
@@ -68,6 +70,7 @@ export function auth(
   }
 }
 
+// USER............................................................
 export function user(
   state = defaultState.user,
   action: Actions,
@@ -83,6 +86,7 @@ export function user(
   }
 }
 
+// USER STATS........................................................
 export function userStats(
   state = defaultState.userStats,
   action: Actions,
@@ -97,6 +101,7 @@ export function userStats(
   }
 }
 
+// ADVERTS..........................................................
 export function adverts(
   state = defaultState.adverts,
   action: Actions,
@@ -107,6 +112,7 @@ export function adverts(
   return state;
 }
 
+// CATEGORIES......................................................
 export function categories(
   state = defaultState.categories,
   action: Actions,
@@ -117,15 +123,13 @@ export function categories(
   return state;
 }
 
-//ERROR HANDLING============================================================================================
-const defaultErrorState: ErrorState = {
-  criticalError: null,
-};
-
+// UI & ERROR HANDLING======================================================================================
+// Helper to check if action is a rejected action
 function isRejectedAction(action: Actions): action is ActionsRejected {
   return action.type.endsWith("/rejected");
 }
 
+// UI............................................................
 export function ui(state = defaultState.ui, action: Actions): State["ui"] {
   if (
     action.type === "auth/login/pending" ||
@@ -159,7 +163,8 @@ export function ui(state = defaultState.ui, action: Actions): State["ui"] {
   return state;
 }
 
-export function error(state = defaultErrorState, action: Actions): ErrorState {
+// ERROR.........................................................
+export function error(state = defaultState.error, action: Actions): ErrorState {
   switch (action.type) {
     case "error/setCritical":
       return {

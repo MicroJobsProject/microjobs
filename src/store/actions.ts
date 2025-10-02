@@ -14,7 +14,7 @@ import type {
   AdvertResponse,
 } from "../pages/advert/types";
 
-//Action Types================================================================================================================
+// ACTION TYPES===============================================================================================================
 // AUTH............................................
 type AuthRegisterPending = {
   type: "auth/register/pending";
@@ -146,7 +146,7 @@ type AdvertsCategoriesRejected = {
   payload: Error;
 };
 
-//Action Creators (Synchronized Actions)============================================================================================
+//ACTION CREATORS (Synchronized Actions)============================================================================================
 // AUTH............................................
 export const authRegisterPending = (): AuthRegisterPending => ({
   type: "auth/register/pending",
@@ -287,7 +287,7 @@ export const advertsCategoriesRejected = (
   payload: error,
 });
 
-//Thunks (Asynchronous Actions)================================================================================================
+//THUNKS (Asynchronous Actions)================================================================================================
 // AUTH............................................
 export function authRegister(credentials: {
   username: string;
@@ -450,7 +450,7 @@ export function advertsCreate(
   };
 }
 
-// INITIALIZE AUTH STATE FROM STORAGE (LOCAL OR SESSION)
+// INITIALIZE AUTH STATE FROM STORAGE (Local or Session)
 export function authInitializeFromStorage(): AppThunk<void> {
   return function (dispatch, _getState, { storage }) {
     const hasAuth = storage.hasAuth();

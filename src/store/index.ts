@@ -14,16 +14,10 @@ import * as profile from "../pages/user/service";
 import * as adverts from "../pages/advert/service";
 import storage from "../utils/storage";
 
+// ROOT REDUCER.................................
 const rootReducer = combineReducers(reducers);
 
-// @ts-expect-error: any
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const sessionLogger = (store) => (next) => (action) => {
-  const result = next(action);
-
-  return result;
-};
-
+// MIDDLEWARES...................................
 // @ts-expect-error: any
 const errorMiddleware = (store) => (next) => (action) => {
   const result = next(action);
@@ -45,9 +39,17 @@ const errorMiddleware = (store) => (next) => (action) => {
   return result;
 };
 
+// @ts-expect-error: any
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const sessionLogger = (store) => (next) => (action) => {
+  const result = next(action);
+
+  return result;
+};
+
+// TYPES.........................................
 type Router = ReturnType<typeof createBrowserRouter>;
 
-// Extra argument for thunks------------------------------------------------------------------------------------------------------
 export type ExtraArgument = {
   api: {
     auth: typeof auth;
@@ -57,8 +59,18 @@ export type ExtraArgument = {
   router: Router;
   storage: typeof storage;
 };
+export type AppStore = ReturnType<typeof configureStore>;
+export type AppGetState = AppStore["getState"];
+export type RootState = ReturnType<typeof rootReducer>;
+export type AppDispatch = ThunkDispatch<RootState, ExtraArgument, Actions>;
+export type AppThunk<ReturnType = void> = thunk.ThunkAction<
+  ReturnType,
+  RootState,
+  ExtraArgument,
+  Actions
+>;
 
-// Store configuration---------------------------------------------------------------------------------------------------------
+// STORE CONFIGURATION.................................
 export default function configureStore(
   preloadedState: Partial<reducers.State>,
   router: Router,
@@ -95,21 +107,6 @@ export default function configureStore(
   return store;
 }
 
-// Types for TypeScript--------------------------------------------------------------------------------------------------------
-export type AppStore = ReturnType<typeof configureStore>;
-export type AppGetState = AppStore["getState"];
-export type RootState = ReturnType<typeof rootReducer>;
-
-export type AppDispatch = ThunkDispatch<RootState, ExtraArgument, Actions>;
-
-// Custom and typed hooks------------------------------------------------------------------------------------------------------
+// TYPED HOOKS....................................
 export const useAppDispatch = useDispatch.withTypes<AppDispatch>();
 export const useAppSelector = useSelector.withTypes<RootState>();
-
-// AppThunk type for asynchronous actions---------------------------------------------------------------------------------------
-export type AppThunk<ReturnType = void> = thunk.ThunkAction<
-  ReturnType,
-  RootState,
-  ExtraArgument,
-  Actions
->;

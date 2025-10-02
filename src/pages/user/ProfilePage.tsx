@@ -39,7 +39,6 @@ function ProfilePage() {
   const [showDeleteAccount, setShowDeleteAccount] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
 
-  // Estados para mostrar/ocultar contraseñas
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -102,7 +101,6 @@ function ProfilePage() {
       newErrors.newPassword = "Password must be at least 6 characters";
     }
 
-    // Validar que la nueva contraseña sea diferente a la actual
     if (passwordData.currentPassword === passwordData.newPassword) {
       newErrors.newPassword =
         "New password must be different from current password";
