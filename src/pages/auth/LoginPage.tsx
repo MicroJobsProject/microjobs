@@ -8,10 +8,6 @@ import { useAppSelector } from "../../store";
 import { getUi } from "../../store/selectors";
 import { isValidEmail } from "../../utils/validation";
 import Alert from "../../components/ui/Alert";
-
-//ASSETS
-import EmailIcon from "../../assets/user-light.svg";
-import PasswordIcon from "../../assets/lock-light.svg";
 import { useTranslation } from "react-i18next";
 
 function LoginPage() {
@@ -28,6 +24,7 @@ function LoginPage() {
 
   const [emailError, setEmailError] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const { email, password, rememberMe } = credentials;
   const isDisabled = !email || !password || isFetching;
@@ -41,6 +38,9 @@ function LoginPage() {
 
     if (name === "email" && emailError) {
       setEmailError("");
+    }
+    if (name === "password" && passwordError) {
+      setPasswordError("");
     }
   }
 
@@ -82,12 +82,9 @@ function LoginPage() {
                   </label>
                   <div className="relative">
                     <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                      <img
-                        src={EmailIcon}
-                        alt=""
-                        className="text-paragraph h-5 w-5 opacity-60"
-                        aria-hidden="true"
-                      />
+                      <span className="material-symbols-outlined text-paragraph text-xl opacity-60">
+                        mail
+                      </span>
                     </div>
                     <input
                       id="email"
@@ -117,26 +114,32 @@ function LoginPage() {
                   </label>
                   <div className="relative">
                     <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                      <img
-                        src={PasswordIcon}
-                        alt=""
-                        className="text-paragraph h-5 w-5 opacity-60"
-                        aria-hidden="true"
-                      />
+                      <span className="material-symbols-outlined text-paragraph text-xl opacity-60">
+                        lock
+                      </span>
                     </div>
                     <input
                       id="password"
-                      type="password"
+                      type={showPassword ? "text" : "password"}
                       name="password"
                       placeholder={t("passwordPlaceholder")}
                       value={password}
                       onChange={handleChange}
-                      className={`bg-container text-paragraph placeholder:text-paragraph/60 block w-full rounded-lg border py-2 pr-3 pl-10 text-sm focus:ring-1 focus:outline-none ${
+                      className={`bg-container text-paragraph placeholder:text-paragraph/60 block w-full rounded-lg border py-2 pr-10 pl-10 text-sm focus:ring-1 focus:outline-none ${
                         passwordError
                           ? "border-destructive focus:border-destructive focus:ring-destructive"
                           : "border-border focus:border-primary focus:ring-primary"
                       }`}
                     />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute top-1/2 right-3 -translate-y-1/2"
+                    >
+                      <span className="material-symbols-outlined text-paragraph text-xl">
+                        {showPassword ? "visibility_off" : "visibility"}
+                      </span>
+                    </button>
                   </div>
                   {passwordError && (
                     <p className="text-destructive text-sm">{passwordError}</p>
