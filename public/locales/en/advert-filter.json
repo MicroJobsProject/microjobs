@@ -1,0 +1,29 @@
+{
+  "filterSearch": "Search",
+  "filterSearchPlaceholder": "Search by name",
+
+  "filterType": "Type",
+  "advertTypeAll": "All Types",
+
+  "filterCategory": "Category",
+  "filterCategoryPlaceholder": "Select categories",
+  "Caring": "Caring",
+  "Cleaning": "Cleaning",
+  "Electrician": "Electrician",
+  "Gardening": "Gardening",
+  "Painting": "Painting",
+  "Personal Training": "Personal Training",
+  "Pets": "Pets",
+  "Plumbing": "Plumbing",
+  "Private Classes": "Private Classes",
+  "Technology": "Technology",
+  "Transport": "Transport",
+  "Video & Photography": "Video & Photography",
+
+  "filterPrice": "Price range",
+  "filterPriceMin": "Min. Price",
+  "filterPriceMax": "Max. Price",
+
+  "applyFilters": "Apply selected filters",
+  "reset": "Reset"
+}

@@ -1,0 +1,28 @@
+{
+  "loginTo": "Accede a MicroJobs",
+  "loginToSubtitle": "Inicia sesión con tu correo electrónico y contraseña.",
+
+  "email": "Correo electrónico",
+  "emailPlaceholder": "tu@correo.com",
+
+  "password": "Contraseña",
+  "passwordPlaceholder": "Tu contraseña",
+
+  "forgotPassword": "¿Olvidaste tu contraseña?",
+
+  "login": "Iniciar sesión",
+  "loginFetching": "Iniciando sesión...",
+  "remember": "Recordar sesión",
+  "signUpParagraph": "¿No tienes cuenta aún?",
+  "signUpLink": "Regístrate aquí",
+
+  "errorValidEmail": "Por favor, introduce una dirección de email válida",
+  "errorPasswordTooShort": "La contraseña debe tener al menos 6 caracteres",
+  "Email and password are required": "Correo y contraseña requeridos",
+  "Invalid password or email": "Credenciales incorrectas",
+  "Email not registered": "Correo no registrado",
+  "Successfully logged in": "Inicio de sesión exitoso",
+  "Server error while logging in": "Error en el servidor al iniciar sesión",
+  "Successfully logged out": "Cierre de sesión exitoso",
+  "Server error while logging out": "Error en el servidor al cerrar sesión"
+}

@@ -17,7 +17,7 @@ function Header() {
   const isLogged = useAuth();
   const [showMenu, setShowMenu] = useState(false);
   const location = useLocation();
-  const { t } = useTranslation();
+  const { t } = useTranslation("header");
   const maxWidth = 640;
 
   useEffect(() => {

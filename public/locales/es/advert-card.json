@@ -1,0 +1,11 @@
+{
+  "ariaAdvertName": "Anuncio para '{{name}}'",
+  "ariaAdvertPhoto": "Imagen de '{{name}}'",
+  "advertTypeOffer": "Ofrece Servicio",
+  "advertTypeNeed": "Necesita Servicio",
+  "ariaAdvertTypeOffer": "Tipo: Ofrece un servicio",
+  "ariaAvertTypeNeed": "Tipo: Necesita un servicio",
+  "ariaAdvertPrice": "Precio: {{price}} euros por hora",
+  "ariaAdvertOwner": "Creado por {{owner}}",
+  "ariaAdvertDescription": "Descripción: {{description}}"
+}

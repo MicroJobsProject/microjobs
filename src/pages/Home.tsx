@@ -15,7 +15,7 @@ import type { Filter } from "./advert/types";
 import { useTranslation } from "react-i18next";
 
 export default function Home() {
-  const { t } = useTranslation();
+  const { t } = useTranslation("home");
   const advertsLoadAction = useAdvertsLoadAction();
   const uiResetErrorAction = useUiResetError();
   const adverts = useAppSelector(getAdverts);

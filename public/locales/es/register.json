@@ -1,0 +1,25 @@
+{
+  "signUpTo": "Bienvenido a MicroJobs",
+  "signUpSubtitle": "¡Regístrate ahora y disfruta de todo lo que tu comunidad puede ofrecer!",
+
+  "username": "Usuario",
+  "usernamePlaceholder": "Tu nombre de usuario",
+
+  "email": "Correo electrónico",
+  "emailPlaceholder": "tu@correo.com",
+
+  "password": "Contraseña",
+  "passwordPlaceholder": "Tu contraseña",
+  "passwordHelp": "La contraseña debe tener al menos 6 caracteres",
+  "passwordRepeat": "Repite la contraseña",
+
+  "createAccount": "Crear Cuenta",
+  "createAccountFetching": "Creando Cuenta...",
+
+  "errorValidEmail": "Por favor, introduce una dirección de email válida",
+  "errorPasswordTooShort": "La contraseña debe tener al menos 6 caracteres",
+  "errorUsernameRequired": "Se requiere un nombre de usuario",
+  "errorPasswordNoMatch": "Las contraseñas no coinciden",
+  "Email already registered": "El correo ya está registrado",
+  "Username already taken": "El usuario ya está registrado"
+}

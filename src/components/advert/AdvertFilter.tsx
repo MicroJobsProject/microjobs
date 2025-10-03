@@ -15,7 +15,7 @@ function AdvertFilter({ onSubmit, onReset }: FilterProps) {
   const [filters, setFilters] = useState<Filter>({});
   const advertsCategoriesAction = useAdvertsCategoriesAction();
   const categories = useAppSelector(getAdvertsCategories);
-  const { t } = useTranslation();
+  const { t } = useTranslation("advert-filter");
 
   useEffect(() => {
     advertsCategoriesAction();

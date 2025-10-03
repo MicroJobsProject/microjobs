@@ -1,0 +1,13 @@
+{
+  "errorTitle": "Something went wrong",
+  "Internal server error. Please try again later.": "Internal server error. Please try again later.",
+  "Service temporarily unavailable. We are working on it.": "Service temporarily unavailable. We are working on it.",
+  "An unexpected error occurred on the server.": "An unexpected error occurred on the server.",
+  "Cannot connect to the server. Please check your internet connection or try again later.": "Cannot connect to the server. Please check your internet connection or try again later.",
+
+  "notFoundSubtitle": "This page took a day off!",
+  "Sorry, the page you are looking for does not exist or has been moved.": "Sorry, the page you are looking for does not exist or has been moved.",
+
+  "goBack": "Go Back",
+  "backToHomepage": "Back to Homepage"
+}

@@ -14,7 +14,7 @@ export default function AuthButton(/* { className }: AuthButtonProps */) {
   const isLogged = useAuth();
   const logoutAction = useLogoutAction();
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t } = useTranslation("header");
 
   const handleLogoutClick = async () => {
     await logoutAction();

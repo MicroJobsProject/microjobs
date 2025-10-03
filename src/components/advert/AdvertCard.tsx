@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import type { Advert } from "../../pages/advert/types";
 
 function AdvertCard({ advert }: { advert: Advert }) {
-  const { t } = useTranslation();
+  const { t } = useTranslation("advert-card");
 
   return (
     <article

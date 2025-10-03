@@ -1,6 +1,7 @@
 //DEPENDENCIES
 import { useState, useEffect, type ChangeEvent, type FormEvent } from "react";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 
 //NATIVE
 import {
@@ -28,6 +29,7 @@ function ProfilePage() {
   const logout = useLogoutAction();
   const uiResetErrorAction = useUiResetError();
   const { error } = useAppSelector(getUi);
+  const { t } = useTranslation();
 
   const userStats = useUserStats();
   const loadUserStats = useUserStatsLoadAction();
@@ -98,7 +100,7 @@ function ProfilePage() {
     }
 
     if (passwordData.newPassword.length < 6) {
-      newErrors.newPassword = "Password must be at least 6 characters";
+      newErrors.newPassword = t("errorPasswordTooShort");
     }
 
     if (passwordData.currentPassword === passwordData.newPassword) {
@@ -107,7 +109,7 @@ function ProfilePage() {
     }
 
     if (passwordData.newPassword !== passwordData.confirmPassword) {
-      newErrors.confirmPassword = "Passwords do not match";
+      newErrors.confirmPassword = t("errorPasswordNoMatch");
     }
 
     if (
