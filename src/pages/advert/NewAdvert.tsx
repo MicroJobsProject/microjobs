@@ -5,8 +5,10 @@ import type { FormEvent } from "react";
 import { getAdvertsCategories } from "../../store/selectors";
 import { useAppSelector } from "../../store";
 import AdvertCategory from "../../components/advert/AdvertCategory";
+import { useTranslation } from "react-i18next";
 
 function NewAdvertPage() {
+  const { t } = useTranslation("create");
   const categories = useAppSelector(getAdvertsCategories);
   const dispatch = useAppDispatch();
 
@@ -30,23 +32,20 @@ function NewAdvertPage() {
     <>
       <div className="wrapper">
         <h2 className="text-heading font-heading mb-2 text-3xl font-extrabold">
-          Create new Advert
+          {t("createTitle")}
         </h2>
-        <p className="text-paragraph mb-2">
-          Post your service need or offer to connect with local professionals
-          and particulars.
-        </p>
+        <p className="text-paragraph mb-2">{t("createSubtitle")}</p>
         <div className="bg-container border-border rounded-xl border p-6 shadow-sm">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="flex flex-col lg:col-span-2">
               <label htmlFor="name" className="input-label">
-                Title*
+                {t("Title")}*
               </label>
               <div>
                 <input
                   type="text"
                   name="name"
-                  placeholder="eg., Need experienced plumber for kitchen renovation"
+                  placeholder={t("titlePlaceholder")}
                   required
                   className="input"
                 />
@@ -54,7 +53,7 @@ function NewAdvertPage() {
             </div>
             <div className="flex flex-col lg:col-span-2">
               <label htmlFor="price" className="input-label">
-                Price*
+                {t("Price")}*
               </label>
               <input
                 type="number"
@@ -69,7 +68,7 @@ function NewAdvertPage() {
                 name="serviceFieldset"
                 className="flex flex-row items-center justify-center gap-4"
               >
-                <legend className="input-label">Advert Type</legend>
+                <legend className="input-label">{t("Advert Type")}</legend>
                 <div className="flex grow flex-row items-center justify-center">
                   <input
                     id="need"
@@ -80,7 +79,7 @@ function NewAdvertPage() {
                     className="peer hidden"
                   />
                   <label htmlFor="need" className="input-radio-label grow">
-                    Need Service
+                    {t("advertTypeNeed")}
                   </label>
                 </div>
                 <div className="flex grow flex-row items-center justify-center">
@@ -92,20 +91,20 @@ function NewAdvertPage() {
                     className="peer hidden"
                   />
                   <label htmlFor="offer" className="input-radio-label grow">
-                    Offer Service
+                    {t("advertTypeOffer")}
                   </label>
                 </div>
               </fieldset>
             </div>
             <div className="flex flex-col lg:col-span-2">
               <label htmlFor="description" className="input-label">
-                Description
+                {t("Description")}
               </label>
 
               <input
                 type="text"
                 name="description"
-                placeholder="Description"
+                placeholder={t("Description")}
                 required
                 className="input"
               />
@@ -115,7 +114,7 @@ function NewAdvertPage() {
               name="categoryFieldset"
               className="flex flex-row items-center justify-center gap-4"
             >
-              <legend className="input-label">Category*</legend>
+              <legend className="input-label">{t("Category")}*</legend>
               <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {categories.length ? (
                   categories.map((category) => (
@@ -126,15 +125,17 @@ function NewAdvertPage() {
                     />
                   ))
                 ) : (
-                  <p>Categories not found</p>
+                  <p>{t("Categories not found")}</p>
                 )}
               </div>
             </fieldset>
 
             <div className="flex justify-end">
               <button type="submit" className="btn btn-primary">
-                <span className="material-symbols-outlined">add_circle</span>
-                Create Advert
+                <span className="material-symbols-outlined" aria-hidden="true">
+                  add_circle
+                </span>
+                {t("Create Advert")}
               </button>
             </div>
           </form>

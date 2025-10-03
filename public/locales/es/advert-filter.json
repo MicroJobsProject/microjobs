@@ -4,6 +4,8 @@
 
   "filterType": "Tipo",
   "advertTypeAll": "Todos",
+  "advertTypeOffer": "Ofrece Servicio",
+  "advertTypeNeed": "Necesita Servicio",
 
   "filterCategory": "Categorías",
   "filterCategoryPlaceholder": "Seleccionar categorías",

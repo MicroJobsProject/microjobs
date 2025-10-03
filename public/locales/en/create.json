@@ -1,14 +1,16 @@
 {
-  "filterSearch": "Search",
-  "filterSearchPlaceholder": "Search by name",
+  "createTitle": "Create New Advert",
+  "createSubtitle": "Post your service need or offer to connect with local professionals and particulars.",
 
-  "filterType": "Type",
-  "advertTypeAll": "All Types",
+  "Title": "Title",
+  "titlePlaceholder": "eg., Need experienced plumber for kitchen renovation",
+  "Price": "Price",
+  "Advert Type": "Advert Type",
   "advertTypeOffer": "Offer Service",
   "advertTypeNeed": "Need Service",
+  "Description": "Description",
+  "Category": "Category",
 
-  "filterCategory": "Category",
-  "filterCategoryPlaceholder": "Select categories",
   "Caring": "Caring",
   "Cleaning": "Cleaning",
   "Electrician": "Electrician",
@@ -22,10 +24,7 @@
   "Transport": "Transport",
   "Video & Photography": "Video & Photography",
 
-  "filterPrice": "Price range",
-  "filterPriceMin": "Min. Price",
-  "filterPriceMax": "Max. Price",
+  "Categories not found": "Categories not found",
 
-  "applyFilters": "Apply selected filters",
-  "reset": "Reset"
+  "Create Advert": "Create Advert"
 }
