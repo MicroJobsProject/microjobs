@@ -9,6 +9,8 @@ import {
   authRegister,
   authLogin,
   authLogoutThunk,
+  authForgotPassword,
+  authResetPassword,
   userLoad,
   userUpdate,
   userStatsLoad,
@@ -53,6 +55,24 @@ export function useLogoutAction() {
   return function () {
     return dispatch(authLogoutThunk());
   };
+}
+
+export function useForgotPasswordAction() {
+  const dispatch = useAppDispatch();
+  return function (email: string) {
+    return dispatch(authForgotPassword(email));
+  };
+}
+
+export function useResetPasswordAction() {
+  const dispatch = useAppDispatch();
+  return function (token: string, password: string) {
+    return dispatch(authResetPassword(token, password));
+  };
+}
+
+export function useSuccessMessage() {
+  return useAppSelector((state) => state.ui.successMessage);
 }
 
 // USER............................................

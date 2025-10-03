@@ -8,11 +8,16 @@ import { getCriticalError } from "./store/selectors";
 import RegisterPage from "./pages/auth/RegisterPage";
 import { CriticalErrorPage, NotFoundPage } from "./pages/error/ErrorPages";
 
+// AUTH.................................................................
 const LoginPage = lazy(() => import("./pages/auth/LoginPage"));
-const ProfilePage = lazy(() => import("./pages/user/ProfilePage"));
-
+const ForgotPasswordPage = lazy(
+  () => import("./pages/auth/ForgotPasswordPage"),
+);
+const ResetPasswordPage = lazy(() => import("./pages/auth/ResetPasswordPage"));
 const RequireAuth = lazy(() => import("./components/auth/RequireAuth"));
 const RequireNoAuth = lazy(() => import("./components/auth/RequireNoAuth"));
+
+const ProfilePage = lazy(() => import("./pages/user/ProfilePage"));
 
 const Home = lazy(() => import("./pages/Home"));
 const Layout = lazy(() => import("./components/layout/layout"));
@@ -49,6 +54,17 @@ function App() {
               </RequireNoAuth>
             }
           />
+
+          <Route
+            path="forgot-password"
+            element={
+              <RequireNoAuth>
+                <ForgotPasswordPage />
+              </RequireNoAuth>
+            }
+          />
+
+          <Route path="reset-password" element={<ResetPasswordPage />} />
 
           <Route path="home" element={<Home />} />
 
