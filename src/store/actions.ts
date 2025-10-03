@@ -46,6 +46,35 @@ type AuthLogout = {
   type: "auth/logout";
 };
 
+// FORGOT PASSWORD.................................
+
+type AuthForgotPasswordPending = {
+  type: "auth/forgotPassword/pending";
+};
+
+type AuthForgotPasswordFulfilled = {
+  type: "auth/forgotPassword/fulfilled";
+  payload: { message: string };
+};
+
+type AuthForgotPasswordRejected = {
+  type: "auth/forgotPassword/rejected";
+  payload: Error;
+};
+
+type AuthResetPasswordPending = {
+  type: "auth/resetPassword/pending";
+};
+
+type AuthResetPasswordFulfilled = {
+  type: "auth/resetPassword/fulfilled";
+};
+
+type AuthResetPasswordRejected = {
+  type: "auth/resetPassword/rejected";
+  payload: Error;
+};
+
 // USER............................................
 type UserLoadPending = {
   type: "user/load/pending";
@@ -176,6 +205,40 @@ export const authLoginRejected = (error: Error): AuthLoginRejected => ({
 
 export const authLogout = (): AuthLogout => ({
   type: "auth/logout",
+});
+
+// FORGOT PASSWORD.................................
+export const authForgotPasswordPending = (): AuthForgotPasswordPending => ({
+  type: "auth/forgotPassword/pending",
+});
+
+export const authForgotPasswordFulfilled = (
+  message: string,
+): AuthForgotPasswordFulfilled => ({
+  type: "auth/forgotPassword/fulfilled",
+  payload: { message },
+});
+
+export const authForgotPasswordRejected = (
+  error: Error,
+): AuthForgotPasswordRejected => ({
+  type: "auth/forgotPassword/rejected",
+  payload: error,
+});
+
+export const authResetPasswordPending = (): AuthResetPasswordPending => ({
+  type: "auth/resetPassword/pending",
+});
+
+export const authResetPasswordFulfilled = (): AuthResetPasswordFulfilled => ({
+  type: "auth/resetPassword/fulfilled",
+});
+
+export const authResetPasswordRejected = (
+  error: Error,
+): AuthResetPasswordRejected => ({
+  type: "auth/resetPassword/rejected",
+  payload: error,
 });
 
 // USER............................................
@@ -343,6 +406,52 @@ export function authLogoutThunk(): AppThunk<Promise<void>> {
   };
 }
 
+// FORGOT PASSWORD.................................
+export function authForgotPassword(email: string): AppThunk<Promise<void>> {
+  return async function (dispatch, _getState, { api }) {
+    dispatch(authForgotPasswordPending());
+    try {
+      const response = await api.auth.forgotPassword(email);
+      dispatch(authForgotPasswordFulfilled(response.message));
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        dispatch(authForgotPasswordRejected(error));
+      }
+      throw error;
+    }
+  };
+}
+
+export function authResetPassword(
+  token: string,
+  password: string,
+): AppThunk<Promise<void>> {
+  return async function (dispatch, _getState, { api, router }) {
+    dispatch(authResetPasswordPending());
+
+    try {
+      const response = await api.auth.resetPassword(token, password);
+
+      if (response.accessToken) {
+        dispatch(authResetPasswordFulfilled());
+
+        setTimeout(() => {
+          dispatch(authLoginFulfilled());
+          router.navigate("/", { replace: true });
+        }, 2500);
+      } else {
+        dispatch(authResetPasswordFulfilled());
+        router.navigate("/login", { replace: true });
+      }
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        dispatch(authResetPasswordRejected(error));
+      }
+      throw error;
+    }
+  };
+}
+
 // USER............................................
 export function userLoad(): AppThunk<Promise<void>> {
   return async function (dispatch, _getState, { api }) {
@@ -470,6 +579,12 @@ export type Actions =
 | AuthLoginFulfilled
 | AuthLoginRejected
 | AuthLogout
+| AuthForgotPasswordPending
+| AuthForgotPasswordFulfilled
+| AuthForgotPasswordRejected
+| AuthResetPasswordPending
+| AuthResetPasswordFulfilled
+| AuthResetPasswordRejected
 | UserLoadPending
 | UserLoadFulfilled
 | UserLoadRejected
@@ -497,6 +612,8 @@ export type Actions =
 export type ActionsRejected = 
 | AuthRegisterRejected
 | AuthLoginRejected
+| AuthForgotPasswordRejected
+| AuthResetPasswordRejected
 | UserLoadRejected
 | UserUpdateRejected
 | UserStatsLoadRejected

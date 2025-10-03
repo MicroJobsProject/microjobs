@@ -1,6 +1,8 @@
 //DEPENDENCIES
 import { useState, type ChangeEvent, type FormEvent } from "react";
+import { Link } from "react-router";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 
 //NATIVE
 import { useLoginAction, useUiResetError } from "../../store/hooks";
@@ -8,7 +10,6 @@ import { useAppSelector } from "../../store";
 import { getUi } from "../../store/selectors";
 import { isValidEmail } from "../../utils/validation";
 import Alert from "../../components/ui/Alert";
-import { useTranslation } from "react-i18next";
 
 function LoginPage() {
   const loginAction = useLoginAction();
@@ -146,14 +147,14 @@ function LoginPage() {
                   )}
                 </div>
 
+                {/* ACTUALIZADO: Link a forgot-password */}
                 <div className="text-left">
-                  <a
-                    href="#"
-                    onClick={(e) => e.preventDefault()}
+                  <Link
+                    to="/forgot-password"
                     className="text-paragraph hover:text-heading text-sm font-medium transition-colors"
                   >
                     {t("forgotPassword")}
-                  </a>
+                  </Link>
                 </div>
 
                 <button
@@ -213,12 +214,12 @@ function LoginPage() {
                 <div className="text-center">
                   <p className="text-paragraph text-sm">
                     {t("signUpParagraph")}{" "}
-                    <a
-                      href="/register"
+                    <Link
+                      to="/register"
                       className="text-primary hover:text-primary-hover font-medium transition-colors"
                     >
                       {t("signUpLink")}
-                    </a>
+                    </Link>
                   </p>
                 </div>
               </form>

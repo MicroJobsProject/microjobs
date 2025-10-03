@@ -16,6 +16,7 @@ export type State = {
   ui: {
     pending: boolean;
     error: Error | null;
+    successMessage: string | null;
   };
   adverts: { loaded: boolean; data: AdvertResponse };
   categories: AdvertCategory[];
@@ -36,6 +37,7 @@ const defaultState: State = {
   ui: {
     pending: false,
     error: null,
+    successMessage: null,
   },
   adverts: {
     loaded: false,
@@ -134,31 +136,41 @@ export function ui(state = defaultState.ui, action: Actions): State["ui"] {
   if (
     action.type === "auth/login/pending" ||
     action.type === "auth/register/pending" ||
+    action.type === "auth/forgotPassword/pending" ||
+    action.type === "auth/resetPassword/pending" ||
     action.type === "user/load/pending" ||
     action.type === "user/update/pending" ||
     action.type === "user/stats/pending" ||
     action.type === "adverts/load/pending"
   ) {
-    return { pending: true, error: null };
+    return { pending: true, error: null, successMessage: null };
   }
   if (
     action.type === "auth/login/fulfilled" ||
     action.type === "auth/register/fulfilled" ||
+    action.type === "auth/resetPassword/fulfilled" ||
     action.type === "user/load/fulfilled" ||
     action.type === "user/update/fulfilled" ||
     action.type === "user/stats/fulfilled" ||
     action.type === "adverts/load/fulfilled"
   ) {
-    return { pending: false, error: null };
+    return { pending: false, error: null, successMessage: null };
+  }
+  if (action.type === "auth/forgotPassword/fulfilled") {
+    return {
+      pending: false,
+      error: null,
+      successMessage: action.payload.message,
+    };
   }
   if (isRejectedAction(action)) {
-    return { pending: false, error: action.payload };
+    return { pending: false, error: action.payload, successMessage: null };
   }
   if (action.type === "ui/reset-error") {
-    return { ...state, error: null };
+    return { ...state, error: null, successMessage: null };
   }
   if (action.type === "error/setCritical") {
-    return { pending: false, error: null };
+    return { pending: false, error: null, successMessage: null };
   }
   return state;
 }

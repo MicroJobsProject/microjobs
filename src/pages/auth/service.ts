@@ -104,6 +104,36 @@ export async function logout(): Promise<void> {
   }
 }
 
+//FORGOT PASSWORD=====================================================================================
+export async function forgotPassword(
+  email: string,
+): Promise<{ message: string }> {
+  const response = await axios.post(
+    `${import.meta.env.VITE_API_BASE_URL}/api/auth/forgot-password`,
+    { email },
+  );
+
+  return response.data;
+}
+
+//RESET PASSWORD=====================================================================================
+export async function resetPassword(
+  token: string,
+  password: string,
+): Promise<{ message: string; accessToken?: string }> {
+  const response = await axios.post(
+    `${import.meta.env.VITE_API_BASE_URL}/api/auth/reset-password`,
+    { token, password },
+  );
+
+  if (response.data.accessToken) {
+    storage.setAuth(response.data.accessToken, false);
+    setAuthorizationHeader(response.data.accessToken);
+  }
+
+  return response.data;
+}
+
 //INITIALIZE AUTH=====================================================================================
 export async function initializeAuth(): Promise<boolean> {
   const token = storage.getAuth();
