@@ -173,7 +173,7 @@ export default function RegisterPage() {
           </div>
         </div>
         {/* Contenedor de la imagen */}
-        <div className="absolute top-0 right-0 -z-10 hidden h-[calc(100vh-64px)] w-1/2 bg-[url('./src/assets/register-image.jpg')] bg-cover bg-center bg-no-repeat lg:block"></div>
+        <div className="absolute top-0 right-0 -z-10 hidden h-[calc(100vh-64px)] w-1/2 bg-[url('/register-image.jpg')] bg-cover bg-center bg-no-repeat lg:block"></div>
       </div>
     </>
   );
