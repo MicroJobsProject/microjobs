@@ -149,8 +149,8 @@ El sistema maneja categorías dinámicas cargadas desde la API:
 ### 1. Requisitos de Software
 
 - **[Node.js](https://nodejs.org/en/download/)** (**Node:** >=v24.8.0)
-- **[Git](https://git-scm.com/downloads)** (\*2.47.1.windows.1\*\*)
-- **[Visual Studio Code](https://code.visualstudio.com/)** (\*1.99.0\*\*)
+- **[Git](https://git-scm.com/downloads)** (2.48.1)
+- **[Visual Studio Code](https://code.visualstudio.com/)** (1.104.2)
 - **[microjobs-api (API REST)](https://github.com/MicroJobsProject/microjobs-api.git)**
 
 > **📝 Nota:** Este proyecto **depende** de la API REST `nodepop-api`. Para poder interactuar con la base de datos simulada, es **primordial** levantar primero el servidor que pone en funcionamiento a la API.
@@ -216,18 +216,14 @@ Una vez iniciado el servidor de desarrollo, abre tu navegador en:
 http://localhost:5173
 ```
 
-<!-- ------------------------------------------------------------------------------------------- -->
-
 ## Recursos del Proyecto
 
 - **Backend (API):** 🔗 [microjobs-api](https://github.com/MicroJobsProject/microjobs-api.git)
 - **Vista Previa del Proyecto:** 👀 [Vista Previa](preview.md)
 
-- **Documentación técnica:** [React](https://react.dev) | [Redux](https://redux.js.org) | [TypeScript](https://www.typescriptlang.org) | [Tailwind](https://tailwindcss.com)
-- **Herramientas:** [Vite](https://vitejs.dev) | [React Router](https://reactrouter.com) | [Axios](https://axios-http.com) | [i18next](https://www.i18next.com)
-- **Diseño:** [Material Icons](https://fonts.google.com/icons) | [Google Fonts](https://fonts.google.com)
-
-<!-- ------------------------------------------------------------------------------------------- -->
+- **Documentación técnica:** 📚 [React](https://react.dev) | [Redux](https://redux.js.org) | [TypeScript](https://www.typescriptlang.org) | [Tailwind](https://tailwindcss.com)
+- **Herramientas:** 📚 [Vite](https://vitejs.dev) | [React Router](https://reactrouter.com) | [Axios](https://axios-http.com) | [i18next](https://www.i18next.com)
+- **Diseño:** 🎨 [Material Icons](https://fonts.google.com/icons) | [Google Fonts](https://fonts.google.com)
 
 ## Contribuciones y Licencias
 
