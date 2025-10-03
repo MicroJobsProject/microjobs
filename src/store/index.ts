@@ -29,7 +29,10 @@ const errorMiddleware = (store) => (next) => (action) => {
   const error = action.payload;
   const status = error?.response?.status || error?.status;
 
-  if (status === 500 || status === 503) {
+  const isNetworkError = !error?.response && error?.message === "Network Error";
+  const isCriticalServerError = status === 500 || status === 503;
+
+  if (isNetworkError || isCriticalServerError) {
     store.dispatch({
       type: "error/setCritical",
       payload: error,

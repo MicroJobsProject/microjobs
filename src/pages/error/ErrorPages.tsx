@@ -1,18 +1,16 @@
 //DEPENDENCIES
 import React from "react";
 import { useSearchParams, useNavigate } from "react-router";
+import { useTranslation } from "react-i18next";
 
 //NATIVE
 import { useAppSelector, useAppDispatch } from "../../store/index";
 import { errorClearCritical } from "../../store/actions";
 import { getCriticalError } from "../../store/selectors";
-
-import { getErrorMessage } from "../../utils/errorMessages";
-
-//STATIC-FILES
-import homeIcon from "../../assets/home-light.svg";
-import backIcon from "../../assets/arrow-brown.svg";
-import { useTranslation } from "react-i18next";
+import {
+  getErrorMessage,
+  getNetworkErrorMessage,
+} from "../../utils/errorMessages";
 
 export const CriticalErrorPage: React.FC = () => {
   const navigate = useNavigate();
@@ -24,16 +22,12 @@ export const CriticalErrorPage: React.FC = () => {
   const errorCode =
     searchParams.get("code") ||
     criticalError?.response?.status?.toString() ||
-    "500";
+    (criticalError?.message === "Network Error" ? "503" : "500");
 
   const errorMessage =
-    (criticalError?.response?.data &&
-    typeof criticalError.response.data === "object" &&
-    "error" in criticalError.response.data
-      ? (criticalError.response.data as { error?: string }).error
-      : undefined) ||
-    criticalError?.message ||
-    getErrorMessage(errorCode);
+    criticalError?.message === "Network Error"
+      ? getNetworkErrorMessage()
+      : getErrorMessage(errorCode);
 
   const handleGoHome = () => {
     dispatch(errorClearCritical());
@@ -57,12 +51,16 @@ export const CriticalErrorPage: React.FC = () => {
         </div>
 
         <div className="flex flex-wrap items-center justify-center gap-4">
-          <button onClick={handleGoHome} className="btn btn-outlined">
-            <img src={backIcon} alt="" className="h-5 w-5" aria-hidden="true" />
+          <button onClick={handleGoBack} className="btn btn-outlined">
+            <span className="material-symbols-outlined" aria-hidden="true">
+              arrow_back
+            </span>
             {t("goBack")}
           </button>
-          <button onClick={handleGoBack} className="btn btn-primary">
-            <img src={homeIcon} alt="" className="h-5 w-5" aria-hidden="true" />
+          <button onClick={handleGoHome} className="btn btn-primary">
+            <span className="material-symbols-outlined" aria-hidden="true">
+              home
+            </span>
             {t("backToHomepage")}
           </button>
         </div>
@@ -99,11 +97,15 @@ export const NotFoundPage: React.FC = () => {
 
         <div className="flex flex-wrap items-center justify-center gap-4">
           <button onClick={handleGoBack} className="btn btn-outlined">
-            <img src={backIcon} alt="" className="h-5 w-5" aria-hidden="true" />
+            <span className="material-symbols-outlined" aria-hidden="true">
+              arrow_back
+            </span>
             {t("goBack")}
           </button>
           <button onClick={handleGoHome} className="btn btn-primary">
-            <img src={homeIcon} alt="" className="h-5 w-5" aria-hidden="true" />
+            <span className="material-symbols-outlined" aria-hidden="true">
+              home
+            </span>
             {t("backToHomepage")}
           </button>
         </div>
