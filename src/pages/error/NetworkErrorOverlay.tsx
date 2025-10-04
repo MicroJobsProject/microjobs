@@ -1,3 +1,6 @@
+// DEPENDENCIES
+import { useTranslation } from "react-i18next";
+
 // NATIVE
 import { useClearCriticalError } from "../../store/hooks";
 
@@ -7,6 +10,7 @@ interface NetworkErrorOverlayProps {
 
 export function NetworkErrorOverlay({ onRetry }: NetworkErrorOverlayProps) {
   const clearCriticalError = useClearCriticalError();
+  const { t } = useTranslation("error");
 
   const handleRetry = () => {
     clearCriticalError();
@@ -25,15 +29,15 @@ export function NetworkErrorOverlay({ onRetry }: NetworkErrorOverlayProps) {
             wifi_off
           </span>
           <h2 className="text-heading mb-2 text-2xl font-bold">
-            No Internet Connection
+            {t("No Internet Connection")}
           </h2>
           <p className="text-paragraph mb-6">
-            Please check your internet connection and try again.
+            {t("Please check your internet connection and try again.")}
           </p>
 
           <button onClick={handleRetry} className="btn btn-primary w-full">
             <span className="material-symbols-outlined mr-2">refresh</span>
-            Retry Connection
+            {t("Retry Connection")}
           </button>
         </div>
       </div>
