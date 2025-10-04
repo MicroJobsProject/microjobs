@@ -7,13 +7,14 @@ import { useTranslation } from "react-i18next";
 // NATIVE
 import { useResetPasswordAction, useAuth } from "../../store/hooks";
 import Alert from "../../components/ui/Alert"; // ✅ Importar Alert
+import clsx from "clsx";
 
 interface ErrorResponse {
   error: string;
 }
 
 function ResetPasswordPage() {
-  const { t } = useTranslation("forgot-password");
+  const { t } = useTranslation("reset-password");
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
@@ -66,11 +67,11 @@ function ResetPasswordPage() {
     const newErrors: { [key: string]: string } = {};
 
     if (formData.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters";
+      newErrors.password = t("errorPasswordTooShort");
     }
 
     if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = "Passwords do not match";
+      newErrors.confirmPassword = t("errorPasswordNoMatch");
     }
 
     if (Object.keys(newErrors).length > 0) {
@@ -92,7 +93,7 @@ function ResetPasswordPage() {
     } catch (error) {
       const axiosError = error as AxiosError<ErrorResponse>;
       const errorMessage =
-        axiosError.response?.data?.error || "Error resetting password";
+        axiosError.response?.data?.error || t("errorResettingPassword");
 
       setErrors({ general: errorMessage });
     } finally {
@@ -107,17 +108,16 @@ function ResetPasswordPage() {
           <div className="w-full max-w-md">
             <div className="bg-container border-border rounded-xl border p-8 shadow-sm">
               <div className="mb-4 flex justify-center">
-                <span className="material-symbols-outlined text-success text-6xl">
+                <span
+                  className="material-symbols-outlined text-success text-6xl"
+                  aria-hidden="true"
+                >
                   check_circle
                 </span>
               </div>
-              <h2 className="text-heading">Password Reset Successful!</h2>
-              <p className="text-paragraph">
-                Your password has been updated successfully.
-              </p>
-              <p className="text-paragraph text-sm">
-                Logging you in and redirecting...
-              </p>
+              <h2 className="text-heading">{t("resetSuccessTitle")}</h2>
+              <p className="text-paragraph">{t("resetSuccessSubtitle")}</p>
+              <p className="text-paragraph text-sm">{t("loginPending")}</p>
               <div className="mt-4 flex justify-center">
                 <div className="border-primary h-8 w-8 animate-spin rounded-full border-4 border-t-transparent"></div>
               </div>
@@ -136,9 +136,9 @@ function ResetPasswordPage() {
             <div className="bg-container border-border rounded-xl border p-8 shadow-sm">
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="text-center">
-                  <h2 className="text-heading">Reset Password</h2>
+                  <h2 className="text-heading">{t("resetTitle")}</h2>
                   <p className="text-paragraph text-left">
-                    Enter your new password below.
+                    {t("resetSubtitle")}
                   </p>
                 </div>
 
@@ -147,11 +147,14 @@ function ResetPasswordPage() {
                     htmlFor="password"
                     className="text-heading block text-sm font-medium"
                   >
-                    New Password
+                    {t("newPassword")}
                   </label>
                   <div className="relative">
                     <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                      <span className="material-symbols-outlined text-paragraph text-xl opacity-60">
+                      <span
+                        className="material-symbols-outlined text-paragraph text-xl opacity-60"
+                        aria-hidden="true"
+                      >
                         lock
                       </span>
                     </div>
@@ -161,28 +164,30 @@ function ResetPasswordPage() {
                       name="password"
                       value={formData.password}
                       onChange={handleChange}
-                      placeholder="Minimum 6 characters"
+                      placeholder={t("newPasswordPlaceholder")}
                       required
                       disabled={loading}
-                      className={`bg-container text-paragraph placeholder:text-paragraph/60 block w-full rounded-lg border py-2 pr-10 pl-10 text-sm focus:ring-1 focus:outline-none ${
-                        errors.password
-                          ? "border-destructive focus:border-destructive focus:ring-destructive"
-                          : "border-border focus:border-primary focus:ring-primary"
-                      }`}
+                      className={clsx(
+                        "input !px-10",
+                        errors.password && "input-error",
+                      )}
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
                       className="absolute top-1/2 right-3 -translate-y-1/2"
                     >
-                      <span className="material-symbols-outlined text-paragraph text-xl">
+                      <span
+                        className="material-symbols-outlined text-paragraph text-xl"
+                        aria-hidden="true"
+                      >
                         {showPassword ? "visibility_off" : "visibility"}
                       </span>
                     </button>
                   </div>
                   {errors.password && (
                     <p className="text-destructive text-sm">
-                      {errors.password}
+                      {t(errors.password)}
                     </p>
                   )}
                 </div>
@@ -192,7 +197,7 @@ function ResetPasswordPage() {
                     htmlFor="confirmPassword"
                     className="text-heading block text-sm font-medium"
                   >
-                    Confirm Password
+                    {t("newPasswordRepeat")}
                   </label>
                   <div className="relative">
                     <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
@@ -206,14 +211,13 @@ function ResetPasswordPage() {
                       name="confirmPassword"
                       value={formData.confirmPassword}
                       onChange={handleChange}
-                      placeholder="Repeat your password"
+                      placeholder={t("newPasswordRepeatPlaceholder")}
                       required
                       disabled={loading}
-                      className={`bg-container text-paragraph placeholder:text-paragraph/60 block w-full rounded-lg border py-2 pr-10 pl-10 text-sm focus:ring-1 focus:outline-none ${
-                        errors.confirmPassword
-                          ? "border-destructive focus:border-destructive focus:ring-destructive"
-                          : "border-border focus:border-primary focus:ring-primary"
-                      }`}
+                      className={clsx(
+                        "input !px-10",
+                        errors.confirmPassword && "input-error",
+                      )}
                     />
                     <button
                       type="button"
@@ -229,7 +233,7 @@ function ResetPasswordPage() {
                   </div>
                   {errors.confirmPassword && (
                     <p className="text-destructive text-sm">
-                      {errors.confirmPassword}
+                      {t(errors.confirmPassword)}
                     </p>
                   )}
                 </div>
@@ -244,16 +248,16 @@ function ResetPasswordPage() {
                   {loading ? (
                     <div className="flex items-center gap-2">
                       <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
-                      Resetting...
+                      {t("resetPending")}
                     </div>
                   ) : (
-                    "Reset Password"
+                    t("resetPassword")
                   )}
                 </button>
 
                 <div className="text-center">
                   <Link to="/login" className="btn btn-outlined w-full">
-                    Back to Login
+                    {t("backToLogin")}
                   </Link>
                 </div>
               </form>
@@ -264,12 +268,12 @@ function ResetPasswordPage() {
 
       {errors.general && (
         <Alert
-          text={
+          text={t(
             errors.general.includes("expired") ||
-            errors.general.includes("Invalid")
+              errors.general.includes("Invalid")
               ? `${errors.general} Click here to request a new link.`
-              : errors.general
-          }
+              : errors.general,
+          )}
           variant="error"
           onClick={() => {
             if (
