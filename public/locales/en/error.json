@@ -22,5 +22,9 @@
   "Error Code": "Error Code",
 
   "Go Back": "Go Back",
-  "Go Home": "Go Home"
+  "Go Home": "Go Home",
+
+  "No Internet Connection": "No Internet Connection",
+  "Please check your internet connection and try again.": "Please check your internet connection and try again.",
+  "Retry Connection": "Retry Connection"
 }
