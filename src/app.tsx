@@ -18,7 +18,7 @@ import {
   ErrorCode,
 } from "./utils/error-utils";
 import RegisterPage from "./pages/auth/RegisterPage";
-import { ErrorPage } from "./pages/error/ErrorPage";
+import { ErrorPages } from "./pages/error/ErrorPages";
 import { NetworkErrorOverlay } from "./pages/error/NetworkErrorOverlay";
 
 const LoginPage = lazy(() => import("./pages/auth/LoginPage"));
@@ -115,11 +115,11 @@ function App() {
               }
             />
 
-            <Route path="not-found" element={<ErrorPage />} />
-            <Route path="server-error" element={<ErrorPage />} />
-            <Route path="service-unavailable" element={<ErrorPage />} />
-            <Route path="unauthorized" element={<ErrorPage />} />
-            <Route path="forbidden" element={<ErrorPage />} />
+            <Route path="not-found" element={<ErrorPages />} />
+            <Route path="server-error" element={<ErrorPages />} />
+            <Route path="service-unavailable" element={<ErrorPages />} />
+            <Route path="unauthorized" element={<ErrorPages />} />
+            <Route path="forbidden" element={<ErrorPages />} />
 
             <Route index element={<Navigate to="/home" replace />} />
             <Route path="*" element={<Navigate to="/not-found" replace />} />

@@ -8,7 +8,7 @@ import { getCriticalError } from "../../store/selectors";
 import { useClearCriticalError } from "../../store/hooks";
 import { getErrorCodeFromRoute } from "../../utils/error-utils";
 
-export function ErrorPage() {
+export function ErrorPages() {
   const navigate = useNavigate();
   const location = useLocation();
   const criticalError = useAppSelector(getCriticalError);
@@ -88,14 +88,14 @@ export function ErrorPage() {
   const handleGoBack = () => {
     clearCriticalError();
 
-    const isFromErrorPage =
+    const isFromErrorPages =
       fromPath.startsWith("/not-found") ||
       fromPath.startsWith("/server-error") ||
       fromPath.startsWith("/service-unavailable") ||
       fromPath.startsWith("/unauthorized") ||
       fromPath.startsWith("/forbidden");
 
-    if (isFromErrorPage || window.history.length <= 2) {
+    if (isFromErrorPages || window.history.length <= 2) {
       navigate("/", { replace: true });
     } else {
       navigate(-1);
