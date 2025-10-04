@@ -6,7 +6,6 @@ import axios from "axios";
 //NATIVE
 import type { Credentials } from "../pages/auth/types";
 import type { User, UpdateProfileData, UserStats } from "../pages/user/types";
-
 import type {
   Advert,
   AdvertData,
@@ -364,10 +363,11 @@ export function authRegister(credentials: {
       dispatch(authRegisterFulfilled());
       router.navigate("/", { replace: true });
     } catch (error: unknown) {
-      if (error instanceof Error) {
+      if (axios.isAxiosError(error)) {
+        dispatch(authRegisterRejected(error));
+      } else if (error instanceof Error) {
         dispatch(authRegisterRejected(error));
       }
-      throw error;
     }
   };
 }
@@ -379,15 +379,15 @@ export function authLogin(
     dispatch(authLoginPending());
     try {
       const { email, password, rememberMe = false } = credentials;
-
       await api.auth.login({ email, password }, rememberMe);
       dispatch(authLoginFulfilled());
       router.navigate("/", { replace: true });
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         dispatch(authLoginRejected(error));
+      } else if (error instanceof Error) {
+        dispatch(authLoginRejected(error));
       }
-      /* throw error; */
     }
   };
 }
@@ -397,10 +397,10 @@ export function authLogoutThunk(): AppThunk<Promise<void>> {
     try {
       await api.auth.logout();
       dispatch(authLogout());
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error: unknown) {
       storage.clearAuth();
       dispatch(authLogout());
-      throw error;
     }
   };
 }
@@ -415,8 +415,9 @@ export function authForgotPassword(email: string): AppThunk<Promise<void>> {
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         dispatch(authForgotPasswordRejected(error));
+      } else if (error instanceof Error) {
+        dispatch(authForgotPasswordRejected(error));
       }
-      throw error;
     }
   };
 }
@@ -427,13 +428,11 @@ export function authResetPassword(
 ): AppThunk<Promise<void>> {
   return async function (dispatch, _getState, { api, router }) {
     dispatch(authResetPasswordPending());
-
     try {
       const response = await api.auth.resetPassword(token, password);
 
       if (response.accessToken) {
         dispatch(authResetPasswordFulfilled());
-
         setTimeout(() => {
           dispatch(authLoginFulfilled());
           router.navigate("/", { replace: true });
@@ -445,8 +444,9 @@ export function authResetPassword(
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         dispatch(authResetPasswordRejected(error));
+      } else if (error instanceof Error) {
+        dispatch(authResetPasswordRejected(error));
       }
-      throw error;
     }
   };
 }
@@ -454,15 +454,16 @@ export function authResetPassword(
 // USER............................................
 export function userLoad(): AppThunk<Promise<void>> {
   return async function (dispatch, _getState, { api }) {
+    dispatch(userLoadPending());
     try {
-      dispatch(userLoadPending());
       const user = await api.profile.getProfile();
       dispatch(userLoadFulfilled(user));
     } catch (error) {
-      if (error instanceof Error) {
+      if (axios.isAxiosError(error)) {
+        dispatch(userLoadRejected(error));
+      } else if (error instanceof Error) {
         dispatch(userLoadRejected(error));
       }
-      throw error;
     }
   };
 }
@@ -471,30 +472,32 @@ export function userUpdate(
   profileData: UpdateProfileData,
 ): AppThunk<Promise<void>> {
   return async function (dispatch, _getState, { api }) {
+    dispatch(userUpdatePending());
     try {
-      dispatch(userUpdatePending());
       const user = await api.profile.updateProfile(profileData);
       dispatch(userUpdateFulfilled(user));
     } catch (error) {
-      if (error instanceof Error) {
+      if (axios.isAxiosError(error)) {
+        dispatch(userUpdateRejected(error));
+      } else if (error instanceof Error) {
         dispatch(userUpdateRejected(error));
       }
-      throw error;
     }
   };
 }
 
 export function userStatsLoad(): AppThunk<Promise<void>> {
   return async function (dispatch, _getState, { api }) {
+    dispatch(userStatsLoadPending());
     try {
-      dispatch(userStatsLoadPending());
       const stats = await api.profile.getUserStats();
       dispatch(userStatsLoadFulfilled(stats));
     } catch (error) {
-      if (error instanceof Error) {
+      if (axios.isAxiosError(error)) {
+        dispatch(userStatsLoadRejected(error));
+      } else if (error instanceof Error) {
         dispatch(userStatsLoadRejected(error));
       }
-      throw error;
     }
   };
 }
@@ -504,15 +507,16 @@ export function advertsLoad(
   params?: Record<string, string>,
 ): AppThunk<Promise<void>> {
   return async function (dispatch, _getState, { api }) {
+    dispatch(advertsLoadPending());
     try {
-      dispatch(advertsLoadPending());
       const adverts = await api.adverts.getAdverts(params);
       dispatch(advertsLoadFulfilled(adverts));
     } catch (error) {
-      if (error instanceof Error) {
+      if (axios.isAxiosError(error)) {
+        dispatch(advertsLoadRejected(error));
+      } else if (error instanceof Error) {
         dispatch(advertsLoadRejected(error));
       }
-      throw error;
     }
   };
 }
@@ -520,15 +524,16 @@ export function advertsLoad(
 //ADVERTS (Categories)...................................
 export function advertsCategories(): AppThunk<Promise<void>> {
   return async function (dispatch, _getState, { api }) {
+    dispatch(advertsCategoriesPending());
     try {
-      dispatch(advertsCategoriesPending());
       const categories = await api.adverts.getAdvertsCategories();
       dispatch(advertsCategoriesFulfilled(categories));
     } catch (error) {
-      if (error instanceof Error) {
+      if (axios.isAxiosError(error)) {
+        dispatch(advertsCategoriesRejected(error));
+      } else if (error instanceof Error) {
         dispatch(advertsCategoriesRejected(error));
       }
-      throw error;
     }
   };
 }
@@ -536,7 +541,7 @@ export function advertsCategories(): AppThunk<Promise<void>> {
 //ADVERTS (create)...................................
 export function advertsCreate(
   newAdvertData: AdvertData,
-): AppThunk<Promise<Advert>> {
+): AppThunk<Promise<Advert | undefined>> {
   return async function (dispatch, _getState, { api /*router*/ }) {
     try {
       // Manage advertsCreatePending
@@ -549,11 +554,12 @@ export function advertsCreate(
       return createdAdvert.data; //advert;
     } catch (error) {
       // Manage advertsCreateRejected
-      if (error instanceof Error) {
-        console.log(error);
+      if (axios.isAxiosError(error)) {
+        dispatch(advertsCreatedRejected(error));
+      } else if (error instanceof Error) {
         dispatch(advertsCreatedRejected(error));
       }
-      throw error;
+      return undefined;
     }
   };
 }
@@ -562,7 +568,6 @@ export function advertsCreate(
 export function authInitializeFromStorage(): AppThunk<void> {
   return function (dispatch, _getState, { storage }) {
     const hasAuth = storage.hasAuth();
-
     if (hasAuth) {
       dispatch(authLoginFulfilled());
     }
