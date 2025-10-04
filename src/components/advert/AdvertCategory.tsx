@@ -1,4 +1,5 @@
 import type { ComponentProps } from "react";
+import { useTranslation } from "react-i18next";
 
 interface AdvertCategoryProps extends ComponentProps<"input"> {
   name: string;
@@ -6,6 +7,7 @@ interface AdvertCategoryProps extends ComponentProps<"input"> {
 }
 
 const AdvertCategory = ({ name, icon, ...props }: AdvertCategoryProps) => {
+  const { t } = useTranslation("advert-category");
   return (
     <div className="flex flex-row items-center justify-center gap-2">
       <input
@@ -22,7 +24,7 @@ const AdvertCategory = ({ name, icon, ...props }: AdvertCategoryProps) => {
         className="input-radio-label flex grow flex-row items-center justify-start gap-2"
       >
         <span className="material-symbols-outlined text-3xl">{icon}</span>
-        {name}
+        {t(name)}
       </label>
     </div>
   );

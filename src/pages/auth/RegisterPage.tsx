@@ -1,13 +1,15 @@
 //DEPENDENCIES
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 //NATIVE
-import { useRegisterAction } from "../../store/hooks";
+import { useRegisterAction, useUiResetError } from "../../store/hooks";
 import { useAppSelector } from "../../store";
 import { getUi } from "../../store/selectors";
 import { isValidEmail } from "../../utils/validation";
 import { useTranslation } from "react-i18next";
 import clsx from "clsx";
+import Alert from "../../components/ui/Alert";
+import axios from "axios";
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -20,7 +22,8 @@ export default function RegisterPage() {
 
   const register = useRegisterAction();
   const ui = useAppSelector(getUi);
-  const { t } = useTranslation();
+  const uiResetErrorAction = useUiResetError();
+  const { t } = useTranslation("register");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -60,6 +63,10 @@ export default function RegisterPage() {
       console.error("Error registering:", error);
     }
   };
+
+  useEffect(() => {
+    uiResetErrorAction();
+  }, []);
 
   return (
     <>
@@ -164,12 +171,18 @@ export default function RegisterPage() {
               </button>
 
               {/* Error general */}
-              {ui.error && (
-                <p className="text-destructive mt-2 text-center text-sm">
-                  {ui.error.message}
-                </p>
-              )}
             </form>
+            {ui.error && (
+              <Alert
+                text={t(
+                  axios.isAxiosError(ui.error)
+                    ? ui.error.response?.data?.error || ui.error.message
+                    : ui.error.message,
+                )}
+                variant="error"
+                onClick={() => uiResetErrorAction()}
+              />
+            )}
           </div>
         </div>
         {/* Contenedor de la imagen */}

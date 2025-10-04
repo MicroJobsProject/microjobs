@@ -2,6 +2,7 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import { Link } from "react-router";
 import type { AxiosError } from "axios";
+import { useTranslation } from "react-i18next";
 
 // NATIVE
 import { forgotPassword } from "./service";
@@ -13,6 +14,7 @@ interface ErrorResponse {
 }
 
 function ForgotPasswordPage() {
+  const { t } = useTranslation("forgot-password");
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>("");
@@ -27,7 +29,7 @@ function ForgotPasswordPage() {
     event.preventDefault();
 
     if (!isValidEmail(email)) {
-      setError("Please enter a valid email");
+      setError(t("errorValidEmail"));
       return;
     }
 
@@ -39,7 +41,7 @@ function ForgotPasswordPage() {
       setSuccess(true);
     } catch (err) {
       const axiosError = err as AxiosError<ErrorResponse>;
-      setError(axiosError.response?.data?.error || "Error sending email");
+      setError(axiosError.response?.data?.error || t("errorSendingEmail"));
     } finally {
       setLoading(false);
     }
@@ -52,19 +54,18 @@ function ForgotPasswordPage() {
           <div className="w-full max-w-md">
             <div className="bg-container border-border rounded-xl border p-8 shadow-sm">
               <div className="mb-4 flex justify-center">
-                <span className="material-symbols-outlined text-success text-6xl">
+                <span
+                  className="material-symbols-outlined text-success text-6xl"
+                  aria-hidden="true"
+                >
                   mark_email_read
                 </span>
               </div>
-              <h2 className="text-heading">Email Sent</h2>
-              <p className="text-paragraph">
-                Check your email for reset instructions.
-              </p>
-              <p className="text-paragraph text-sm">
-                If you don't see it, check your spam folder.
-              </p>
+              <h2 className="text-heading">{t("emailSent")}</h2>
+              <p className="text-paragraph">{t("emailSentParagraph")}</p>
+              <p className="text-paragraph text-sm">{t("emailSentHelp")}</p>
               <Link to="/login" className="btn btn-outlined mt-4 w-full">
-                Back to Login
+                {t("backToLogin")}
               </Link>
             </div>
           </div>
@@ -81,10 +82,9 @@ function ForgotPasswordPage() {
             <div className="bg-container border-border rounded-xl border p-8 shadow-sm">
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="text-center">
-                  <h2 className="text-heading">Forgot Your Password?</h2>
+                  <h2 className="text-heading">{t("forgotTitle")}</h2>
                   <p className="text-paragraph text-left">
-                    Enter your email and we'll send you instructions to reset
-                    your password.
+                    {t("forgotSubtitle")}
                   </p>
                 </div>
 
@@ -93,11 +93,14 @@ function ForgotPasswordPage() {
                     htmlFor="email"
                     className="text-heading block text-sm font-medium"
                   >
-                    Email
+                    {t("email")}
                   </label>
                   <div className="relative">
                     <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                      <span className="material-symbols-outlined text-paragraph text-xl opacity-60">
+                      <span
+                        className="material-symbols-outlined text-paragraph text-xl opacity-60"
+                        aria-hidden="true"
+                      >
                         mail
                       </span>
                     </div>
@@ -107,7 +110,7 @@ function ForgotPasswordPage() {
                       name="email"
                       value={email}
                       onChange={handleChange}
-                      placeholder="your@email.com"
+                      placeholder={t("emailPlaceholder")}
                       required
                       disabled={loading}
                       className="bg-container text-paragraph placeholder:text-paragraph/60 border-border focus:border-primary focus:ring-primary block w-full rounded-lg border py-2 pr-3 pl-10 text-sm focus:ring-1 focus:outline-none"
@@ -123,24 +126,24 @@ function ForgotPasswordPage() {
                   {loading ? (
                     <div className="flex items-center gap-2">
                       <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
-                      Sending...
+                      {t("sendPending")}
                     </div>
                   ) : (
-                    "Send Instructions"
+                    t("send")
                   )}
                 </button>
 
                 <div className="space-y-2 text-center">
                   <Link to="/login" className="btn btn-outlined block w-full">
-                    Back to Login
+                    {t("backToLogin")}
                   </Link>
                   <p className="text-paragraph text-sm">
-                    Don't have an account?{" "}
+                    {t("signUpParagraph")}{" "}
                     <Link
                       to="/register"
                       className="text-primary hover:text-primary-hover font-medium transition-colors"
                     >
-                      Sign up here
+                      {t("signUpLink")}
                     </Link>
                   </p>
                 </div>
@@ -151,7 +154,7 @@ function ForgotPasswordPage() {
       </div>
 
       {error && (
-        <Alert text={error} variant="error" onClick={() => setError("")} />
+        <Alert text={t(error)} variant="error" onClick={() => setError("")} />
       )}
     </>
   );

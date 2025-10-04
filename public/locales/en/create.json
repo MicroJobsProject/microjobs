@@ -1,0 +1,30 @@
+{
+  "createTitle": "Create New Advert",
+  "createSubtitle": "Post your service need or offer to connect with local professionals and particulars.",
+
+  "Title": "Title",
+  "titlePlaceholder": "eg., Need experienced plumber for kitchen renovation",
+  "Price": "Price",
+  "Advert Type": "Advert Type",
+  "advertTypeOffer": "Offer Service",
+  "advertTypeNeed": "Need Service",
+  "Description": "Description",
+  "Category": "Category",
+
+  "Caring": "Caring",
+  "Cleaning": "Cleaning",
+  "Electrician": "Electrician",
+  "Gardening": "Gardening",
+  "Painting": "Painting",
+  "Personal Training": "Personal Training",
+  "Pets": "Pets",
+  "Plumbing": "Plumbing",
+  "Private Classes": "Private Classes",
+  "Technology": "Technology",
+  "Transport": "Transport",
+  "Video & Photography": "Video & Photography",
+
+  "Categories not found": "Categories not found",
+
+  "Create Advert": "Create Advert"
+}

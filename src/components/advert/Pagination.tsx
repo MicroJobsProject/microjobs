@@ -8,7 +8,7 @@ interface PaginationProps {
 }
 
 function Pagination({ current, total, onPageChange }: PaginationProps) {
-  const { t } = useTranslation();
+  const { t } = useTranslation("advert-pagination");
   const pages = Array.from({ length: total }, (_, i) => i + 1);
 
   if (total <= 1) {

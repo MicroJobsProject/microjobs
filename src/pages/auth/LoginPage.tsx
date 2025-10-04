@@ -15,7 +15,7 @@ function LoginPage() {
   const loginAction = useLoginAction();
   const uiResetErrorAction = useUiResetError();
   const { pending: isFetching, error } = useAppSelector(getUi);
-  const { t } = useTranslation();
+  const { t } = useTranslation("login");
 
   const [credentials, setCredentials] = useState({
     email: "",

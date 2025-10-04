@@ -17,7 +17,7 @@ export const CriticalErrorPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const [searchParams] = useSearchParams();
   const criticalError = useAppSelector(getCriticalError);
-  const { t } = useTranslation();
+  const { t } = useTranslation("error");
 
   const errorCode =
     searchParams.get("code") ||
@@ -72,7 +72,7 @@ export const CriticalErrorPage: React.FC = () => {
 export const NotFoundPage: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { t } = useTranslation();
+  const { t } = useTranslation("error");
 
   const handleGoHome = () => {
     dispatch(errorClearCritical());
@@ -91,7 +91,9 @@ export const NotFoundPage: React.FC = () => {
           <h2 className="!text-destructive !text-9xl">404</h2>
           <h3>{t("notFoundSubtitle")}</h3>
           <p className="text-paragraph mx-auto max-w-md text-lg">
-            {t("notFoundParagraph")}
+            {t(
+              "Sorry, the page you are looking for does not exist or has been moved.",
+            )}
           </p>
         </div>
 

@@ -9,8 +9,8 @@ function LanguageSelector() {
   // const location = useLocation();
   // const navigate = useNavigate();
   const languages = [
-    { code: "en", lang: "English" },
-    { code: "es", lang: "Español" },
+    { code: "en-US", lang: "English" },
+    { code: "es-ES", lang: "Español" },
   ];
 
   function handleChangeLanguage(newLanguage: string) {

@@ -1,0 +1,28 @@
+{
+  "loginTo": "Log In to MicroJobs",
+  "loginToSubtitle": "Sign in by entering your username and password.",
+
+  "email": "Email",
+  "emailPlaceholder": "your@email.com",
+
+  "password": "Password",
+  "passwordPlaceholder": "Your password",
+
+  "forgotPassword": "Forgot password?",
+
+  "login": "Login",
+  "loginFetching": "Logging In...",
+  "remember": "Remember me",
+  "signUpParagraph": "Don't have an account?",
+  "signUpLink": "Sign up here",
+
+  "errorValidEmail": "Please enter a valid email address",
+  "errorPasswordTooShort": "Password must be at least 6 characters",
+  "Email and password are required": "Email and password are required",
+  "Invalid password or email": "Invalid password or email",
+  "Email not registered": "Email not registered",
+  "Successfully logged in": "Successfully logged in",
+  "Server error while logging in": "Server error while logging in",
+  "Successfully logged out": "Successfully logged out",
+  "Server error while logging out": "Server error while logging out"
+}

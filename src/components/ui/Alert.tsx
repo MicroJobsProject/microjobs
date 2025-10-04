@@ -32,7 +32,10 @@ const Alert = ({ text, variant, ...props }: AlertProps) => {
       >
         <div className="flex items-center">
           {icon && (
-            <span className="material-symbols-outlined mr-3 flex items-center justify-center">
+            <span
+              className="material-symbols-outlined mr-3 flex items-center justify-center"
+              aria-hidden="true"
+            >
               {icon}
             </span>
           )}

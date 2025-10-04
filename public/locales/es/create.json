@@ -1,0 +1,30 @@
+{
+  "createTitle": "Crear nuevo anuncio",
+  "createSubtitle": "Publica tu oferta o necesidad de servicio para conectar con profesionales y particulares de tu zona.",
+
+  "Title": "Título",
+  "titlePlaceholder": "p.e., Necesito fontanero con experiencia en renovación de cocinas",
+  "Price": "Precio",
+  "Advert Type": "Tipo de anuncio",
+  "advertTypeOffer": "Ofrece Servicio",
+  "advertTypeNeed": "Necesita Servicio",
+  "Description": "Descripción",
+  "Category": "Categoría",
+
+  "Caring": "Cuidados",
+  "Cleaning": "Limpieza",
+  "Electrician": "Electricista",
+  "Gardening": "Jardinería",
+  "Painting": "Pintura",
+  "Personal Training": "Cuidado Personal",
+  "Pets": "Mascotas",
+  "Plumbing": "Fontanería",
+  "Private Classes": "Clases Particulares",
+  "Technology": "Tecnología",
+  "Transport": "Transporte",
+  "Video & Photography": "Video y Fotografía",
+
+  "Categories not found": "No se encontraron categorías",
+
+  "Create Advert": "Crear anuncio"
+}

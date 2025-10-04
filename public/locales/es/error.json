@@ -1,0 +1,13 @@
+{
+  "errorTitle": "Algo ha ido mal",
+  "Internal server error. Please try again later.": "Error interno en el server. Por favor, inténtelo de nuevo más tarde.",
+  "Service temporarily unavailable. We are working on it.": "Fuera de servicio temporalmente. Estamos trabajando en ello.",
+  "An unexpected error occurred on the server.": "Surgió un error inesperado en el servidor.",
+  "Cannot connect to the server. Please check your internet connection or try again later.": "No se pudo establecer conexión con el servidor. Por favor, compruebe su red o inténtelo de nuevo más tarde.",
+
+  "notFoundSubtitle": "¡Esta página se tomó el día libre!",
+  "Sorry, the page you are looking for does not exist or has been moved.": "Lo sentimos, la página que estabas buscando no existe o su ruta ha sido modificada.",
+
+  "goBack": "Volver",
+  "backToHomepage": "Ir a la página principal"
+}

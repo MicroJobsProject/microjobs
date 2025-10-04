@@ -1,6 +1,7 @@
 //DEPENDENCIES
 import { useState, useEffect, type ChangeEvent, type FormEvent } from "react";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 
 //NATIVE
 import {
@@ -19,6 +20,7 @@ import { changePassword, deleteAccount } from "./service";
 
 //ASSETS
 import PlaceholderImage from "../../assets/placeholder.png";
+import clsx from "clsx";
 
 type Section = "profile" | "security" | "stats";
 
@@ -28,6 +30,7 @@ function ProfilePage() {
   const logout = useLogoutAction();
   const uiResetErrorAction = useUiResetError();
   const { error } = useAppSelector(getUi);
+  const { t } = useTranslation("profile");
 
   const userStats = useUserStats();
   const loadUserStats = useUserStatsLoadAction();
@@ -94,20 +97,19 @@ function ProfilePage() {
     };
 
     if (!passwordData.currentPassword) {
-      newErrors.currentPassword = "Current password is required";
+      newErrors.currentPassword = t("errorPasswordRequired");
     }
 
     if (passwordData.newPassword.length < 6) {
-      newErrors.newPassword = "Password must be at least 6 characters";
+      newErrors.newPassword = t("errorPasswordTooShort");
     }
 
     if (passwordData.currentPassword === passwordData.newPassword) {
-      newErrors.newPassword =
-        "New password must be different from current password";
+      newErrors.newPassword = t("errorPasswordSame");
     }
 
     if (passwordData.newPassword !== passwordData.confirmPassword) {
-      newErrors.confirmPassword = "Passwords do not match";
+      newErrors.confirmPassword = t("errorPasswordNoMatch");
     }
 
     if (
@@ -128,15 +130,14 @@ function ProfilePage() {
         confirmPassword: "",
       });
       setShowChangePassword(false);
-      setSuccessMessage("Password changed successfully!");
+      setSuccessMessage(t("updateSuccess"));
       setShowSuccess(true);
       setTimeout(() => setShowSuccess(false), 3000);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         setPasswordErrors({
           ...passwordErrors,
-          currentPassword:
-            error.response?.data?.error || "Error changing password",
+          currentPassword: t(error.response?.data?.error || "errorUpdate"),
         });
       }
     } finally {
@@ -148,7 +149,7 @@ function ProfilePage() {
     event.preventDefault();
 
     if (!deletePassword) {
-      setDeleteError("Password is required to delete account");
+      setDeleteError(t("errorPasswordRequiredDelete"));
       return;
     }
 
@@ -158,7 +159,7 @@ function ProfilePage() {
       await logout();
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        setDeleteError(error.response?.data?.error || "Error deleting account");
+        setDeleteError(t(error.response?.data?.error || "errorDeletion"));
       }
     } finally {
       setIsProcessing(false);
@@ -181,8 +182,8 @@ function ProfilePage() {
 
   return (
     <>
-      <div className="mx-auto max-w-7xl px-6 py-8">
-        <h2 className="mb-6">Account Settings</h2>
+      <div className="wrapper">
+        <h2 className="!mb-6">{t("Account Settings")}</h2>
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-4">
           {/* Sidebar Navigation */}
@@ -198,10 +199,13 @@ function ProfilePage() {
                         : "text-paragraph hover:bg-border"
                     }`}
                   >
-                    <span className="material-symbols-outlined">
+                    <span
+                      className="material-symbols-outlined"
+                      aria-hidden="true"
+                    >
                       account_circle
                     </span>
-                    <span>Profile</span>
+                    <span>{t("Profile")}</span>
                   </button>
                 </li>
                 <li>
@@ -213,8 +217,13 @@ function ProfilePage() {
                         : "text-paragraph hover:bg-border"
                     }`}
                   >
-                    <span className="material-symbols-outlined">lock</span>
-                    <span>Security</span>
+                    <span
+                      className="material-symbols-outlined"
+                      aria-hidden="true"
+                    >
+                      lock
+                    </span>
+                    <span>{t("Security")}</span>
                   </button>
                 </li>
                 <li>
@@ -226,8 +235,13 @@ function ProfilePage() {
                         : "text-paragraph hover:bg-border"
                     }`}
                   >
-                    <span className="material-symbols-outlined">bar_chart</span>
-                    <span>Statistics</span>
+                    <span
+                      className="material-symbols-outlined"
+                      aria-hidden="true"
+                    >
+                      bar_chart
+                    </span>
+                    <span>{t("Statistics")}</span>
                   </button>
                 </li>
                 <li className="border-border border-t pt-2">
@@ -235,8 +249,13 @@ function ProfilePage() {
                     onClick={handleLogout}
                     className="text-paragraph hover:bg-border flex w-full items-center gap-3 rounded-lg px-4 py-2 text-left transition"
                   >
-                    <span className="material-symbols-outlined">logout</span>
-                    <span>Log Out</span>
+                    <span
+                      className="material-symbols-outlined"
+                      aria-hidden="true"
+                    >
+                      logout
+                    </span>
+                    <span>{t("Log Out")}</span>
                   </button>
                 </li>
               </ul>
@@ -248,7 +267,7 @@ function ProfilePage() {
             {/* Profile Section */}
             {activeSection === "profile" && (
               <div className="bg-container border-border min-h-[500px] rounded-xl border p-8 shadow-sm">
-                <h3 className="mb-6">Profile Information</h3>
+                <h3 className="mb-6">{t("Profile Information")}</h3>
 
                 <div className="flex items-center gap-6">
                   <div className="relative">
@@ -263,7 +282,10 @@ function ProfilePage() {
                       className="border-border bg-container absolute right-0 bottom-0 flex h-8 w-8 cursor-not-allowed items-center justify-center rounded-full border opacity-50"
                       title="Image upload coming soon"
                     >
-                      <span className="material-symbols-outlined text-paragraph text-base">
+                      <span
+                        className="material-symbols-outlined text-paragraph text-base"
+                        aria-hidden="true"
+                      >
                         add_a_photo
                       </span>
                     </button>
@@ -275,7 +297,7 @@ function ProfilePage() {
                     <p className="text-paragraph">{user.email}</p>
                     {user.createdAt && (
                       <p className="text-paragraph text-sm">
-                        Member since{" "}
+                        {t("Member since")}{" "}
                         {new Date(user.createdAt).toLocaleDateString()}
                       </p>
                     )}
@@ -286,13 +308,13 @@ function ProfilePage() {
                   <div className="grid gap-4 md:grid-cols-2">
                     <div>
                       <label className="text-paragraph mb-2 block text-sm font-medium">
-                        Username
+                        {t("Username")}
                       </label>
                       <p className="text-heading">{user.username}</p>
                     </div>
                     <div>
                       <label className="text-paragraph mb-2 block text-sm font-medium">
-                        Email
+                        {t("Email")}
                       </label>
                       <p className="text-heading">{user.email}</p>
                     </div>
@@ -308,16 +330,16 @@ function ProfilePage() {
                 <div className="border-border border-b p-8">
                   <div className="mb-4 flex items-center justify-between">
                     <div>
-                      <h3 className="mb-1">Change Password</h3>
+                      <h3 className="mb-1">{t("Change Password")}</h3>
                       <p className="text-paragraph text-sm">
-                        Update your account password
+                        {t("Update your account password")}
                       </p>
                     </div>
                     <button
                       onClick={() => setShowChangePassword(!showChangePassword)}
                       className="btn btn-secondary text-sm"
                     >
-                      {showChangePassword ? "Cancel" : "Change"}
+                      {showChangePassword ? t("Cancel") : t("Change")}
                     </button>
                   </div>
 
@@ -332,7 +354,7 @@ function ProfilePage() {
                             htmlFor="currentPassword"
                             className="text-heading block text-sm font-medium"
                           >
-                            Current Password
+                            {t("Current Password")}
                           </label>
                           <div className="relative">
                             <input
@@ -341,11 +363,10 @@ function ProfilePage() {
                               name="currentPassword"
                               value={passwordData.currentPassword}
                               onChange={handlePasswordChange}
-                              className={`bg-container text-paragraph placeholder:text-paragraph/60 block w-full rounded-lg border px-3 py-2 pr-10 text-sm focus:ring-1 focus:outline-none ${
-                                passwordErrors.currentPassword
-                                  ? "border-destructive focus:border-destructive focus:ring-destructive"
-                                  : "border-border focus:border-primary focus:ring-primary"
-                              }`}
+                              className={clsx(
+                                "input",
+                                passwordErrors.currentPassword && "input-error",
+                              )}
                             />
                             <button
                               type="button"
@@ -363,7 +384,7 @@ function ProfilePage() {
                           </div>
                           {passwordErrors.currentPassword && (
                             <p className="text-destructive text-sm">
-                              {passwordErrors.currentPassword}
+                              {t(passwordErrors.currentPassword)}
                             </p>
                           )}
                         </div>
@@ -374,7 +395,7 @@ function ProfilePage() {
                               htmlFor="newPassword"
                               className="text-heading block text-sm font-medium"
                             >
-                              New Password
+                              {t("New Password")}
                             </label>
                             <div className="relative">
                               <input
@@ -383,11 +404,10 @@ function ProfilePage() {
                                 name="newPassword"
                                 value={passwordData.newPassword}
                                 onChange={handlePasswordChange}
-                                className={`bg-container text-paragraph placeholder:text-paragraph/60 block w-full rounded-lg border px-3 py-2 pr-10 text-sm focus:ring-1 focus:outline-none ${
-                                  passwordErrors.newPassword
-                                    ? "border-destructive focus:border-destructive focus:ring-destructive"
-                                    : "border-border focus:border-primary focus:ring-primary"
-                                }`}
+                                className={clsx(
+                                  "input",
+                                  passwordErrors.newPassword && "input-error",
+                                )}
                               />
                               <button
                                 type="button"
@@ -405,7 +425,7 @@ function ProfilePage() {
                             </div>
                             {passwordErrors.newPassword && (
                               <p className="text-destructive text-sm">
-                                {passwordErrors.newPassword}
+                                {t(passwordErrors.newPassword)}
                               </p>
                             )}
                           </div>
@@ -415,7 +435,7 @@ function ProfilePage() {
                               htmlFor="confirmPassword"
                               className="text-heading block text-sm font-medium"
                             >
-                              Confirm New Password
+                              {t("Confirm New Password")}
                             </label>
                             <div className="relative">
                               <input
@@ -424,11 +444,11 @@ function ProfilePage() {
                                 name="confirmPassword"
                                 value={passwordData.confirmPassword}
                                 onChange={handlePasswordChange}
-                                className={`bg-container text-paragraph placeholder:text-paragraph/60 block w-full rounded-lg border px-3 py-2 pr-10 text-sm focus:ring-1 focus:outline-none ${
-                                  passwordErrors.confirmPassword
-                                    ? "border-destructive focus:border-destructive focus:ring-destructive"
-                                    : "border-border focus:border-primary focus:ring-primary"
-                                }`}
+                                className={clsx(
+                                  "input",
+                                  passwordErrors.confirmPassword &&
+                                    "input-error",
+                                )}
                               />
                               <button
                                 type="button"
@@ -446,7 +466,7 @@ function ProfilePage() {
                             </div>
                             {passwordErrors.confirmPassword && (
                               <p className="text-destructive text-sm">
-                                {passwordErrors.confirmPassword}
+                                {t(passwordErrors.confirmPassword)}
                               </p>
                             )}
                           </div>
@@ -465,10 +485,10 @@ function ProfilePage() {
                             {isProcessing ? (
                               <div className="flex items-center gap-2">
                                 <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
-                                Updating...
+                                {t("Updating...")}
                               </div>
                             ) : (
-                              "Update Password"
+                              t("Update Password")
                             )}
                           </button>
                         </div>
@@ -481,16 +501,18 @@ function ProfilePage() {
                 <div className="p-8">
                   <div className="flex items-center justify-between">
                     <div>
-                      <h3 className="text-destructive mb-1">Delete Account</h3>
+                      <h3 className="text-destructive mb-1">
+                        {t("Delete Account")}
+                      </h3>
                       <p className="text-paragraph text-sm">
-                        Permanently delete your account and all data
+                        {t("Permanently delete your account and all data")}
                       </p>
                     </div>
                     <button
                       onClick={() => setShowDeleteAccount(true)}
                       className="btn btn-destructive text-sm"
                     >
-                      Delete
+                      {t("Delete")}
                     </button>
                   </div>
                 </div>
@@ -504,14 +526,13 @@ function ProfilePage() {
                 setDeletePassword("");
                 setDeleteError("");
               }}
-              title="Confirm Account Deletion"
+              title={t("Confirm Account Deletion")}
               variant="destructive"
             >
               <form onSubmit={handleDeleteAccount} className="space-y-4">
                 <div className="bg-destructive/10 border-destructive rounded-lg border p-4">
                   <p className="text-destructive text-sm font-medium">
-                    Warning: This action cannot be undone. All your data will be
-                    permanently deleted.
+                    {t("warningDeletion")}
                   </p>
                 </div>
 
@@ -520,7 +541,7 @@ function ProfilePage() {
                     htmlFor="deletePassword"
                     className="text-heading block text-sm font-medium"
                   >
-                    Enter your password to confirm
+                    {t("Enter your password to confirm")}
                   </label>
                   <div className="relative">
                     <input
@@ -531,11 +552,7 @@ function ProfilePage() {
                         setDeletePassword(e.target.value);
                         setDeleteError("");
                       }}
-                      className={`bg-container text-paragraph placeholder:text-paragraph/60 block w-full rounded-lg border px-3 py-2 pr-10 text-sm focus:ring-1 focus:outline-none ${
-                        deleteError
-                          ? "border-destructive focus:border-destructive focus:ring-destructive"
-                          : "border-border focus:border-primary focus:ring-primary"
-                      }`}
+                      className={clsx("input", deleteError && "input-error")}
                     />
                     <button
                       type="button"
@@ -548,7 +565,7 @@ function ProfilePage() {
                     </button>
                   </div>
                   {deleteError && (
-                    <p className="text-destructive text-sm">{deleteError}</p>
+                    <p className="text-destructive text-sm">{t(deleteError)}</p>
                   )}
                 </div>
 
@@ -562,7 +579,7 @@ function ProfilePage() {
                     }}
                     className="btn btn-secondary"
                   >
-                    Cancel
+                    {t("Cancel")}
                   </button>
                   <button
                     type="submit"
@@ -574,10 +591,10 @@ function ProfilePage() {
                     {isProcessing ? (
                       <div className="flex items-center gap-2">
                         <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
-                        Deleting...
+                        {t("Deleting...")}
                       </div>
                     ) : (
-                      "Delete My Account"
+                      t("Delete My Account")
                     )}
                   </button>
                 </div>
@@ -587,22 +604,25 @@ function ProfilePage() {
             {/* Statistics Section */}
             {activeSection === "stats" && (
               <div className="bg-container border-border min-h-[500px] rounded-xl border p-8 shadow-sm">
-                <h3 className="mb-6">Account Statistics</h3>
+                <h3 className="mb-6">{t("Account Statistics")}</h3>
 
                 <div className="bg-background rounded-lg p-6">
                   <div className="flex items-center gap-4">
-                    <span className="material-symbols-outlined text-primary text-5xl">
+                    <span
+                      className="material-symbols-outlined text-primary text-5xl"
+                      aria-hidden="true"
+                    >
                       campaign
                     </span>
                     <div>
                       <p className="text-paragraph mb-1 text-sm">
-                        Total Adverts
+                        {t("Total Adverts")}
                       </p>
                       <p className="text-heading text-4xl font-bold">
                         {userStats.loaded ? userStats.advertCount : "..."}
                       </p>
                       <p className="text-paragraph text-xs">
-                        Adverts created with this account
+                        {t("Adverts created with this account")}
                       </p>
                     </div>
                   </div>
@@ -623,11 +643,11 @@ function ProfilePage() {
 
       {error && (
         <Alert
-          text={
+          text={t(
             axios.isAxiosError(error)
               ? error.response?.data?.error || error.message
-              : error.message
-          }
+              : error.message,
+          )}
           variant="error"
           onClick={() => uiResetErrorAction()}
         />
