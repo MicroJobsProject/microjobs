@@ -2,6 +2,7 @@
 import { useState, useEffect, type ChangeEvent, type FormEvent } from "react";
 import { Link, useSearchParams, useNavigate } from "react-router";
 import type { AxiosError } from "axios";
+import { useTranslation } from "react-i18next";
 
 // NATIVE
 import { useResetPasswordAction, useAuth } from "../../store/hooks";
@@ -12,6 +13,7 @@ interface ErrorResponse {
 }
 
 function ResetPasswordPage() {
+  const { t } = useTranslation("forgot-password");
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
