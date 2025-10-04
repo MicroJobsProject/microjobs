@@ -7,56 +7,61 @@ import { useAppSelector } from "../../store";
 import { getCriticalError } from "../../store/selectors";
 import { useClearCriticalError } from "../../store/hooks";
 import { getErrorCodeFromRoute } from "../../utils/error-utils";
+import { useTranslation } from "react-i18next";
 
 export function ErrorPages() {
   const navigate = useNavigate();
   const location = useLocation();
   const criticalError = useAppSelector(getCriticalError);
   const clearCriticalError = useClearCriticalError();
+  const { t } = useTranslation("error");
 
   const errorCode = getErrorCodeFromRoute(location.pathname);
   const fromPath = location.state?.from || "/";
 
   const errorConfig = {
     404: {
-      title: "Not Found!",
-      subtitle: "This page took a day off",
-      message:
+      title: t("Not Found!"),
+      subtitle: t("This page took a day off"),
+      message: t(
         "Sorry, the page you were looking for doesn't exist or has been removed.",
+      ),
       icon: "search_off",
       showGoBack: true,
       bgGradient: "from-primary/10 to-transparent",
     },
     500: {
-      title: "Internal Server Error!",
-      subtitle: "Oops! Something went wrong on our end",
-      message:
+      title: t("Internal Server Error!"),
+      subtitle: t("Oops! Something went wrong on our end"),
+      message: t(
         "There was an error processing your request. Please try again later. If you need immediate help, let us know.",
+      ),
       icon: "error",
       showGoBack: false,
       bgGradient: "from-destructive/10 to-transparent",
     },
     503: {
-      title: "Service Unavailable",
-      subtitle: "We're temporarily down for maintenance",
-      message:
+      title: t("Service Unavailable"),
+      subtitle: t("We're temporarily down for maintenance"),
+      message: t(
         "Our service is temporarily unavailable. We're working on it and will be back shortly.",
+      ),
       icon: "build_circle",
       showGoBack: false,
       bgGradient: "from-warning/10 to-transparent",
     },
     401: {
-      title: "Unauthorized",
-      subtitle: "Access denied",
-      message: "You need to be logged in to access this resource.",
+      title: t("Unauthorized"),
+      subtitle: t("Access denied"),
+      message: t("You need to be logged in to access this resource."),
       icon: "lock",
       showGoBack: true,
       bgGradient: "from-primary/10 to-transparent",
     },
     403: {
-      title: "Forbidden",
-      subtitle: "You shall not pass!",
-      message: "You don't have permission to access this resource.",
+      title: t("Forbidden"),
+      subtitle: t("You shall not pass!"),
+      message: t("You don't have permission to access this resource."),
       icon: "block",
       showGoBack: true,
       bgGradient: "from-destructive/10 to-transparent",
@@ -103,7 +108,7 @@ export function ErrorPages() {
   };
 
   return (
-    <div className="wrapper flex min-h-screen items-center justify-center">
+    <div className="wrapper flex items-center justify-center">
       <div className="w-full max-w-2xl">
         <div
           className={`absolute inset-0 bg-gradient-to-br ${config.bgGradient} pointer-events-none opacity-50`}
@@ -145,18 +150,26 @@ export function ErrorPages() {
                     onClick={handleGoBack}
                     className="btn btn-outlined w-full min-w-40 sm:w-auto"
                   >
-                    <span className="material-symbols-outlined">
+                    <span
+                      className="material-symbols-outlined"
+                      aria-hidden="true"
+                    >
                       arrow_back
                     </span>
-                    Go Back
+                    {t("Go Back")}
                   </button>
                 )}
                 <button
                   onClick={handleGoHome}
                   className="btn btn-primary w-full min-w-40 sm:w-auto"
                 >
-                  <span className="material-symbols-outlined">home</span>
-                  Go Home
+                  <span
+                    className="material-symbols-outlined"
+                    aria-hidden="true"
+                  >
+                    home
+                  </span>
+                  {t("Go Home")}
                 </button>
               </div>
             </div>
@@ -164,7 +177,7 @@ export function ErrorPages() {
 
           <div className="mt-8 text-center">
             <p className="text-paragraph text-sm opacity-60">
-              Error Code: {errorCode}
+              {t("Error Code")}: {errorCode}
             </p>
           </div>
         </div>
