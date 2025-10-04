@@ -1,7 +1,7 @@
 import { useAppDispatch } from "../../store";
 import type { AdvertData } from "./types";
-import { advertsCreate } from "../../store/actions";
-import type { FormEvent } from "react";
+import { advertsCategories, advertsCreate } from "../../store/actions";
+import { useEffect, type FormEvent } from "react";
 import { getAdvertsCategories } from "../../store/selectors";
 import { useAppSelector } from "../../store";
 import AdvertCategory from "../../components/advert/AdvertCategory";
@@ -11,6 +11,12 @@ function NewAdvertPage() {
   const { t } = useTranslation("create");
   const categories = useAppSelector(getAdvertsCategories);
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (!categories.length) {
+      dispatch(advertsCategories());
+    }
+  }, [dispatch, categories.length]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
