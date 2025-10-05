@@ -1,31 +1,39 @@
 import { useAppDispatch } from "../../store";
-import type { AdvertData } from "./types";
-import { advertsCreate } from "../../store/actions";
-import type { FormEvent } from "react";
+
+import { advertsCategories, advertsCreate } from "../../store/actions";
+import { useEffect, useState, type FormEvent } from "react";
 import { getAdvertsCategories } from "../../store/selectors";
 import { useAppSelector } from "../../store";
 import AdvertCategory from "../../components/advert/AdvertCategory";
 import { useTranslation } from "react-i18next";
+import PhotoInput from "../../components/advert/PhotoInput";
 
 function NewAdvertPage() {
   const { t } = useTranslation("create");
   const categories = useAppSelector(getAdvertsCategories);
   const dispatch = useAppDispatch();
 
+  const maxDescriptionChars = 600;
+  const [description, setDescription] = useState("");
+
+  useEffect(() => {
+    if (!categories.length) {
+      dispatch(advertsCategories());
+    }
+  }, [dispatch, categories.length]);
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
     const data = new FormData(form);
-    const newAdvertData: AdvertData = {
-      name: data.get("name") as string,
-      price: data.get("price") as string,
-      offer: data.get("serviceRadio") == "offer" ? "true" : "false",
-      category: data.get("category") as string,
-      description: data.get("description") as string,
-    };
-    console.log(newAdvertData);
+    data.append("offer", form.offer.value === "offer" ? "true" : "false");
 
-    await dispatch(advertsCreate(newAdvertData));
+    console.log("FormData entries:");
+    for (const pair of data.entries()) {
+      console.log(`${pair[0]}: ${pair[1]}`);
+    }
+
+    await dispatch(advertsCreate(data));
   }
 
   return (
@@ -55,13 +63,17 @@ function NewAdvertPage() {
               <label htmlFor="price" className="input-label">
                 {t("Price")}*
               </label>
-              <input
-                type="number"
-                name="price"
-                placeholder="0.00€"
-                required
-                className="input"
-              />
+              <div className="flex w-full items-center overflow-hidden rounded-lg border border-gray-300">
+                <input
+                  type="number"
+                  name="price"
+                  placeholder="0.00"
+                  required
+                  step={0.01}
+                  className="flex-1 px-4 py-2 focus:outline-none"
+                />
+                <span className="px-3 whitespace-nowrap">{t("€/hr")}</span>
+              </div>
             </div>
             <div>
               <fieldset
@@ -98,17 +110,29 @@ function NewAdvertPage() {
             </div>
             <div className="flex flex-col lg:col-span-2">
               <label htmlFor="description" className="input-label">
-                {t("Description")}
+                {t("Description")}*
               </label>
-
-              <input
-                type="text"
+              <textarea
+                id="description"
                 name="description"
-                placeholder={t("Description")}
+                placeholder={
+                  t("Enter a detailed description (max ") +
+                  maxDescriptionChars +
+                  t(" characters)")
+                }
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                maxLength={maxDescriptionChars}
+                rows={6}
                 required
-                className="input"
+                className="w-full resize-none rounded-lg border border-gray-300 p-3 text-sm placeholder-gray-400 focus:ring-2 focus:ring-blue-400 focus:outline-none"
               />
+              <div className="mt-1 text-right text-xs text-gray-500">
+                {description.length}/{maxDescriptionChars} characters
+              </div>
             </div>
+
+            <PhotoInput></PhotoInput>
 
             <fieldset
               name="categoryFieldset"
@@ -144,7 +168,5 @@ function NewAdvertPage() {
     </>
   );
 }
-//TODO: add photo upload
-//TODO: add category select, not charging after refresh page
 
 export default NewAdvertPage;

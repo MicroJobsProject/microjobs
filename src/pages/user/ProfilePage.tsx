@@ -2,7 +2,6 @@
 import { useState, useEffect, type ChangeEvent, type FormEvent } from "react";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
-import { Link, NavLink } from "react-router";
 import clsx from "clsx";
 
 //NATIVE
@@ -13,110 +12,18 @@ import {
   useUiResetError,
   useUserStats,
   useUserStatsLoadAction,
-  useAdvertsLoadAction,
 } from "../../store/hooks";
 import { useAppSelector } from "../../store";
-import { getAdverts, getPagination, getUi } from "../../store/selectors";
+import { getUi } from "../../store/selectors";
 import Alert from "../../components/ui/Alert";
-import AdvertCard from "../../components/advert/AdvertCard";
-import Pagination from "../../components/advert/Pagination";
 import Modal from "../../components/ui/Modal";
 import { changePassword, deleteAccount } from "./service";
-import type { User } from "./types";
+import UserAdvertsList from "../../components/user/UserAdvertsList";
 
 //ASSETS
 import PlaceholderImage from "../../assets/placeholder.png";
 
 type Section = "profile" | "security" | "stats";
-
-const UserAdverts = ({ user }: { user: User }) => {
-  const advertsLoadAction = useAdvertsLoadAction();
-  const adverts = useAppSelector(getAdverts);
-  const uiResetErrorAction = useUiResetError();
-  const { pending, error } = useAppSelector(getUi);
-  const { totalPages } = useAppSelector(getPagination);
-  const [page, setPage] = useState(1);
-  const { t } = useTranslation("home");
-
-  if (!user) {
-    return (
-      <>
-        <div className="flex flex-col items-center justify-center gap-4">
-          <span
-            className="material-symbols-outlined text-heading !text-7xl"
-            aria-hidden="true"
-          >
-            search_off
-          </span>
-          <h3 className="font-bold" role="heading">
-            {t("noAdvertsTitle")}
-          </h3>
-          <div className="text-center">
-            <p>{t("noAdvertsSubtitle")}</p>
-            <p>{t("noAdvertsParagraph")}</p>
-          </div>
-          <div className="flex gap-4">
-            <NavLink to="/advert/new" className="btn btn-primary">
-              <span className="material-symbols-outlined" aria-hidden="true">
-                add
-              </span>
-              <span>{t("newAdvert")}</span>
-            </NavLink>
-          </div>
-        </div>
-      </>
-    );
-  }
-  function handlePageChange(newPage: number) {
-    setPage(newPage);
-  }
-
-  useEffect(() => {
-    const params: Record<string, string> = {
-      page: page.toString(),
-      owner: user.username,
-    };
-
-    advertsLoadAction(params);
-  }, [page]);
-
-  return (
-    <>
-      <section>
-        <h2 className="!mb-6">{t("userAdverts")}</h2>
-        {pending ? (
-          <p>Loading...</p>
-        ) : (
-          adverts?.length && (
-            <ul className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {adverts.map((advert) => (
-                <li key={advert._id}>
-                  <Link to={`/adverts/${advert._id}`}>
-                    <AdvertCard advert={advert} />
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          )
-        )}
-      </section>
-      <section>
-        <Pagination
-          current={page}
-          total={totalPages}
-          onPageChange={handlePageChange}
-        />
-      </section>
-      {error && (
-        <Alert
-          text={error.message}
-          variant="error"
-          onClick={() => uiResetErrorAction()}
-        />
-      )}
-    </>
-  );
-};
 
 function ProfilePage() {
   const user = useUser();
@@ -278,9 +185,7 @@ function ProfilePage() {
     <>
       <div className="wrapper">
         <h2 className="!mb-6">{t("Account Settings")}</h2>
-
         <div className="mb-6 grid grid-cols-1 gap-6 lg:grid-cols-4">
-          {/* Sidebar Navigation */}
           <aside className="lg:col-span-1">
             <nav className="bg-container border-border top-24 rounded-xl border p-4 shadow-sm">
               <ul className="space-y-2">
@@ -356,9 +261,7 @@ function ProfilePage() {
             </nav>
           </aside>
 
-          {/* Main Content */}
           <main className="lg:col-span-3">
-            {/* Profile Section */}
             {activeSection === "profile" && (
               <div className="bg-container border-border min-h-[500px] rounded-xl border p-8 shadow-sm">
                 <h3 className="mb-6">{t("Profile Information")}</h3>
@@ -417,10 +320,8 @@ function ProfilePage() {
               </div>
             )}
 
-            {/* Security Section */}
             {activeSection === "security" && (
               <div className="bg-container border-border min-h-[500px] rounded-xl border shadow-sm">
-                {/* Change Password */}
                 <div className="border-border border-b p-8">
                   <div className="mb-4 flex items-center justify-between">
                     <div>
@@ -431,7 +332,7 @@ function ProfilePage() {
                     </div>
                     <button
                       onClick={() => setShowChangePassword(!showChangePassword)}
-                      className="btn btn-secondary text-sm"
+                      className="btn btn-outlined text-sm"
                     >
                       {showChangePassword ? t("Cancel") : t("Change")}
                     </button>
@@ -591,7 +492,6 @@ function ProfilePage() {
                   )}
                 </div>
 
-                {/* Delete Account */}
                 <div className="p-8">
                   <div className="flex items-center justify-between">
                     <div>
@@ -695,7 +595,6 @@ function ProfilePage() {
               </form>
             </Modal>
 
-            {/* Statistics Section */}
             {activeSection === "stats" && (
               <div className="bg-container border-border min-h-[500px] rounded-xl border p-8 shadow-sm">
                 <h3 className="mb-6">{t("Account Statistics")}</h3>
@@ -725,7 +624,7 @@ function ProfilePage() {
             )}
           </main>
         </div>
-        <UserAdverts user={user} />
+        <UserAdvertsList user={user} />
       </div>
 
       {showSuccess && (

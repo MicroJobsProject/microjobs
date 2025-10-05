@@ -10,15 +10,6 @@ export interface Advert {
   updatedAt: string;
 }
 
-export interface AdvertData {
-  name: string;
-  price: string;
-  offer: string;
-  category: string;
-  photo?: File;
-  description: string;
-}
-
 export interface AdvertResponse {
   results: Advert[];
   total: number;

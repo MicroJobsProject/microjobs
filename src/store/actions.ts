@@ -8,7 +8,6 @@ import type { Credentials } from "../pages/auth/types";
 import type { User, UpdateProfileData, UserStats } from "../pages/user/types";
 import type {
   Advert,
-  AdvertData,
   AdvertCategory,
   AdvertResponse,
 } from "../pages/advert/types";
@@ -46,7 +45,6 @@ type AuthLogout = {
 };
 
 // FORGOT PASSWORD.................................
-
 type AuthForgotPasswordPending = {
   type: "auth/forgotPassword/pending";
 };
@@ -158,8 +156,22 @@ type AdvertsCreatedRejected = {
   payload: Error;
 };
 
-//ADVERTS (Categories)...................................
+//ADVERTS (delete)...................................
+type AdvertsDeletePending = {
+  type: "adverts/delete/pending";
+};
 
+type AdvertsDeleteFulfilled = {
+  type: "adverts/delete/fulfilled";
+  payload: string[];
+};
+
+type AdvertsDeleteRejected = {
+  type: "adverts/delete/rejected";
+  payload: Error;
+};
+
+// ADVERTS (Categories)...................................
 type AdvertsCategoriesPending = {
   type: "adverts/categories/pending";
 };
@@ -344,6 +356,23 @@ export const advertsCreatedRejected = (
   error: Error,
 ): AdvertsCreatedRejected => ({
   type: "adverts/created/rejected",
+  payload: error,
+});
+
+// ADVERTS (delete)...................................
+export const advertsDeletePending = (): AdvertsDeletePending => ({
+  type: "adverts/delete/pending",
+});
+
+export const advertsDeleteFulfilled = (
+  advertIds: string[],
+): AdvertsDeleteFulfilled => ({
+  type: "adverts/delete/fulfilled",
+  payload: advertIds,
+});
+
+export const advertsDeleteRejected = (error: Error): AdvertsDeleteRejected => ({
+  type: "adverts/delete/rejected",
   payload: error,
 });
 
@@ -536,7 +565,7 @@ export function userStatsLoad(): AppThunk<Promise<void>> {
   };
 }
 
-//ADVERTS (Load)...................................
+// ADVERTS (Load)...................................
 export function advertsLoad(
   params?: Record<string, string>,
 ): AppThunk<Promise<void>> {
@@ -555,7 +584,7 @@ export function advertsLoad(
   };
 }
 
-//ADVERTS (Categories)...................................
+// ADVERTS (Categories)...................................
 export function advertsCategories(): AppThunk<Promise<void>> {
   return async function (dispatch, _getState, { api }) {
     dispatch(advertsCategoriesPending());
@@ -572,11 +601,11 @@ export function advertsCategories(): AppThunk<Promise<void>> {
   };
 }
 
-//ADVERTS (create)...................................
+// ADVERTS (create)...................................
 export function advertsCreate(
-  newAdvertData: AdvertData,
-): AppThunk<Promise<Advert | undefined>> {
-  return async function (dispatch, _getState, { api /*router*/ }) {
+  newAdvertData: FormData,
+): AppThunk<Promise<Advert>> {
+  return async function (dispatch, _getState, { api, router }) {
     try {
       // Manage advertsCreatePending
       const createdAdvert = await api.adverts.createAdvert(newAdvertData);
@@ -585,6 +614,7 @@ export function advertsCreate(
       // const advert = await api.adverts.getAdvert(createdAdvert.id.toString());
       // dispatch(advertsCreatedFulfilled(advert));
       // router.navigate(`/adverts/${createdAdvert.id}`);
+      router.navigate(`/home/`);
       return createdAdvert.data; //advert;
     } catch (error) {
       // Manage advertsCreateRejected
@@ -612,6 +642,42 @@ export function advertsDetail(
         dispatch(advertsDetailRejected(error));
       }
       throw error;
+    }
+  };
+}
+
+// ADVERTS (delete single)...................................
+export function advertDelete(advertId: string): AppThunk<Promise<void>> {
+  return async function (dispatch, _getState, { api }) {
+    dispatch(advertsDeletePending());
+    try {
+      await api.adverts.deleteAdvert(advertId);
+      dispatch(advertsDeleteFulfilled([advertId]));
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        dispatch(advertsDeleteRejected(error));
+      } else if (error instanceof Error) {
+        dispatch(advertsDeleteRejected(error));
+      }
+    }
+  };
+}
+
+// ADVERTS (delete multiple)...................................
+export function advertsDeleteMultiple(
+  advertIds: string[],
+): AppThunk<Promise<void>> {
+  return async function (dispatch, _getState, { api }) {
+    dispatch(advertsDeletePending());
+    try {
+      await api.adverts.deleteMultipleAdverts(advertIds);
+      dispatch(advertsDeleteFulfilled(advertIds));
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        dispatch(advertsDeleteRejected(error));
+      } else if (error instanceof Error) {
+        dispatch(advertsDeleteRejected(error));
+      }
     }
   };
 }
@@ -658,6 +724,10 @@ export type Actions =
 | AdvertsLoadRejected
 | AdvertsCreatedFulfilled
 | AdvertsCreatedRejected
+| AdvertsCreatedRejected
+| AdvertsDeletePending
+| AdvertsDeleteFulfilled
+| AdvertsDeleteRejected
 | AdvertsCategoriesPending
 | AdvertsCategoriesFulfilled
 | AdvertsCategoriesRejected

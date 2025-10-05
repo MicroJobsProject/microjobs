@@ -1,10 +1,5 @@
 import { client } from "../../api/client";
-import type {
-  AdvertData,
-  AdvertCategory,
-  AdvertResponse,
-  Advert,
-} from "./types";
+import type { AdvertCategory, AdvertResponse, Advert } from "./types";
 
 export async function getAdverts(params?: Record<string, string>) {
   const query = new URLSearchParams(params).toString();
@@ -13,9 +8,8 @@ export async function getAdverts(params?: Record<string, string>) {
   return response.data;
 }
 
-export const createAdvert = async (advertData: AdvertData) => {
-  console.log("advertData in service:", advertData);
-  const response = await client.post("/api/adverts", advertData);
+export const createAdvert = async (formData: FormData) => {
+  const response = await client.post("/api/adverts", formData);
 
   return response;
 };
@@ -26,6 +20,16 @@ export async function getAdvertsCategories() {
   );
 
   return response.data;
+}
+
+export async function deleteAdvert(advertId: string): Promise<void> {
+  await client.delete(`/api/adverts/${advertId}`);
+}
+
+export async function deleteMultipleAdverts(
+  advertIds: string[],
+): Promise<void> {
+  await client.post("/api/adverts/bulk-delete", { advertIds });
 }
 
 export const getAdvertById = async (advertId: string) => {

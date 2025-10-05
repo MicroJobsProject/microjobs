@@ -1,6 +1,7 @@
 //DEPENDENCIES
 import { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router";
+import { useTranslation } from "react-i18next";
 
 //NATIVE
 import Page from "../components/layout/Page";
@@ -12,7 +13,6 @@ import Pagination from "../components/advert/Pagination";
 import Alert from "../components/ui/Alert";
 import AdvertFilter from "../components/advert/AdvertFilter";
 import type { Filter } from "./advert/types";
-import { useTranslation } from "react-i18next";
 import { seoNormalize } from "../utils/seoNormalize";
 
 export default function Home() {
