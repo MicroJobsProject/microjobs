@@ -111,6 +111,23 @@ export function adverts(
   if (action.type === "adverts/load/fulfilled") {
     return { ...state, loaded: true, data: action.payload };
   }
+
+  if (action.type === "adverts/delete/fulfilled") {
+    const filteredResults = state.data.results.filter(
+      (advert) => !action.payload.includes(advert._id),
+    );
+
+    return {
+      ...state,
+      data: {
+        ...state.data,
+        results: filteredResults,
+        total: filteredResults.length,
+        totalAdverts: state.data.totalAdverts - action.payload.length,
+      },
+    };
+  }
+
   return state;
 }
 
@@ -141,7 +158,8 @@ export function ui(state = defaultState.ui, action: Actions): State["ui"] {
     action.type === "user/load/pending" ||
     action.type === "user/update/pending" ||
     action.type === "user/stats/pending" ||
-    action.type === "adverts/load/pending"
+    action.type === "adverts/load/pending" ||
+    action.type === "adverts/delete/pending"
   ) {
     return { pending: true, error: null, successMessage: null };
   }
@@ -152,7 +170,8 @@ export function ui(state = defaultState.ui, action: Actions): State["ui"] {
     action.type === "user/load/fulfilled" ||
     action.type === "user/update/fulfilled" ||
     action.type === "user/stats/fulfilled" ||
-    action.type === "adverts/load/fulfilled"
+    action.type === "adverts/load/fulfilled" ||
+    action.type === "adverts/delete/fulfilled"
   ) {
     return { pending: false, error: null, successMessage: null };
   }

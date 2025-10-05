@@ -46,7 +46,6 @@ type AuthLogout = {
 };
 
 // FORGOT PASSWORD.................................
-
 type AuthForgotPasswordPending = {
   type: "auth/forgotPassword/pending";
 };
@@ -158,8 +157,22 @@ type AdvertsCreatedRejected = {
   payload: Error;
 };
 
-//ADVERTS (Categories)...................................
+//ADVERTS (delete)...................................
+type AdvertsDeletePending = {
+  type: "adverts/delete/pending";
+};
 
+type AdvertsDeleteFulfilled = {
+  type: "adverts/delete/fulfilled";
+  payload: string[];
+};
+
+type AdvertsDeleteRejected = {
+  type: "adverts/delete/rejected";
+  payload: Error;
+};
+
+// ADVERTS (Categories)...................................
 type AdvertsCategoriesPending = {
   type: "adverts/categories/pending";
 };
@@ -327,6 +340,23 @@ export const advertsCreatedRejected = (
   error: Error,
 ): AdvertsCreatedRejected => ({
   type: "adverts/created/rejected",
+  payload: error,
+});
+
+// ADVERTS (delete)...................................
+export const advertsDeletePending = (): AdvertsDeletePending => ({
+  type: "adverts/delete/pending",
+});
+
+export const advertsDeleteFulfilled = (
+  advertIds: string[],
+): AdvertsDeleteFulfilled => ({
+  type: "adverts/delete/fulfilled",
+  payload: advertIds,
+});
+
+export const advertsDeleteRejected = (error: Error): AdvertsDeleteRejected => ({
+  type: "adverts/delete/rejected",
   payload: error,
 });
 
@@ -502,7 +532,7 @@ export function userStatsLoad(): AppThunk<Promise<void>> {
   };
 }
 
-//ADVERTS (Load)...................................
+// ADVERTS (Load)...................................
 export function advertsLoad(
   params?: Record<string, string>,
 ): AppThunk<Promise<void>> {
@@ -521,7 +551,7 @@ export function advertsLoad(
   };
 }
 
-//ADVERTS (Categories)...................................
+// ADVERTS (Categories)...................................
 export function advertsCategories(): AppThunk<Promise<void>> {
   return async function (dispatch, _getState, { api }) {
     dispatch(advertsCategoriesPending());
@@ -538,7 +568,7 @@ export function advertsCategories(): AppThunk<Promise<void>> {
   };
 }
 
-//ADVERTS (create)...................................
+// ADVERTS (create)...................................
 export function advertsCreate(
   newAdvertData: AdvertData,
 ): AppThunk<Promise<Advert | undefined>> {
@@ -560,6 +590,42 @@ export function advertsCreate(
         dispatch(advertsCreatedRejected(error));
       }
       return undefined;
+    }
+  };
+}
+
+// ADVERTS (delete single)...................................
+export function advertDelete(advertId: string): AppThunk<Promise<void>> {
+  return async function (dispatch, _getState, { api }) {
+    dispatch(advertsDeletePending());
+    try {
+      await api.adverts.deleteAdvert(advertId);
+      dispatch(advertsDeleteFulfilled([advertId]));
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        dispatch(advertsDeleteRejected(error));
+      } else if (error instanceof Error) {
+        dispatch(advertsDeleteRejected(error));
+      }
+    }
+  };
+}
+
+// ADVERTS (delete multiple)...................................
+export function advertsDeleteMultiple(
+  advertIds: string[],
+): AppThunk<Promise<void>> {
+  return async function (dispatch, _getState, { api }) {
+    dispatch(advertsDeletePending());
+    try {
+      await api.adverts.deleteMultipleAdverts(advertIds);
+      dispatch(advertsDeleteFulfilled(advertIds));
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        dispatch(advertsDeleteRejected(error));
+      } else if (error instanceof Error) {
+        dispatch(advertsDeleteRejected(error));
+      }
     }
   };
 }
@@ -606,11 +672,14 @@ export type Actions =
 | AdvertsLoadRejected
 | AdvertsCreatedFulfilled
 | AdvertsCreatedRejected
+| AdvertsCreatedRejected
+| AdvertsDeletePending
+| AdvertsDeleteFulfilled
+| AdvertsDeleteRejected
 | AdvertsCategoriesPending
 | AdvertsCategoriesFulfilled
 | AdvertsCategoriesRejected
-| AdvertsCreatedFulfilled
-| AdvertsCreatedRejected;
+| AdvertsCreatedFulfilled;
 
 // prettier-ignore
 export type ActionsRejected = 
@@ -623,8 +692,8 @@ export type ActionsRejected =
 | UserStatsLoadRejected
 | AdvertsLoadRejected
 | AdvertsCreatedRejected
-| AdvertsCategoriesRejected
-| AdvertsCreatedRejected;
+| AdvertsDeleteRejected
+| AdvertsCategoriesRejected;
 
 // prettier-ignore
 export type ErrorActions =

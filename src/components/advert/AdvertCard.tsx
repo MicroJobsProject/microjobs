@@ -1,4 +1,7 @@
+// DEPENDENCIES
 import { useTranslation } from "react-i18next";
+
+// NATIVE
 import type { Advert } from "../../pages/advert/types";
 
 function AdvertCard({ advert }: { advert: Advert }) {

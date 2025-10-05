@@ -22,3 +22,13 @@ export async function getAdvertsCategories() {
 
   return response.data;
 }
+
+export async function deleteAdvert(advertId: string): Promise<void> {
+  await client.delete(`/api/adverts/${advertId}`);
+}
+
+export async function deleteMultipleAdverts(
+  advertIds: string[],
+): Promise<void> {
+  await client.post("/api/adverts/bulk-delete", { advertIds });
+}

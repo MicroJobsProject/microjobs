@@ -18,6 +18,8 @@ import {
   errorClearCritical,
   advertsLoad,
   advertsCategories,
+  advertDelete,
+  advertsDeleteMultiple,
 } from "./actions";
 import {
   getCriticalError,
@@ -121,6 +123,20 @@ export function useAdvertsCategoriesAction() {
   const dispatch = useAppDispatch();
   return function () {
     return dispatch(advertsCategories());
+  };
+}
+
+export function useAdvertDeleteAction() {
+  const dispatch = useAppDispatch();
+  return function (advertId: string) {
+    return dispatch(advertDelete(advertId));
+  };
+}
+
+export function useAdvertsDeleteMultipleAction() {
+  const dispatch = useAppDispatch();
+  return function (advertIds: string[]) {
+    return dispatch(advertsDeleteMultiple(advertIds));
   };
 }
 
