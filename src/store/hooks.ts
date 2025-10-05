@@ -18,6 +18,7 @@ import {
   errorClearCritical,
   advertsLoad,
   advertsCategories,
+  advertsDetail,
 } from "./actions";
 import {
   getCriticalError,
@@ -121,6 +122,13 @@ export function useAdvertsCategoriesAction() {
   const dispatch = useAppDispatch();
   return function () {
     return dispatch(advertsCategories());
+  };
+}
+
+export function useAdvertsDetailAction() {
+  const dispatch = useAppDispatch();
+  return function (advertId: string) {
+    return dispatch(advertsDetail(advertId));
   };
 }
 

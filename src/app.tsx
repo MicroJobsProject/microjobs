@@ -33,6 +33,7 @@ const ProfilePage = lazy(() => import("./pages/user/ProfilePage"));
 const Home = lazy(() => import("./pages/Home"));
 const Layout = lazy(() => import("./components/layout/layout"));
 const NewAdvertPage = lazy(() => import("./pages/advert/NewAdvert"));
+const AdvertDetail = lazy(() => import("./pages/advert/AdvertDetail"));
 
 function App() {
   const navigate = useNavigate();
@@ -47,10 +48,10 @@ function App() {
     if (criticalError && !isNetworkError) {
       const errorRoute = getErrorRoute(errorCode!);
 
-      navigate(errorRoute, {
-        replace: true,
-        state: { from: location.pathname },
-      });
+      // navigate(errorRoute, {
+      //   replace: true,
+      //   state: { from: location.pathname },
+      // });
 
       const timer = setTimeout(() => {
         clearCriticalError();
@@ -93,6 +94,14 @@ function App() {
               element={
                 <RequireNoAuth>
                   <ForgotPasswordPage />
+                </RequireNoAuth>
+              }
+            />
+            <Route
+              path="/advert/:advertName/:advertId"
+              element={
+                <RequireNoAuth>
+                  <AdvertDetail />
                 </RequireNoAuth>
               }
             />

@@ -19,6 +19,11 @@ export const getPagination = createSelector(
   (page, totalPages) => ({ page, totalPages }),
 );
 
+export const getAdvertById = (advertId?: string) => {
+  return function (state: RootState) {
+    return state.adverts.data.results.find((advert) => advert._id === advertId);
+  };
+};
 // CATEGORIES...................................................
 export const getAdvertsCategories = (state: RootState) => state.categories;
 

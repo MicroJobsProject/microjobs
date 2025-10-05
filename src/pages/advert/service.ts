@@ -1,5 +1,10 @@
 import { client } from "../../api/client";
-import type { AdvertData, AdvertCategory, AdvertResponse } from "./types";
+import type {
+  AdvertData,
+  AdvertCategory,
+  AdvertResponse,
+  Advert,
+} from "./types";
 
 export async function getAdverts(params?: Record<string, string>) {
   const query = new URLSearchParams(params).toString();
@@ -22,3 +27,9 @@ export async function getAdvertsCategories() {
 
   return response.data;
 }
+
+export const getAdvertById = async (advertId: string) => {
+  const response = await client.get<Advert>(`/api/adverts/${advertId}`);
+
+  return response.data;
+};

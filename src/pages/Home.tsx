@@ -13,6 +13,7 @@ import Alert from "../components/ui/Alert";
 import AdvertFilter from "../components/advert/AdvertFilter";
 import type { Filter } from "./advert/types";
 import { useTranslation } from "react-i18next";
+import { seoNormalize } from "../utils/seoNormalize";
 
 export default function Home() {
   const { t } = useTranslation("home");
@@ -80,7 +81,9 @@ export default function Home() {
               <ul className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {adverts.map((advert) => (
                   <li key={advert._id}>
-                    <Link to={`/adverts/${advert._id}`}>
+                    <Link
+                      to={`/advert/${seoNormalize(advert.name)}/${advert._id}`}
+                    >
                       <AdvertCard advert={advert} />
                     </Link>
                   </li>
