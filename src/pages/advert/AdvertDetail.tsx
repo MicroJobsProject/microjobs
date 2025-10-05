@@ -2,19 +2,26 @@
 import { useParams } from "react-router";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import axios from "axios";
 
 //NATIVE
 import Page from "../../components/layout/Page";
-import { useAdvertsDetailAction, useUiResetError } from "../../store/hooks";
+import {
+  useAdvertsDetailAction,
+  useAuth,
+  useUiResetError,
+  useUser,
+} from "../../store/hooks";
 import { useAppSelector } from "../../store";
 import { getAdvertById, getUi } from "../../store/selectors";
 import placeholder from "../../assets/placeholder.png";
 import { formatDistanceToNow } from "date-fns";
 import Alert from "../../components/ui/Alert";
-import axios from "axios";
 
 function AdvertDetail() {
   const params = useParams();
+  const isLogged = useAuth();
+  const user = useUser();
   const advertDetailAction = useAdvertsDetailAction();
   const advert = useAppSelector(getAdvertById(params.advertId));
   const { pending, error } = useAppSelector(getUi);
@@ -32,7 +39,7 @@ function AdvertDetail() {
     <>
       <Page>
         {pending && <p>Loading...</p>}
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-y-8 lg:grid-cols-3 lg:gap-x-8">
           {/* Detalles del anuncio */}
           <div className="bg-container border-border col-span-2 overflow-hidden rounded-xl shadow-sm lg:col-span-2">
             <div className="relative">
@@ -48,12 +55,12 @@ function AdvertDetail() {
             </div>
             <div className="p-6">
               {/* Título, etiquetas y precio */}
-              <div className="mb-6 flex items-center justify-between">
+              <div className="mb-6 flex items-start justify-between">
                 <div className="flex flex-col">
                   <h2>{advert?.name}</h2>
-                  <div className="flex gap-2">
+                  <div className="flex flex-col gap-2 md:flex-row">
                     <span
-                      className="rounded-full bg-amber-300 px-2.5 py-0.5 text-xs font-medium"
+                      className="rounded-full bg-amber-300 px-3 py-0.5"
                       aria-label={t(
                         advert?.offer
                           ? "ariaAdvertTypeOffer"
@@ -62,12 +69,16 @@ function AdvertDetail() {
                     >
                       {t(advert?.offer ? "advertTypeOffer" : "advertTypeNeed")}
                     </span>
-                    <span aria-hidden="true">·</span>
+                    <span aria-hidden="true" className="hidden md:block">
+                      ·
+                    </span>
                     <span>{advert?.category}</span>
-                    <span aria-hidden="true">·</span>
+                    <span aria-hidden="true" className="hidden md:block">
+                      ·
+                    </span>
                     {advert?.updatedAt && (
                       <span>
-                        uploaded{" "}
+                        Uploaded{" "}
                         {formatDistanceToNow(new Date(advert.updatedAt))} ago
                       </span>
                     )}
@@ -79,12 +90,19 @@ function AdvertDetail() {
                 </div>
               </div>
               {/* Botones */}
-              <div className="mb-6 flex gap-4">
-                <button className="btn btn-destructive">
-                  <span className="material-symbols-outlined">delete</span>
-                  <span>Delete</span>
-                </button>
-              </div>
+              {user?.id === advert?.owner._id && (
+                <div className="mb-6 flex gap-4">
+                  <button className="btn btn-destructive">
+                    <span
+                      className="material-symbols-outlined"
+                      aria-hidden="true"
+                    >
+                      delete
+                    </span>
+                    <span>Delete</span>
+                  </button>
+                </div>
+              )}
               {/* Descripción */}
               <div>
                 <h3 className="!mb-4">Description</h3>
@@ -93,7 +111,7 @@ function AdvertDetail() {
             </div>
           </div>
           {/* Detalles del usuario */}
-          <div className="bg-container border-border flex h-1/4 flex-col gap-4 rounded-xl border p-8 shadow-sm">
+          <div className="bg-container border-border flex h-auto flex-col gap-4 rounded-xl border p-8 shadow-sm md:h-45">
             <div className="flex items-center gap-6">
               <img
                 src={placeholder}
@@ -104,7 +122,12 @@ function AdvertDetail() {
                 {advert?.owner.username}
               </span>
             </div>
-            <h3>Contact Information</h3>
+            {isLogged && (
+              <>
+                <h3>Contact Information</h3>
+                <p>email</p>
+              </>
+            )}
           </div>
         </div>
       </Page>
