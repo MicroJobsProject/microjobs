@@ -59,13 +59,17 @@ function NewAdvertPage() {
               <label htmlFor="price" className="input-label">
                 {t("Price")}*
               </label>
-              <input
-                type="number"
-                name="price"
-                placeholder="0.00€"
-                required
-                className="input"
-              />
+              <div className="flex w-full items-center overflow-hidden rounded-lg border border-gray-300">
+                <input
+                  type="number"
+                  name="price"
+                  placeholder="0.00"
+                  required
+                  step={0.01}
+                  className="flex-1 px-4 py-2 focus:outline-none"
+                />
+                <span className="px-3 whitespace-nowrap">{t("€/hr")}</span>
+              </div>
             </div>
             <div>
               <fieldset
@@ -162,7 +166,5 @@ function NewAdvertPage() {
     </>
   );
 }
-//TODO: add photo upload
-//TODO: add category select, not charging after refresh page
 
 export default NewAdvertPage;
