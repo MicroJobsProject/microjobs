@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import type { Advert } from "../../pages/advert/types";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function AdvertCard({ advert }: { advert: Advert }) {
   const { t } = useTranslation("advert-card");
@@ -10,7 +11,11 @@ function AdvertCard({ advert }: { advert: Advert }) {
       aria-label={t("ariaAdvertName", { name: advert.name })}
     >
       <img
-        src={advert.photo ?? "/src/assets/placeholder.png"}
+        src={
+          advert.photo
+            ? `${API_BASE_URL}${advert.photo}`
+            : "/src/assets/placeholder.png"
+        }
         className="h-48 w-full object-cover"
         alt={t("ariaAdvertPhoto", { name: advert.name })}
       />
