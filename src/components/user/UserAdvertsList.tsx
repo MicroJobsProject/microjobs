@@ -7,6 +7,7 @@ import clsx from "clsx";
 //NATIVE
 import { useAppSelector } from "../../store";
 import {
+  useUserStatsLoadAction,
   useAdvertsLoadAction,
   useAdvertDeleteAction,
   useAdvertsDeleteMultipleAction,
@@ -26,6 +27,7 @@ export default function UserAdvertsList({ user }: UserAdvertsListProps) {
   const { t } = useTranslation(["home", "profile"]);
   const navigate = useNavigate();
 
+  const loadUserStats = useUserStatsLoadAction();
   const advertsLoadAction = useAdvertsLoadAction();
   const advertDeleteAction = useAdvertDeleteAction();
   const advertsDeleteMultipleAction = useAdvertsDeleteMultipleAction();
@@ -97,6 +99,9 @@ export default function UserAdvertsList({ user }: UserAdvertsListProps) {
       } else {
         await advertsDeleteMultipleAction(Array.from(selectedAdverts));
       }
+
+      await loadUserStats();
+
       setShowDeleteModal(false);
       setSelectedAdverts(new Set());
       setAdvertToDelete(null);
