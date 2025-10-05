@@ -26,9 +26,7 @@ export function ErrorPages() {
       message: t(
         "Sorry, the page you were looking for doesn't exist or has been removed.",
       ),
-      icon: "search_off",
       showGoBack: true,
-      bgGradient: "from-primary/10 to-transparent",
     },
     500: {
       title: t("Internal Server Error!"),
@@ -36,9 +34,7 @@ export function ErrorPages() {
       message: t(
         "There was an error processing your request. Please try again later. If you need immediate help, let us know.",
       ),
-      icon: "error",
       showGoBack: false,
-      bgGradient: "from-destructive/10 to-transparent",
     },
     503: {
       title: t("Service Unavailable"),
@@ -46,25 +42,19 @@ export function ErrorPages() {
       message: t(
         "Our service is temporarily unavailable. We're working on it and will be back shortly.",
       ),
-      icon: "build_circle",
       showGoBack: false,
-      bgGradient: "from-warning/10 to-transparent",
     },
     401: {
       title: t("Unauthorized"),
       subtitle: t("Access denied"),
       message: t("You need to be logged in to access this resource."),
-      icon: "lock",
       showGoBack: true,
-      bgGradient: "from-primary/10 to-transparent",
     },
     403: {
       title: t("Forbidden"),
       subtitle: t("You shall not pass!"),
       message: t("You don't have permission to access this resource."),
-      icon: "block",
       showGoBack: true,
-      bgGradient: "from-destructive/10 to-transparent",
     },
   };
 
@@ -108,94 +98,56 @@ export function ErrorPages() {
   };
 
   return (
-    <div className="wrapper flex items-center justify-center">
-      <div className="w-full max-w-2xl">
-        <div
-          className={`absolute inset-0 bg-gradient-to-br ${config.bgGradient} pointer-events-none opacity-50`}
-        ></div>
-
+    <div className="wrapper flex min-h-screen items-center justify-center">
+      <div className="w-full max-w-2xl space-y-8 text-center">
         <div className="relative">
-          <div className="bg-container border-border overflow-hidden rounded-2xl border shadow-lg">
-            <div
-              className={`h-2 bg-gradient-to-r ${config.bgGradient.replace("to-transparent", "to-primary/50")}`}
-            ></div>
-
-            <div className="p-8 text-center sm:p-12">
-              <div className="mb-6 inline-block">
-                <div className="relative">
-                  <div
-                    className={`absolute inset-0 bg-gradient-to-br ${config.bgGradient} animate-pulse opacity-30 blur-2xl`}
-                  ></div>
-                  <span className="material-symbols-outlined text-destructive animate-bounce-slow relative block text-8xl sm:text-9xl">
-                    {config.icon}
-                  </span>
-                </div>
-              </div>
-
-              <div className="mb-8 space-y-4">
-                <h2 className="text-heading font-heading text-4xl font-extrabold sm:text-5xl">
-                  {config.title}
-                </h2>
-                <h3 className="text-primary text-xl font-semibold sm:text-2xl">
-                  {config.subtitle}
-                </h3>
-                <p className="text-paragraph mx-auto max-w-md text-base leading-relaxed sm:text-lg">
-                  {config.message}
-                </p>
-              </div>
-
-              <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
-                {config.showGoBack && (
-                  <button
-                    onClick={handleGoBack}
-                    className="btn btn-outlined w-full min-w-40 sm:w-auto"
-                  >
-                    <span
-                      className="material-symbols-outlined"
-                      aria-hidden="true"
-                    >
-                      arrow_back
-                    </span>
-                    {t("Go Back")}
-                  </button>
-                )}
-                <button
-                  onClick={handleGoHome}
-                  className="btn btn-primary w-full min-w-40 sm:w-auto"
-                >
-                  <span
-                    className="material-symbols-outlined"
-                    aria-hidden="true"
-                  >
-                    home
-                  </span>
-                  {t("Go Home")}
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-8 text-center">
-            <p className="text-paragraph text-sm opacity-60">
-              {t("Error Code")}: {errorCode}
-            </p>
+          <h1 className="text-heading font-heading text-8xl font-extrabold opacity-10 sm:text-9xl">
+            {errorCode}
+          </h1>
+          <div className="absolute inset-0 flex items-center justify-center">
+            <h2 className="text-heading font-heading text-4xl font-extrabold sm:text-5xl">
+              {config.title}
+            </h2>
           </div>
         </div>
-      </div>
 
-      <style>{`
-        @keyframes bounce-slow {
-          0%, 100% {
-            transform: translateY(0);
-          }
-          50% {
-            transform: translateY(-10px);
-          }
-        }
-        .animate-bounce-slow {
-          animation: bounce-slow 3s ease-in-out infinite;
-        }
-      `}</style>
+        <h3 className="text-primary text-2xl font-semibold sm:text-3xl">
+          {config.subtitle}
+        </h3>
+
+        <p className="text-paragraph mx-auto max-w-lg text-lg leading-relaxed sm:text-xl">
+          {config.message}
+        </p>
+
+        <div className="flex flex-col items-center justify-center gap-4 pt-8 sm:flex-row">
+          {config.showGoBack && (
+            <button
+              onClick={handleGoBack}
+              className="btn btn-outlined w-full min-w-40 sm:w-auto"
+            >
+              <span className="material-symbols-outlined" aria-hidden="true">
+                arrow_back
+              </span>
+              {t("Go Back")}
+            </button>
+          )}
+          <button
+            onClick={handleGoHome}
+            className="btn btn-primary w-full min-w-40 sm:w-auto"
+          >
+            <span className="material-symbols-outlined" aria-hidden="true">
+              home
+            </span>
+            {t("Go Home")}
+          </button>
+        </div>
+
+        <div className="pt-8">
+          <p className="text-paragraph text-sm opacity-60">
+            {t("Error Code")}: {errorCode}
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
