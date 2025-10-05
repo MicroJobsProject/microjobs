@@ -1,5 +1,5 @@
 import { useAppDispatch } from "../../store";
-import type { AdvertData } from "./types";
+
 import { advertsCategories, advertsCreate } from "../../store/actions";
 import { useEffect, type FormEvent } from "react";
 import { getAdvertsCategories } from "../../store/selectors";
@@ -22,16 +22,14 @@ function NewAdvertPage() {
     event.preventDefault();
     const form = event.currentTarget;
     const data = new FormData(form);
-    const newAdvertData: AdvertData = {
-      name: data.get("name") as string,
-      price: data.get("price") as string,
-      offer: data.get("serviceRadio") == "offer" ? "true" : "false",
-      category: data.get("category") as string,
-      description: data.get("description") as string,
-    };
-    console.log(newAdvertData);
+    data.append("offer", form.offer.value === "offer" ? "true" : "false");
 
-    await dispatch(advertsCreate(newAdvertData));
+    console.log("FormData entries:");
+    for (const pair of data.entries()) {
+      console.log(`${pair[0]}: ${pair[1]}`);
+    }
+
+    await dispatch(advertsCreate(data));
   }
 
   return (
@@ -112,6 +110,20 @@ function NewAdvertPage() {
                 name="description"
                 placeholder={t("Description")}
                 required
+                className="input"
+              />
+            </div>
+
+            <div className="flex flex-col lg:col-span-2">
+              <label htmlFor="photo" className="input-label">
+                {t("Photo")}
+              </label>
+
+              <input
+                type="file"
+                accept="image/*"
+                name="photo"
+                placeholder={t("Photo")}
                 className="input"
               />
             </div>

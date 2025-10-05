@@ -9,7 +9,6 @@ import type { User, UpdateProfileData, UserStats } from "../pages/user/types";
 
 import type {
   Advert,
-  AdvertData,
   AdvertCategory,
   AdvertResponse,
 } from "../pages/advert/types";
@@ -535,9 +534,9 @@ export function advertsCategories(): AppThunk<Promise<void>> {
 
 //ADVERTS (create)...................................
 export function advertsCreate(
-  newAdvertData: AdvertData,
+  newAdvertData: FormData,
 ): AppThunk<Promise<Advert>> {
-  return async function (dispatch, _getState, { api /*router*/ }) {
+  return async function (dispatch, _getState, { api, router }) {
     try {
       // Manage advertsCreatePending
       const createdAdvert = await api.adverts.createAdvert(newAdvertData);
@@ -546,6 +545,7 @@ export function advertsCreate(
       // const advert = await api.adverts.getAdvert(createdAdvert.id.toString());
       // dispatch(advertsCreatedFulfilled(advert));
       // router.navigate(`/adverts/${createdAdvert.id}`);
+      router.navigate(`/home/`);
       return createdAdvert.data; //advert;
     } catch (error) {
       // Manage advertsCreateRejected
