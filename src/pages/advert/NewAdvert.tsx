@@ -1,33 +1,26 @@
 import { useAppDispatch } from "../../store";
 
 import { advertsCategories, advertsCreate } from "../../store/actions";
-import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { getAdvertsCategories } from "../../store/selectors";
 import { useAppSelector } from "../../store";
 import AdvertCategory from "../../components/advert/AdvertCategory";
 import { useTranslation } from "react-i18next";
+import PhotoInput from "../../components/advert/PhotoInput";
 
 function NewAdvertPage() {
   const { t } = useTranslation("create");
   const categories = useAppSelector(getAdvertsCategories);
   const dispatch = useAppDispatch();
 
-  const [selectedPhoto, setSelectedPhoto] = useState<File | null>(null);
-  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const maxDescriptionChars = 600;
+  const [description, setDescription] = useState("");
 
   useEffect(() => {
     if (!categories.length) {
       dispatch(advertsCategories());
     }
   }, [dispatch, categories.length]);
-
-  function handlePhotoChange(e: ChangeEvent<HTMLInputElement>) {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      setSelectedPhoto(file);
-      setPhotoPreview(URL.createObjectURL(file));
-    }
-  }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -117,45 +110,29 @@ function NewAdvertPage() {
             </div>
             <div className="flex flex-col lg:col-span-2">
               <label htmlFor="description" className="input-label">
-                {t("Description")}
+                {t("Description")}*
               </label>
-              <input
-                type="text"
+              <textarea
+                id="description"
                 name="description"
-                placeholder={t("Description")}
+                placeholder={
+                  t("Enter a detailed description (max ") +
+                  maxDescriptionChars +
+                  t(" characters)")
+                }
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                maxLength={maxDescriptionChars}
+                rows={6}
                 required
-                className="input"
+                className="w-full resize-none rounded-lg border border-gray-300 p-3 text-sm placeholder-gray-400 focus:ring-2 focus:ring-blue-400 focus:outline-none"
               />
+              <div className="mt-1 text-right text-xs text-gray-500">
+                {description.length}/{maxDescriptionChars} characters
+              </div>
             </div>
 
-            <div className="flex flex-col lg:col-span-2">
-              <span className="input-label">{t("Photo")}</span>
-              <label
-                htmlFor="photo"
-                className="flex min-h-50 cursor-pointer items-center justify-center overflow-hidden rounded-lg border border-dashed border-gray-300 hover:bg-gray-100"
-              >
-                {photoPreview ? (
-                  <img
-                    src={photoPreview}
-                    alt={selectedPhoto?.name}
-                    className="max-h-60 object-contain"
-                  />
-                ) : (
-                  <span className="px-4 text-center">
-                    {t("Drag and drop your photo here, or click to select")}
-                  </span>
-                )}
-              </label>
-              <input
-                id="photo"
-                type="file"
-                accept="image/*"
-                name="photo"
-                className="input"
-                hidden
-                onChange={handlePhotoChange}
-              />
-            </div>
+            <PhotoInput></PhotoInput>
 
             <fieldset
               name="categoryFieldset"
