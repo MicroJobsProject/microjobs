@@ -1,7 +1,7 @@
 import { useAppDispatch } from "../../store";
 
 import { advertsCategories, advertsCreate } from "../../store/actions";
-import { useEffect, type FormEvent } from "react";
+import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 import { getAdvertsCategories } from "../../store/selectors";
 import { useAppSelector } from "../../store";
 import AdvertCategory from "../../components/advert/AdvertCategory";
@@ -12,11 +12,22 @@ function NewAdvertPage() {
   const categories = useAppSelector(getAdvertsCategories);
   const dispatch = useAppDispatch();
 
+  const [selectedPhoto, setSelectedPhoto] = useState<File | null>(null);
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+
   useEffect(() => {
     if (!categories.length) {
       dispatch(advertsCategories());
     }
   }, [dispatch, categories.length]);
+
+  function handlePhotoChange(e: ChangeEvent<HTMLInputElement>) {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setSelectedPhoto(file);
+      setPhotoPreview(URL.createObjectURL(file));
+    }
+  }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -108,7 +119,6 @@ function NewAdvertPage() {
               <label htmlFor="description" className="input-label">
                 {t("Description")}
               </label>
-
               <input
                 type="text"
                 name="description"
@@ -119,16 +129,31 @@ function NewAdvertPage() {
             </div>
 
             <div className="flex flex-col lg:col-span-2">
-              <label htmlFor="photo" className="input-label">
-                {t("Photo")}
+              <span className="input-label">{t("Photo")}</span>
+              <label
+                htmlFor="photo"
+                className="flex min-h-50 cursor-pointer items-center justify-center overflow-hidden rounded-lg border border-dashed border-gray-300 hover:bg-gray-100"
+              >
+                {photoPreview ? (
+                  <img
+                    src={photoPreview}
+                    alt={selectedPhoto?.name}
+                    className="max-h-60 object-contain"
+                  />
+                ) : (
+                  <span className="px-4 text-center">
+                    {t("Drag and drop your photo here, or click to select")}
+                  </span>
+                )}
               </label>
-
               <input
+                id="photo"
                 type="file"
                 accept="image/*"
                 name="photo"
-                placeholder={t("Photo")}
                 className="input"
+                hidden
+                onChange={handlePhotoChange}
               />
             </div>
 
