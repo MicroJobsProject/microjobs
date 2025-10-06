@@ -54,7 +54,7 @@ function AdvertDetail() {
     if (!params.advertId) {
       return;
     }
-    if (!user) {
+    if (!user && isLogged) {
       loadUser();
     }
     advertDetailAction(params.advertId);
@@ -84,7 +84,7 @@ function AdvertDetail() {
                 src={advert?.photo ?? PlaceholderImage}
                 alt={
                   advert?.photo
-                    ? t("ariaAdvertPhoto", { name: advert.name })
+                    ? t("advert-card:ariaAdvertPhoto", { name: advert.name })
                     : t("placeholder")
                 }
                 className="w-full object-cover"
@@ -92,16 +92,16 @@ function AdvertDetail() {
             </div>
             <div className="p-6">
               {/* Título, etiquetas y precio */}
-              <div className="mb-6 flex items-start justify-between">
+              <div className="mb-6 flex flex-col items-start justify-between gap-4 sm:flex-row">
                 <div className="flex flex-col items-start">
-                  <h2>{advert?.name}</h2>
+                  <h2 className="">{advert?.name}</h2>
                   <div className="flex flex-col items-start gap-2 md:flex-row md:items-center">
                     <span
                       className="flex justify-center rounded-full bg-amber-300 px-3 py-0.5"
                       aria-label={t(
                         advert?.offer
-                          ? "ariaAdvertTypeOffer"
-                          : "ariaAdvertTypeNeed",
+                          ? "advert-card:ariaAdvertTypeOffer"
+                          : "advert-card:ariaAdvertTypeNeed",
                       )}
                     >
                       {t(
