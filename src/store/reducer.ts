@@ -3,11 +3,7 @@ import type { AxiosError } from "axios";
 
 //NATIVE
 import type { User } from "../pages/user/types";
-import type {
-  Advert,
-  AdvertCategory,
-  AdvertResponse,
-} from "../pages/advert/types";
+import type { AdvertCategory, AdvertResponse } from "../pages/advert/types";
 import { type Actions, type ActionsRejected } from "./actions";
 
 // TYPES===================================================================================================

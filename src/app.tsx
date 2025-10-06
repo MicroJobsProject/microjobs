@@ -48,10 +48,10 @@ function App() {
     if (criticalError && !isNetworkError) {
       const errorRoute = getErrorRoute(errorCode!);
 
-      // navigate(errorRoute, {
-      //   replace: true,
-      //   state: { from: location.pathname },
-      // });
+      navigate(errorRoute, {
+        replace: true,
+        state: { from: location.pathname },
+      });
 
       const timer = setTimeout(() => {
         clearCriticalError();
@@ -99,11 +99,7 @@ function App() {
             />
             <Route
               path="/advert/:advertName/:advertId"
-              element={
-                <RequireNoAuth>
-                  <AdvertDetail />
-                </RequireNoAuth>
-              }
+              element={<AdvertDetail />}
             />
             <Route path="reset-password" element={<ResetPasswordPage />} />
             <Route path="home" element={<Home />} />

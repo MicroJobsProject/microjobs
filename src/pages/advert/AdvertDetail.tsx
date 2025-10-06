@@ -1,12 +1,13 @@
 // DEPENDENCIES
-import { useParams } from "react-router";
-import { useEffect } from "react";
+import { useNavigate, useParams } from "react-router";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 
 //NATIVE
 import Page from "../../components/layout/Page";
 import {
+  useAdvertDeleteAction,
   useAdvertsDetailAction,
   useAuth,
   useUiResetError,
@@ -17,16 +18,21 @@ import { getAdvertById, getUi } from "../../store/selectors";
 import placeholder from "../../assets/placeholder.png";
 import { formatDistanceToNow } from "date-fns";
 import Alert from "../../components/ui/Alert";
+import clsx from "clsx";
+import Modal from "../../components/ui/Modal";
 
 function AdvertDetail() {
   const params = useParams();
+  const navigate = useNavigate();
   const isLogged = useAuth();
   const user = useUser();
   const advertDetailAction = useAdvertsDetailAction();
   const advert = useAppSelector(getAdvertById(params.advertId));
   const { pending, error } = useAppSelector(getUi);
   const uiResetErrorAction = useUiResetError();
-  const { t } = useTranslation();
+  const advertDeleteAction = useAdvertDeleteAction();
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const { t } = useTranslation(["profile"]);
 
   useEffect(() => {
     if (!params.advertId) {
@@ -34,6 +40,18 @@ function AdvertDetail() {
     }
     advertDetailAction(params.advertId);
   }, [params.advertId]);
+
+  async function handleConfirmDelete() {
+    try {
+      if (advert) {
+        await advertDeleteAction(advert?._id);
+      }
+      setShowDeleteModal(false);
+      navigate("/", { replace: true });
+    } catch (error) {
+      console.error("Error deleting adverts:", error);
+    }
+  }
 
   return (
     <>
@@ -92,7 +110,10 @@ function AdvertDetail() {
               {/* Botones */}
               {user?.id === advert?.owner._id && (
                 <div className="mb-6 flex gap-4">
-                  <button className="btn btn-destructive">
+                  <button
+                    className="btn btn-destructive"
+                    onClick={() => setShowDeleteModal(true)}
+                  >
                     <span
                       className="material-symbols-outlined"
                       aria-hidden="true"
@@ -111,8 +132,8 @@ function AdvertDetail() {
             </div>
           </div>
           {/* Detalles del usuario */}
-          <div className="bg-container border-border flex h-auto flex-col gap-4 rounded-xl border p-8 shadow-sm md:h-45">
-            <div className="flex items-center gap-6">
+          <div className="bg-container border-border flex h-auto flex-col rounded-xl border p-6 shadow-sm md:h-45">
+            <div className="mb-2 flex items-center gap-6">
               <img
                 src={placeholder}
                 alt={advert?.owner.username}
@@ -142,6 +163,48 @@ function AdvertDetail() {
           onClick={() => uiResetErrorAction()}
         />
       )}
+      <Modal
+        isOpen={showDeleteModal}
+        onClose={() => {
+          setShowDeleteModal(false);
+        }}
+        title={t("profile:Confirm Deletion")}
+        variant="destructive"
+      >
+        <div className="space-y-4">
+          <p className="text-destructive text-sm font-medium">
+            {t("profile:This action cannot be undone.")}
+          </p>
+
+          <div className="flex justify-end gap-3">
+            <button
+              onClick={() => {
+                setShowDeleteModal(false);
+              }}
+              className="btn btn-secondary"
+            >
+              {t("profile:Cancel")}
+            </button>
+            <button
+              onClick={handleConfirmDelete}
+              disabled={pending}
+              className={clsx(
+                "btn btn-destructive",
+                pending && "cursor-not-allowed opacity-50",
+              )}
+            >
+              {pending ? (
+                <div className="flex items-center gap-2">
+                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+                  {t("profile:Deleting...")}
+                </div>
+              ) : (
+                t("profile:Delete")
+              )}
+            </button>
+          </div>
+        </div>
+      </Modal>
     </>
   );
 }
