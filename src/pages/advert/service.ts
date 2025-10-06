@@ -42,6 +42,6 @@ export async function sendContactMessage(
     username?: string;
   },
 ): Promise<{ success: boolean; message: string }> {
-  const response = await client.post(`/api/contact/${advertId}`, data);
+  const response = await client.post(`/contact/${advertId}`, data);
   return response.data;
 }
