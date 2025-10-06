@@ -33,8 +33,7 @@ const ProfilePage = lazy(() => import("./pages/user/ProfilePage"));
 const Home = lazy(() => import("./pages/Home"));
 const Layout = lazy(() => import("./components/layout/layout"));
 const NewAdvertPage = lazy(() => import("./pages/advert/NewAdvert"));
-
-const ContactPage = lazy(() => import("./pages/contact/ContactPage"));
+const AdvertDetail = lazy(() => import("./pages/advert/AdvertDetail"));
 
 function App() {
   const navigate = useNavigate();
@@ -98,6 +97,10 @@ function App() {
                 </RequireNoAuth>
               }
             />
+            <Route
+              path="/advert/:advertName/:advertId"
+              element={<AdvertDetail />}
+            />
             <Route path="reset-password" element={<ResetPasswordPage />} />
             <Route path="home" element={<Home />} />
             <Route
@@ -116,7 +119,6 @@ function App() {
                 </RequireAuth>
               }
             />
-            <Route path="contact/:advertId" element={<ContactPage />} />
 
             <Route path="not-found" element={<ErrorPages />} />
             <Route path="server-error" element={<ErrorPages />} />

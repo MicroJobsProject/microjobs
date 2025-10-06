@@ -19,6 +19,7 @@ import {
   errorClearCritical,
   advertsLoad,
   advertsCategories,
+  advertsDetail,
   advertDelete,
   advertsDeleteMultiple,
 } from "./actions";
@@ -127,6 +128,13 @@ export function useAdvertsCategoriesAction() {
   };
 }
 
+export function useAdvertsDetailAction() {
+  const dispatch = useAppDispatch();
+  return function (advertId: string) {
+    return dispatch(advertsDetail(advertId));
+  };
+}
+
 export function useAdvertDeleteAction() {
   const dispatch = useAppDispatch();
   return function (advertId: string) {
@@ -169,6 +177,7 @@ export function useContactSendAction() {
     data: {
       senderName: string;
       senderEmail: string;
+      subject: string;
       message: string;
       username?: string;
     },

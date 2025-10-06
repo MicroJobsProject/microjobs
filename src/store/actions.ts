@@ -186,6 +186,22 @@ type AdvertsCategoriesRejected = {
   payload: Error;
 };
 
+//ADVERTS (Detail)...................................
+
+type AdvertsDetailPending = {
+  type: "adverts/detail/pending";
+};
+
+type AdvertsDetailFulfilled = {
+  type: "adverts/detail/fulfilled";
+  payload: Advert;
+};
+
+type AdvertsDetailRejected = {
+  type: "adverts/detail/rejected";
+  payload: Error;
+};
+
 // CONTACT (send message)...................................
 type ContactSendPending = {
   type: "contact/send/pending";
@@ -342,6 +358,7 @@ export const advertsLoadRejected = (error: Error): AdvertsLoadRejected => ({
   type: "adverts/load/rejected",
   payload: error,
 });
+
 //ADVERTS (create)...................................
 export const advertsCreatedFulfilled = (
   advert: Advert,
@@ -390,6 +407,23 @@ export const advertsCategoriesRejected = (
   error: Error,
 ): AdvertsCategoriesRejected => ({
   type: "adverts/categories/rejected",
+  payload: error,
+});
+
+//ADVERTS (Detail)...................................
+export const advertsDetailPending = (): AdvertsDetailPending => ({
+  type: "adverts/detail/pending",
+});
+
+export const advertsDetailFulfilled = (
+  advert: Advert,
+): AdvertsDetailFulfilled => ({
+  type: "adverts/detail/fulfilled",
+  payload: advert,
+});
+
+export const advertsDetailRejected = (error: Error): AdvertsDetailRejected => ({
+  type: "adverts/detail/rejected",
   payload: error,
 });
 
@@ -627,6 +661,24 @@ export function advertsCreate(
   };
 }
 
+//ADVERTS (Detail)...................................
+export function advertsDetail(
+  advertId: string,
+): AppThunk<Promise<Advert | void>> {
+  return async function (dispatch, _getState, { api }) {
+    dispatch(advertsDetailPending());
+    try {
+      const advert = await api.adverts.getAdvertById(advertId);
+      dispatch(advertsDetailFulfilled(advert));
+    } catch (error) {
+      if (error instanceof Error) {
+        dispatch(advertsDetailRejected(error));
+      }
+      throw error;
+    }
+  };
+}
+
 // ADVERTS (delete single)...................................
 export function advertDelete(advertId: string): AppThunk<Promise<void>> {
   return async function (dispatch, _getState, { api }) {
@@ -664,12 +716,12 @@ export function advertsDeleteMultiple(
 }
 
 // CONTACT (send message)..............................................
-// CONTACT (send message)
 export function contactSend(
   advertId: string,
   messageData: {
     senderName: string;
     senderEmail: string;
+    subject: string;
     message: string;
     username?: string;
   },
@@ -680,11 +732,9 @@ export function contactSend(
       const response = await api.adverts.sendContactMessage(
         advertId,
         messageData,
-      ); // 👈 cambia api.contact → api.adverts
+      );
       dispatch(
-        contactSendFulfilled(
-          response.message || "Mensaje enviado correctamente",
-        ),
+        contactSendFulfilled(response.message || "Message sent successfully"),
       );
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
@@ -746,6 +796,10 @@ export type Actions =
 | AdvertsCategoriesFulfilled
 | AdvertsCategoriesRejected
 | AdvertsCreatedFulfilled
+| AdvertsCreatedRejected
+| AdvertsDetailPending
+| AdvertsDetailFulfilled
+| AdvertsDetailRejected
 | ContactSendPending
 | ContactSendFulfilled
 | ContactSendRejected;
@@ -761,8 +815,9 @@ export type ActionsRejected =
 | UserStatsLoadRejected
 | AdvertsLoadRejected
 | AdvertsCreatedRejected
-| AdvertsDeleteRejected
-| AdvertsCategoriesRejected;
+| AdvertsCategoriesRejected
+| AdvertsCreatedRejected
+| AdvertsDetailRejected;
 
 // prettier-ignore
 export type ErrorActions =

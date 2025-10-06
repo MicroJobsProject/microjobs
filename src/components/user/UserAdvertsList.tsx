@@ -18,6 +18,11 @@ import Pagination from "../advert/Pagination";
 import Alert from "../ui/Alert";
 import Modal from "../ui/Modal";
 import type { User } from "../../pages/user/types";
+import { seoNormalize } from "../../utils/seoNormalize";
+import type { Advert } from "../../pages/advert/types";
+
+//ASSETS
+import PlaceholderImage from "/placeholder.png";
 
 interface UserAdvertsListProps {
   user: User;
@@ -110,11 +115,11 @@ export default function UserAdvertsList({ user }: UserAdvertsListProps) {
     }
   }
 
-  function handleAdvertClick(advertId: string, event: React.MouseEvent) {
+  function handleAdvertClick(advert: Advert, event: React.MouseEvent) {
     if ((event.target as HTMLElement).closest('input[type="checkbox"]')) {
       return;
     }
-    navigate(`/adverts/${advertId}`);
+    navigate(`/advert/${seoNormalize(advert.name)}/${advert._id}`);
   }
 
   if (!adverts || adverts.length === 0) {
@@ -196,7 +201,7 @@ export default function UserAdvertsList({ user }: UserAdvertsListProps) {
                   "bg-container border-border flex cursor-pointer overflow-hidden rounded-lg border transition-all hover:shadow-md",
                   selectedAdverts.has(advert._id) && "ring-primary ring-2",
                 )}
-                onClick={(e) => handleAdvertClick(advert._id, e)}
+                onClick={(e) => handleAdvertClick(advert, e)}
               >
                 <div
                   className="flex items-center justify-center self-stretch bg-cyan-50 px-6 transition-colors hover:bg-cyan-100"
@@ -218,7 +223,7 @@ export default function UserAdvertsList({ user }: UserAdvertsListProps) {
                 </div>
 
                 <img
-                  src={advert.photo ?? "/src/assets/placeholder.png"}
+                  src={advert.photo ?? PlaceholderImage}
                   alt={advert.name}
                   className="my-4 ml-4 h-20 w-20 flex-shrink-0 rounded-lg object-cover"
                 />

@@ -7,6 +7,7 @@ export interface Advert {
   category: string;
   photo: string | undefined;
   description: string;
+  updatedAt: string;
 }
 
 export interface AdvertResponse {
