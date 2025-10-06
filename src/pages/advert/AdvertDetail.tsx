@@ -26,6 +26,7 @@ import Modal from "../../components/ui/Modal";
 
 //ASSETS
 import PlaceholderImage from "/placeholder.png";
+import { API_BASE_URL } from "../../config/constans";
 
 function AdvertDetail() {
   const params = useParams();
@@ -152,7 +153,11 @@ function AdvertDetail() {
           <div className="bg-container border-border col-span-2 overflow-hidden rounded-xl shadow-sm lg:col-span-2">
             <div className="relative">
               <img
-                src={advert?.photo ?? PlaceholderImage}
+                src={
+                  advert?.photo
+                    ? `${API_BASE_URL}${advert.photo}`
+                    : PlaceholderImage
+                }
                 alt={
                   advert?.photo
                     ? t("ariaAdvertPhoto", { name: advert.name })

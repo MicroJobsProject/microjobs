@@ -23,6 +23,7 @@ import type { Advert } from "../../pages/advert/types";
 
 //ASSETS
 import PlaceholderImage from "/placeholder.png";
+import { API_BASE_URL } from "../../config/constans";
 
 interface UserAdvertsListProps {
   user: User;
@@ -223,7 +224,11 @@ export default function UserAdvertsList({ user }: UserAdvertsListProps) {
                 </div>
 
                 <img
-                  src={advert.photo ?? PlaceholderImage}
+                  src={
+                    advert.photo
+                      ? `${API_BASE_URL}${advert.photo}`
+                      : PlaceholderImage
+                  }
                   alt={advert.name}
                   className="my-4 ml-4 h-20 w-20 flex-shrink-0 rounded-lg object-cover"
                 />
