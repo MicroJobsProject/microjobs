@@ -192,7 +192,14 @@ function AdvertDetail() {
                     <span aria-hidden="true" className="hidden md:block">
                       ·
                     </span>
-                    <span>{t(`advert-category:${advert?.category}`)}</span>
+                    {advert?.category && (
+                      <span>
+                        {t(advert.category, {
+                          ns: "advert-category",
+                          defaultValue: advert.category,
+                        })}
+                      </span>
+                    )}
                     <span aria-hidden="true" className="hidden md:block">
                       ·
                     </span>
