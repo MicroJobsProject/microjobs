@@ -162,9 +162,9 @@ function AdvertDetail() {
                 {advert?.owner.username}
               </span>
             </div>
-            <div className="flex flex-col">
-              {isLogged &&
-                (isOwner ? (
+            {isLogged && (
+              <div className="flex flex-col">
+                {isOwner ? (
                   <Link className="btn btn-primary" to="/profile">
                     <span
                       className="material-symbols-outlined"
@@ -179,8 +179,9 @@ function AdvertDetail() {
                     <h3>{t("Contact Information")}</h3>
                     {/* <p>{advert?.owner.email}</p> */}
                   </>
-                ))}
-            </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </Page>
