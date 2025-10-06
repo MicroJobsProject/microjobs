@@ -6,6 +6,7 @@ import type { Credentials } from "../pages/auth/types";
 import type { UpdateProfileData } from "../pages/user/types";
 
 import {
+  contactSend,
   authRegister,
   authLogin,
   authLogoutThunk,
@@ -158,4 +159,18 @@ export function useClearCriticalError() {
   return function () {
     return dispatch(errorClearCritical());
   };
+}
+
+// CONTACT.........................................
+export function useContactSendAction() {
+  const dispatch = useAppDispatch();
+  return (
+    advertId: string,
+    data: {
+      senderName: string;
+      senderEmail: string;
+      message: string;
+      username?: string;
+    },
+  ) => dispatch(contactSend(advertId, data));
 }

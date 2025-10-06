@@ -34,6 +34,8 @@ const Home = lazy(() => import("./pages/Home"));
 const Layout = lazy(() => import("./components/layout/layout"));
 const NewAdvertPage = lazy(() => import("./pages/advert/NewAdvert"));
 
+const ContactPage = lazy(() => import("./pages/contact/ContactPage"));
+
 function App() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -114,6 +116,7 @@ function App() {
                 </RequireAuth>
               }
             />
+            <Route path="contact/:advertId" element={<ContactPage />} />
 
             <Route path="not-found" element={<ErrorPages />} />
             <Route path="server-error" element={<ErrorPages />} />

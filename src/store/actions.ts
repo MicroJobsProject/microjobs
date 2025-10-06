@@ -186,6 +186,21 @@ type AdvertsCategoriesRejected = {
   payload: Error;
 };
 
+// CONTACT (send message)...................................
+type ContactSendPending = {
+  type: "contact/send/pending";
+};
+
+type ContactSendFulfilled = {
+  type: "contact/send/fulfilled";
+  payload: { message: string };
+};
+
+type ContactSendRejected = {
+  type: "contact/send/rejected";
+  payload: Error;
+};
+
 //ACTION CREATORS (Synchronized Actions)============================================================================================
 // AUTH............................................
 export const authRegisterPending = (): AuthRegisterPending => ({
@@ -375,6 +390,24 @@ export const advertsCategoriesRejected = (
   error: Error,
 ): AdvertsCategoriesRejected => ({
   type: "adverts/categories/rejected",
+  payload: error,
+});
+
+// CONTACT (send message).......................................................
+
+export const contactSendPending = (): ContactSendPending => ({
+  type: "contact/send/pending",
+});
+
+export const contactSendFulfilled = (
+  message: string,
+): ContactSendFulfilled => ({
+  type: "contact/send/fulfilled",
+  payload: { message },
+});
+
+export const contactSendRejected = (error: Error): ContactSendRejected => ({
+  type: "contact/send/rejected",
   payload: error,
 });
 
@@ -630,6 +663,39 @@ export function advertsDeleteMultiple(
   };
 }
 
+// CONTACT (send message)..............................................
+// CONTACT (send message)
+export function contactSend(
+  advertId: string,
+  messageData: {
+    senderName: string;
+    senderEmail: string;
+    message: string;
+    username?: string;
+  },
+): AppThunk<Promise<void>> {
+  return async function (dispatch, _getState, { api }) {
+    dispatch(contactSendPending());
+    try {
+      const response = await api.adverts.sendContactMessage(
+        advertId,
+        messageData,
+      ); // 👈 cambia api.contact → api.adverts
+      dispatch(
+        contactSendFulfilled(
+          response.message || "Mensaje enviado correctamente",
+        ),
+      );
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        dispatch(contactSendRejected(error));
+      } else if (error instanceof Error) {
+        dispatch(contactSendRejected(error));
+      }
+    }
+  };
+}
+
 // INITIALIZE AUTH STATE FROM STORAGE (Local or Session)
 export function authInitializeFromStorage(): AppThunk<void> {
   return function (dispatch, _getState, { storage }) {
@@ -679,7 +745,10 @@ export type Actions =
 | AdvertsCategoriesPending
 | AdvertsCategoriesFulfilled
 | AdvertsCategoriesRejected
-| AdvertsCreatedFulfilled;
+| AdvertsCreatedFulfilled
+| ContactSendPending
+| ContactSendFulfilled
+| ContactSendRejected;
 
 // prettier-ignore
 export type ActionsRejected = 

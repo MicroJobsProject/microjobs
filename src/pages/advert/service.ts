@@ -31,3 +31,17 @@ export async function deleteMultipleAdverts(
 ): Promise<void> {
   await client.post("/api/adverts/bulk-delete", { advertIds });
 }
+
+// CONTACT OWNER OF AN ADVERT
+export async function sendContactMessage(
+  advertId: string,
+  data: {
+    senderName: string;
+    senderEmail: string;
+    message: string;
+    username?: string;
+  },
+): Promise<{ success: boolean; message: string }> {
+  const response = await client.post(`/api/contact/${advertId}`, data);
+  return response.data;
+}
