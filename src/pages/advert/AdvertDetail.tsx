@@ -19,9 +19,11 @@ import {
 } from "../../store/hooks";
 import { useAppSelector } from "../../store";
 import { getAdvertById, getUi } from "../../store/selectors";
-import placeholder from "../../assets/placeholder.png";
 import Alert from "../../components/ui/Alert";
 import Modal from "../../components/ui/Modal";
+
+//ASSETS
+import PlaceholderImage from "/placeholder.png";
 
 function AdvertDetail() {
   const params = useParams();
@@ -79,7 +81,7 @@ function AdvertDetail() {
           <div className="bg-container border-border col-span-2 overflow-hidden rounded-xl shadow-sm lg:col-span-2">
             <div className="relative">
               <img
-                src={advert?.photo ?? placeholder}
+                src={advert?.photo ?? PlaceholderImage}
                 alt={
                   advert?.photo
                     ? t("ariaAdvertPhoto", { name: advert.name })
@@ -154,7 +156,7 @@ function AdvertDetail() {
           <div className="bg-container border-border flex h-auto flex-col gap-4 rounded-xl border p-6 shadow-sm">
             <div className="flex items-center gap-6">
               <img
-                src={placeholder}
+                src={PlaceholderImage}
                 alt={advert?.owner.username}
                 className="size-15 rounded-full object-cover"
               />

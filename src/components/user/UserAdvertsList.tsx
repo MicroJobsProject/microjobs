@@ -21,6 +21,9 @@ import type { User } from "../../pages/user/types";
 import { seoNormalize } from "../../utils/seoNormalize";
 import type { Advert } from "../../pages/advert/types";
 
+//ASSETS
+import PlaceholderImage from "/placeholder.png";
+
 interface UserAdvertsListProps {
   user: User;
 }
@@ -220,7 +223,7 @@ export default function UserAdvertsList({ user }: UserAdvertsListProps) {
                 </div>
 
                 <img
-                  src={advert.photo ?? "/src/assets/placeholder.png"}
+                  src={advert.photo ?? PlaceholderImage}
                   alt={advert.name}
                   className="my-4 ml-4 h-20 w-20 flex-shrink-0 rounded-lg object-cover"
                 />
