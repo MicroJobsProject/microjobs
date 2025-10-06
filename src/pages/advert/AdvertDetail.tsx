@@ -138,7 +138,7 @@ function AdvertDetail() {
                     >
                       delete
                     </span>
-                    <span>Delete</span>
+                    <span>{t("profile:Delete")}</span>
                   </button>
                 </div>
               )}
@@ -172,7 +172,7 @@ function AdvertDetail() {
                     >
                       account_circle
                     </span>
-                    <span>My Profile</span>
+                    <span>{t("My Profile")}</span>
                   </Link>
                 ) : (
                   <>
@@ -201,12 +201,12 @@ function AdvertDetail() {
         onClose={() => {
           setShowDeleteModal(false);
         }}
-        title={t("profile:Confirm Deletion")}
+        title={t("Confirm Deletion")}
         variant="destructive"
       >
         <div className="space-y-4">
           <p className="text-destructive text-sm font-medium">
-            {t("profile:This action cannot be undone.")}
+            {t("This action cannot be undone.")}
           </p>
 
           <div className="flex justify-end gap-3">
