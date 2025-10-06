@@ -119,7 +119,7 @@ export default function UserAdvertsList({ user }: UserAdvertsListProps) {
     if ((event.target as HTMLElement).closest('input[type="checkbox"]')) {
       return;
     }
-    navigate(`/adverts/${seoNormalize(advert.name)}/${advert._id}`);
+    navigate(`/advert/${seoNormalize(advert.name)}/${advert._id}`);
   }
 
   if (!adverts || adverts.length === 0) {
