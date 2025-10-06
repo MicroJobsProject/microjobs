@@ -1,8 +1,11 @@
 // DEPENDENCIES
-import { useNavigate, useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
+import clsx from "clsx";
+import { formatDistanceToNow } from "date-fns";
+import { enUS, es } from "date-fns/locale";
 
 //NATIVE
 import Page from "../../components/layout/Page";
@@ -12,13 +15,12 @@ import {
   useAuth,
   useUiResetError,
   useUser,
+  useUserLoadAction,
 } from "../../store/hooks";
 import { useAppSelector } from "../../store";
 import { getAdvertById, getUi } from "../../store/selectors";
 import placeholder from "../../assets/placeholder.png";
-import { formatDistanceToNow } from "date-fns";
 import Alert from "../../components/ui/Alert";
-import clsx from "clsx";
 import Modal from "../../components/ui/Modal";
 
 function AdvertDetail() {
@@ -26,24 +28,39 @@ function AdvertDetail() {
   const navigate = useNavigate();
   const isLogged = useAuth();
   const user = useUser();
+  const loadUser = useUserLoadAction();
   const advertDetailAction = useAdvertsDetailAction();
   const advert = useAppSelector(getAdvertById(params.advertId));
   const { pending, error } = useAppSelector(getUi);
   const uiResetErrorAction = useUiResetError();
   const advertDeleteAction = useAdvertDeleteAction();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const { t } = useTranslation(["profile"]);
+  const { t, i18n } = useTranslation([
+    "detail",
+    "profile",
+    "advert-card",
+    "advert-category",
+  ]);
+
+  const isOwner = user?.id === advert?.owner._id;
+
+  const locale = i18n.language === "es-ES" ? es : enUS;
+  const date = advert?.updatedAt ? new Date(advert.updatedAt) : new Date();
+  const timeAgo = formatDistanceToNow(date, { locale });
 
   useEffect(() => {
     if (!params.advertId) {
       return;
+    }
+    if (!user) {
+      loadUser();
     }
     advertDetailAction(params.advertId);
   }, [params.advertId]);
 
   async function handleConfirmDelete() {
     try {
-      if (advert) {
+      if (advert && user) {
         await advertDeleteAction(advert?._id);
       }
       setShowDeleteModal(false);
@@ -57,7 +74,7 @@ function AdvertDetail() {
     <>
       <Page>
         {pending && <p>Loading...</p>}
-        <div className="grid grid-cols-1 gap-y-8 lg:grid-cols-3 lg:gap-x-8">
+        <div className="grid grid-cols-1 items-start gap-y-8 lg:grid-cols-3 lg:gap-x-8">
           {/* Detalles del anuncio */}
           <div className="bg-container border-border col-span-2 overflow-hidden rounded-xl shadow-sm lg:col-span-2">
             <div className="relative">
@@ -74,41 +91,42 @@ function AdvertDetail() {
             <div className="p-6">
               {/* Título, etiquetas y precio */}
               <div className="mb-6 flex items-start justify-between">
-                <div className="flex flex-col">
+                <div className="flex flex-col items-start">
                   <h2>{advert?.name}</h2>
-                  <div className="flex flex-col gap-2 md:flex-row">
+                  <div className="flex flex-col items-start gap-2 md:flex-row md:items-center">
                     <span
-                      className="rounded-full bg-amber-300 px-3 py-0.5"
+                      className="flex justify-center rounded-full bg-amber-300 px-3 py-0.5"
                       aria-label={t(
                         advert?.offer
                           ? "ariaAdvertTypeOffer"
                           : "ariaAdvertTypeNeed",
                       )}
                     >
-                      {t(advert?.offer ? "advertTypeOffer" : "advertTypeNeed")}
+                      {t(
+                        advert?.offer
+                          ? "advert-card:advertTypeOffer"
+                          : "advert-card:advertTypeNeed",
+                      )}
                     </span>
                     <span aria-hidden="true" className="hidden md:block">
                       ·
                     </span>
-                    <span>{advert?.category}</span>
+                    <span>{t(`advert-category:${advert?.category}`)}</span>
                     <span aria-hidden="true" className="hidden md:block">
                       ·
                     </span>
                     {advert?.updatedAt && (
-                      <span>
-                        Uploaded{" "}
-                        {formatDistanceToNow(new Date(advert.updatedAt))} ago
-                      </span>
+                      <span>{t("detail:updatedAgo", { time: timeAgo })}</span>
                     )}
                   </div>
                 </div>
                 <div className="flex flex-col text-right">
                   <h2 className="!text-primary">{advert?.price}€</h2>
-                  <span>per hour</span>
+                  <span>{t("per hour")}</span>
                 </div>
               </div>
               {/* Botones */}
-              {user?.id === advert?.owner._id && (
+              {isOwner && (
                 <div className="mb-6 flex gap-4">
                   <button
                     className="btn btn-destructive"
@@ -126,14 +144,15 @@ function AdvertDetail() {
               )}
               {/* Descripción */}
               <div>
-                <h3 className="!mb-4">Description</h3>
+                <h3 className="!mb-4">{t("Description")}</h3>
                 <p>{advert?.description}</p>
               </div>
             </div>
           </div>
           {/* Detalles del usuario */}
-          <div className="bg-container border-border flex h-auto flex-col rounded-xl border p-6 shadow-sm md:h-45">
-            <div className="mb-2 flex items-center gap-6">
+
+          <div className="bg-container border-border flex h-auto flex-col gap-4 rounded-xl border p-6 shadow-sm">
+            <div className="flex items-center gap-6">
               <img
                 src={placeholder}
                 alt={advert?.owner.username}
@@ -143,12 +162,25 @@ function AdvertDetail() {
                 {advert?.owner.username}
               </span>
             </div>
-            {isLogged && (
-              <>
-                <h3>Contact Information</h3>
-                <p>email</p>
-              </>
-            )}
+            <div className="flex flex-col">
+              {isLogged &&
+                (isOwner ? (
+                  <Link className="btn btn-primary" to="/profile">
+                    <span
+                      className="material-symbols-outlined"
+                      aria-hidden="true"
+                    >
+                      account_circle
+                    </span>
+                    <span>My Profile</span>
+                  </Link>
+                ) : (
+                  <>
+                    <h3>{t("Contact Information")}</h3>
+                    {/* <p>{advert?.owner.email}</p> */}
+                  </>
+                ))}
+            </div>
           </div>
         </div>
       </Page>
