@@ -26,7 +26,7 @@ import Modal from "../../components/ui/Modal";
 
 //ASSETS
 import PlaceholderImage from "/placeholder.png";
-import { API_BASE_URL } from "../../config/constans";
+import { API_BASE_URL } from "../../config/constants";
 
 function AdvertDetail() {
   const params = useParams();

@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 
 // NATIVE
 import type { Advert } from "../../pages/advert/types";
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+import { API_BASE_URL } from "../../config/constants";
 
 //ASSETS
 import PlaceholderImage from "/placeholder.png";

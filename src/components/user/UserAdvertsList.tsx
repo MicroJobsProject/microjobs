@@ -23,7 +23,7 @@ import type { Advert } from "../../pages/advert/types";
 
 //ASSETS
 import PlaceholderImage from "/placeholder.png";
-import { API_BASE_URL } from "../../config/constans";
+import { API_BASE_URL } from "../../config/constants";
 
 interface UserAdvertsListProps {
   user: User;
