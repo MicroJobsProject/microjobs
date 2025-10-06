@@ -24,5 +24,12 @@
   "Successfully logged in": "Successfully logged in",
   "Server error while logging in": "Server error while logging in",
   "Successfully logged out": "Successfully logged out",
-  "Server error while logging out": "Server error while logging out"
+  "Server error while logging out": "Server error while logging out",
+
+  "Page Not Found": "Page Not Found",
+  "Internal Server Error": "Internal Server Error",
+  "Service Unavailable": "Service Unavailable",
+  "Forbidden": "Forbidden",
+  "Bad Request": "Bad Request",
+  "Error": "Error"
 }
