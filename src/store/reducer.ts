@@ -111,6 +111,13 @@ export function adverts(
   if (action.type === "adverts/load/fulfilled") {
     return { ...state, loaded: true, data: action.payload };
   }
+  if (action.type === "adverts/detail/fulfilled") {
+    return {
+      ...state,
+      loaded: true,
+      data: { ...state.data, results: [action.payload] },
+    };
+  }
 
   if (action.type === "adverts/delete/fulfilled") {
     const filteredResults = state.data.results.filter(
@@ -159,6 +166,7 @@ export function ui(state = defaultState.ui, action: Actions): State["ui"] {
     action.type === "user/update/pending" ||
     action.type === "user/stats/pending" ||
     action.type === "adverts/load/pending" ||
+    action.type === "adverts/detail/pending" ||
     action.type === "adverts/delete/pending"
   ) {
     return { pending: true, error: null, successMessage: null };
@@ -171,6 +179,7 @@ export function ui(state = defaultState.ui, action: Actions): State["ui"] {
     action.type === "user/update/fulfilled" ||
     action.type === "user/stats/fulfilled" ||
     action.type === "adverts/load/fulfilled" ||
+    action.type === "adverts/detail/fulfilled" ||
     action.type === "adverts/delete/fulfilled"
   ) {
     return { pending: false, error: null, successMessage: null };

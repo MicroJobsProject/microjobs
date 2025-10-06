@@ -134,11 +134,9 @@ function AdvertFilter({ onSubmit, onReset }: FilterProps) {
                       type="checkbox"
                       id={category.name.toLowerCase()}
                       name="category"
-                      value={category.name.toLowerCase()}
+                      value={category.name}
                       checked={
-                        filters.category?.includes(
-                          category.name.toLowerCase(),
-                        ) ?? false
+                        filters.category?.includes(category.name) ?? false
                       }
                       onChange={handleCategoryChange}
                     />

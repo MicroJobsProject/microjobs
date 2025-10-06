@@ -1,5 +1,5 @@
 import { client } from "../../api/client";
-import type { AdvertCategory, AdvertResponse } from "./types";
+import type { AdvertCategory, AdvertResponse, Advert } from "./types";
 
 export async function getAdverts(params?: Record<string, string>) {
   const query = new URLSearchParams(params).toString();
@@ -31,3 +31,9 @@ export async function deleteMultipleAdverts(
 ): Promise<void> {
   await client.post("/api/adverts/bulk-delete", { advertIds });
 }
+
+export const getAdvertById = async (advertId: string) => {
+  const response = await client.get<Advert>(`/api/adverts/${advertId}`);
+
+  return response.data;
+};
