@@ -26,5 +26,10 @@
 
   "No Internet Connection": "No Internet Connection",
   "Please check your internet connection and try again.": "Please check your internet connection and try again.",
-  "Retry Connection": "Retry Connection"
+  "Retry Connection": "Retry Connection",
+
+  "Page Not Found": "Page Not Found",
+  "Internal Server Error": "Internal Server Error",
+  "Bad Request": "Bad Request",
+  "Error": "Error"
 }

@@ -26,5 +26,10 @@
 
   "No Internet Connection": "Sin conexión a la red",
   "Please check your internet connection and try again.": "Por favor, comprueba tu conexión a internet y vuelve a intentarlo.",
-  "Retry Connection": "Reintentar Conexión"
+  "Retry Connection": "Reintentar Conexión",
+
+  "Page Not Found": "Página no encontrada",
+  "Internal Server Error": "Error interno en el servidor",
+  "Bad Request": "Error en la petición",
+  "Error": "Error"
 }
