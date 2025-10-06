@@ -115,11 +115,10 @@ function NewAdvertPage() {
               <textarea
                 id="description"
                 name="description"
-                placeholder={
-                  t("Enter a detailed description (max ") +
-                  maxDescriptionChars +
-                  t(" characters)")
-                }
+                placeholder={t(
+                  "Enter a detailed description (max {{number}} characters)",
+                  { number: maxDescriptionChars },
+                )}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 maxLength={maxDescriptionChars}
@@ -128,7 +127,7 @@ function NewAdvertPage() {
                 className="w-full resize-none rounded-lg border border-gray-300 p-3 text-sm placeholder-gray-400 focus:ring-2 focus:ring-blue-400 focus:outline-none"
               />
               <div className="mt-1 text-right text-xs text-gray-500">
-                {description.length}/{maxDescriptionChars} characters
+                {description.length}/{maxDescriptionChars} {t("characters")}
               </div>
             </div>
 
