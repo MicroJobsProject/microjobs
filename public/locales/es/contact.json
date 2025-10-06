@@ -1,0 +1,14 @@
+{
+  "contactTitle": "Contacta ahora",
+  "name": "Nombre de usuario",
+  "email": "Correo electrónico",
+  "subject": "Asunto",
+  "subjectPlaceholder": "Tu asunto",
+  "message": "Mensaje",
+  "messagePlaceholder": "Tu mensaje",
+  "sendingMessage": "Enviando mensaje...",
+  "sendMessage": "Enviar mensaje",
+
+  "errorSubjectRequired": "Se requiere un asunto",
+  "errorMessageRequired": "Se requiere un mensaje"
+}
