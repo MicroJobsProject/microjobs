@@ -40,6 +40,16 @@
   "Deleting...": "Deleting...",
   "User not found": "User not found",
 
+  "myAdverts": "My Adverts",
+  "selectAll": "Select All",
+  "deselectAll": "Deselect All",
+  "ariaSelectAdvert": "Select advert '{{name}}'",
+  "deleteSelected": "Delete Selected",
+  "confirmDeletion": "Confirm Deletion",
+  "confirmDeletionSingle": "Are you sure you want to delete this advert?",
+  "confirmDeletionMultiple": "Are you sure you want to delete {{count}} adverts?",
+  "confirmDeletionWarning": "This action cannot be undone",
+
   "Account Statistics": "Account Statistics",
   "Total Adverts": "Total Adverts",
   "Averts created with this account": "Adverts created with this account"

@@ -29,7 +29,12 @@ interface UserAdvertsListProps {
 }
 
 export default function UserAdvertsList({ user }: UserAdvertsListProps) {
-  const { t } = useTranslation(["home", "profile"]);
+  const { t } = useTranslation([
+    "home",
+    "profile",
+    "advert-card",
+    "advert-category",
+  ]);
   const navigate = useNavigate();
 
   const loadUserStats = useUserStatsLoadAction();
@@ -153,7 +158,7 @@ export default function UserAdvertsList({ user }: UserAdvertsListProps) {
       <section className="mb-8">
         <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div className="flex flex-col gap-2">
-            <h2 className="!mb-0">{t("profile:My Adverts")}</h2>
+            <h2 className="!mb-0">{t("profile:myAdverts")}</h2>
             {adverts.length > 0 && (
               <button
                 onClick={handleSelectAll}
@@ -166,8 +171,8 @@ export default function UserAdvertsList({ user }: UserAdvertsListProps) {
                 </span>
                 <span>
                   {selectedAdverts.size === adverts.length
-                    ? t("profile:Deselect All")
-                    : t("profile:Select All")}
+                    ? t("profile:deselectAll")
+                    : t("profile:selectAll")}
                 </span>
               </button>
             )}
@@ -182,7 +187,7 @@ export default function UserAdvertsList({ user }: UserAdvertsListProps) {
                 delete
               </span>
               <span>
-                {t("profile:Delete Selected")} ({selectedAdverts.size})
+                {t("profile:deleteSelected")} ({selectedAdverts.size})
               </span>
             </button>
           )}
@@ -216,7 +221,7 @@ export default function UserAdvertsList({ user }: UserAdvertsListProps) {
                     onChange={() => handleSelectAdvert(advert._id)}
                     onClick={(e) => e.stopPropagation()}
                     className="text-primary focus:ring-primary h-5 w-5 cursor-pointer rounded border-gray-300"
-                    aria-label={t("profile:Select advert", {
+                    aria-label={t("profile:ariaSelectAdvert", {
                       name: advert.name,
                     })}
                   />
@@ -224,7 +229,7 @@ export default function UserAdvertsList({ user }: UserAdvertsListProps) {
 
                 <img
                   src={advert.photo ?? PlaceholderImage}
-                  alt={advert.name}
+                  alt={t("advert-card:ariaAdvertPhoto", { name: advert.name })}
                   className="my-4 ml-4 h-20 w-20 flex-shrink-0 rounded-lg object-cover"
                 />
 
@@ -242,7 +247,10 @@ export default function UserAdvertsList({ user }: UserAdvertsListProps) {
                         : t("advert-card:advertTypeNeed")}
                     </span>
                     <span className="text-sm font-bold text-gray-700">
-                      {advert.category}
+                      {t(advert.category, {
+                        ns: "advert-category",
+                        defaultValue: advert.category,
+                      })}
                     </span>
                   </div>
                 </div>
@@ -271,19 +279,19 @@ export default function UserAdvertsList({ user }: UserAdvertsListProps) {
           setShowDeleteModal(false);
           setAdvertToDelete(null);
         }}
-        title={t("profile:Confirm Deletion")}
+        title={t("profile:confirmDeletion")}
         variant="destructive"
       >
         <div className="space-y-4">
           <p className="text-paragraph">
             {deleteType === "single"
-              ? t("profile:Are you sure you want to delete this advert?")
-              : t("profile:Are you sure you want to delete {count} adverts?", {
+              ? t("profile:confirmDeletionSingle")
+              : t("profile:confirmDeletionMultiple", {
                   count: selectedAdverts.size,
                 })}
           </p>
           <p className="text-destructive text-sm font-medium">
-            {t("profile:This action cannot be undone.")}
+            {t("profile:confirmDeletionWarning")}
           </p>
 
           <div className="flex justify-end gap-3">
