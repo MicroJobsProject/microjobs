@@ -6,5 +6,8 @@
   "profile": "Profile",
   "login": "Login",
   "logout": "Logout",
-  "register": "Register"
+  "register": "Register",
+
+  "darkMode": "Dark Mode",
+  "lightMode": "Light Mode"
 }

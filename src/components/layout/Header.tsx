@@ -100,11 +100,21 @@ function Header() {
                   <button className="btn btn-secondary" onClick={toggleTheme}>
                     <span className="sr-only">{t("toggleTheme")}</span>
                     {theme === "dark" ? (
-                      <span className="material-symbols-outlined">
+                      <span
+                        className="material-symbols-outlined"
+                        aria-hidden="true"
+                        aria-label={t("Dark mode")}
+                      >
                         nightlight
                       </span>
                     ) : (
-                      <span className="material-symbols-outlined">sunny</span>
+                      <span
+                        className="material-symbols-outlined"
+                        aria-hidden="true"
+                        aria-label={t("Light mode")}
+                      >
+                        sunny
+                      </span>
                     )}
                   </button>
                 </li>
