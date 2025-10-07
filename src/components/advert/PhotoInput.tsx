@@ -4,13 +4,20 @@ import imageCompression from "browser-image-compression";
 
 interface PhotoInputProps {
   onInvalidFile?: () => void;
+  onFileSelect?: (file: File | null) => void;
+  onCompressingChange?: (isCompressing: boolean) => void; // 👈 nueva prop
 }
 
-function PhotoInput({ onInvalidFile }: PhotoInputProps) {
+function PhotoInput({
+  onInvalidFile,
+  onFileSelect,
+  onCompressingChange,
+}: PhotoInputProps) {
   const { t } = useTranslation("create");
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [isCompressing, setIsCompressing] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -38,6 +45,8 @@ function PhotoInput({ onInvalidFile }: PhotoInputProps) {
 
     try {
       setError(null);
+      setIsCompressing(true);
+      onCompressingChange?.(true); // 👈 avisa al padre
 
       const compressedBlob = await imageCompression(selectedFile, {
         maxSizeMB: 0.5,
@@ -45,7 +54,6 @@ function PhotoInput({ onInvalidFile }: PhotoInputProps) {
         useWebWorker: true,
       });
 
-      // ✅ Convertimos el Blob a File para que DataTransfer lo acepte
       const compressedFile = new File([compressedBlob], selectedFile.name, {
         type: compressedBlob.type,
         lastModified: Date.now(),
@@ -56,9 +64,13 @@ function PhotoInput({ onInvalidFile }: PhotoInputProps) {
       if (inputRef.current) inputRef.current.files = dataTransfer.files;
 
       setFile(compressedFile);
+      onFileSelect?.(compressedFile);
     } catch (err) {
       console.error("Error compressing image:", err);
       setError(t("Error compressing the image. Please try again."));
+    } finally {
+      setIsCompressing(false);
+      onCompressingChange?.(false);
     }
   }
 
@@ -76,6 +88,7 @@ function PhotoInput({ onInvalidFile }: PhotoInputProps) {
     setPreview(null);
     setError(null);
     if (inputRef.current) inputRef.current.value = "";
+    onFileSelect?.(null);
   }
 
   return (
@@ -92,7 +105,13 @@ function PhotoInput({ onInvalidFile }: PhotoInputProps) {
             : "border-gray-300 hover:bg-gray-100"
         }`}
       >
-        {preview ? (
+        {isCompressing ? (
+          // 🌀 Spinner
+          <div className="flex flex-col items-center justify-center text-gray-500">
+            <div className="mb-2 h-10 w-10 animate-spin rounded-full border-4 border-gray-300 border-t-gray-600"></div>
+            <span className="text-sm">{t("Compressing image...")}</span>
+          </div>
+        ) : preview ? (
           <div className="relative h-full w-full">
             <img
               src={preview}
