@@ -26,6 +26,16 @@ function NewAdvertPage() {
     event.preventDefault();
     const form = event.currentTarget;
     const data = new FormData(form);
+
+    const photoFile = form.photo.files[0];
+    if (photoFile && !photoFile.type.startsWith("image/")) {
+      alert("Please select a valid image before submitting.");
+      return;
+    }
+    if (!photoFile) {
+      data.append("photo", "");
+    }
+
     data.append("offer", form.offer.value === "offer" ? "true" : "false");
 
     console.log("FormData entries:");
@@ -68,6 +78,7 @@ function NewAdvertPage() {
                   type="number"
                   name="price"
                   placeholder="0.00"
+                  min={0}
                   required
                   step={0.01}
                   className="flex-1 px-4 py-2 focus:outline-none"
@@ -170,3 +181,8 @@ function NewAdvertPage() {
 }
 
 export default NewAdvertPage;
+
+//TODO: validate min price 0.01
+//TODO: validate file is image
+//TODO: no photo if its not loaded
+//TODO: maximum filesize

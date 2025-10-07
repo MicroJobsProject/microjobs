@@ -15,9 +15,9 @@ function AdvertCard({ advert }: { advert: Advert }) {
     >
       <img
         src={
-          advert.photo
-            ? `${API_BASE_URL}${advert.photo}`
-            : "/src/assets/placeholder.png"
+          advert.photo === "/uploads/undefined" || !advert.photo
+            ? "/src/assets/placeholder.png"
+            : `${API_BASE_URL}${advert.photo}`
         }
         className="h-48 w-full object-cover"
         alt={t("ariaAdvertPhoto", { name: advert.name })}
