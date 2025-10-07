@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import AuthButton from "../auth/AuthButton";
 import Dropdown from "../ui/Dropdown";
 import LanguageSelector from "../ui/LanguageSelector";
-import { useAuth } from "../../store/hooks";
+import { useAuth, useTheme } from "../../store/hooks";
 
 //STATIC-FILES
 import AppLogo from "../icon/AppLogo";
@@ -17,6 +17,7 @@ function Header() {
   const isLogged = useAuth();
   const [showMenu, setShowMenu] = useState(false);
   const location = useLocation();
+  const { theme, toggleTheme } = useTheme();
   const { t } = useTranslation("header");
   const maxWidth = 640;
 
@@ -96,14 +97,15 @@ function Header() {
                   </Dropdown>
                 </li>
                 <li>
-                  <button className="btn btn-secondary">
+                  <button className="btn btn-secondary" onClick={toggleTheme}>
                     <span className="sr-only">{t("toggleTheme")}</span>
-                    <span
-                      className="material-symbols-outlined"
-                      aria-hidden="true"
-                    >
-                      nightlight
-                    </span>
+                    {theme === "dark" ? (
+                      <span className="material-symbols-outlined">
+                        nightlight
+                      </span>
+                    ) : (
+                      <span className="material-symbols-outlined">sunny</span>
+                    )}
                   </button>
                 </li>
                 {isLogged && (
