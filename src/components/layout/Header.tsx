@@ -148,7 +148,7 @@ function Header() {
         {showMenu && (
           <>
             <div
-              className="fixed inset-0 top-18.5 z-900 bg-black/15"
+              className="fixed inset-0 top-18.5 z-900 bg-black/50"
               onClick={() => setShowMenu(false)}
             />
             <ul className="border-border bg-container absolute left-1/2 z-990 grid w-full -translate-x-1/2 gap-2 border border-b px-6 py-8 shadow-sm">

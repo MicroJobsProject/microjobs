@@ -210,7 +210,7 @@ export default function UserAdvertsList({ user }: UserAdvertsListProps) {
                 onClick={(e) => handleAdvertClick(advert, e)}
               >
                 <div
-                  className="flex items-center justify-center self-stretch bg-cyan-50 px-6 transition-colors hover:bg-cyan-100"
+                  className="flex items-center justify-center self-stretch bg-cyan-500/10 px-6 transition-colors hover:bg-cyan-500/20"
                   onClick={(e) => {
                     e.stopPropagation();
                     handleSelectAdvert(advert._id);
@@ -221,7 +221,7 @@ export default function UserAdvertsList({ user }: UserAdvertsListProps) {
                     checked={selectedAdverts.has(advert._id)}
                     onChange={() => handleSelectAdvert(advert._id)}
                     onClick={(e) => e.stopPropagation()}
-                    className="text-primary focus:ring-primary h-5 w-5 cursor-pointer rounded border-gray-300"
+                    className="text-primary focus:ring-primary border-border h-5 w-5 cursor-pointer rounded"
                     aria-label={t("profile:ariaSelectAdvert", {
                       name: advert.name,
                     })}
@@ -251,7 +251,7 @@ export default function UserAdvertsList({ user }: UserAdvertsListProps) {
                         ? t("advert-card:advertTypeOffer")
                         : t("advert-card:advertTypeNeed")}
                     </span>
-                    <span className="text-sm font-bold text-gray-700">
+                    <span className="text-heading text-sm font-bold">
                       {t(advert.category, {
                         ns: "advert-category",
                         defaultValue: advert.category,
@@ -260,7 +260,7 @@ export default function UserAdvertsList({ user }: UserAdvertsListProps) {
                   </div>
                 </div>
 
-                <div className="my-4 mr-4 flex flex-col items-center justify-center rounded-lg bg-gray-100 px-6">
+                <div className="bg-background my-4 mr-4 flex flex-col items-center justify-center rounded-lg px-6">
                   <span className="text-primary text-xl font-bold whitespace-nowrap">
                     {advert.price}€
                   </span>

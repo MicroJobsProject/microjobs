@@ -109,7 +109,7 @@ function AdvertFilter({ onSubmit, onReset }: FilterProps) {
             value={
               typeof filters.offer === "boolean" ? String(filters.offer) : ""
             }
-            className="input"
+            className="input bg-container"
             onChange={handleTypeChange}
           >
             <option value="">{t("advertTypeAll")}</option>

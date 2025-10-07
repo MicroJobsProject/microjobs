@@ -13,7 +13,7 @@ function AdvertCard({ advert }: { advert: Advert }) {
 
   return (
     <article
-      className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition hover:scale-102 hover:shadow-md"
+      className="border-border bg-container overflow-hidden rounded-xl border shadow-sm transition hover:scale-102 hover:shadow-md"
       aria-label={t("ariaAdvertName", { name: advert.name })}
     >
       <img
@@ -24,7 +24,7 @@ function AdvertCard({ advert }: { advert: Advert }) {
       <div className="h-60 p-6">
         <div className="mb-3 flex items-center justify-between">
           <span
-            className="rounded-full bg-amber-300 px-2.5 py-0.5 text-xs font-medium"
+            className="rounded-full bg-amber-300 px-2.5 py-0.5 text-xs font-medium text-amber-900"
             aria-label={t(
               advert.offer ? "ariaAdvertTypeOffer" : "ariaAdvertTypeNeed",
             )}
