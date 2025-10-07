@@ -11,6 +11,7 @@ import type {
   AdvertCategory,
   AdvertResponse,
 } from "../pages/advert/types";
+import { seoNormalize } from "../utils/seoNormalize";
 
 // ACTION TYPES===============================================================================================================
 // AUTH............................................
@@ -643,12 +644,12 @@ export function advertsCreate(
       // Manage advertsCreatePending
       const createdAdvert = await api.adverts.createAdvert(newAdvertData);
 
-      //TODO: navigate to advertDetail
-      // const advert = await api.adverts.getAdvert(createdAdvert.id.toString());
-      // dispatch(advertsCreatedFulfilled(advert));
-      // router.navigate(`/adverts/${createdAdvert.id}`);
-      router.navigate(`/home/`);
-      return createdAdvert.data; //advert;
+      const advert = await api.adverts.getAdvertById(createdAdvert.result._id);
+
+      dispatch(advertsCreatedFulfilled(advert));
+      router.navigate(`/advert/${seoNormalize(advert.name)}/${advert._id}`);
+
+      return createdAdvert; //advert;
     } catch (error) {
       // Manage advertsCreateRejected
       if (axios.isAxiosError(error)) {
