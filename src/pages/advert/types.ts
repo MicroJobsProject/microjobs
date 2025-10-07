@@ -1,6 +1,6 @@
 export interface Advert {
   _id: string;
-  owner: { _id: string; username: string };
+  owner: { username: string };
   name: string;
   price: number;
   offer: boolean;
@@ -8,6 +8,7 @@ export interface Advert {
   photo: string | undefined;
   description: string;
   updatedAt: string;
+  isOwner: boolean;
 }
 
 export interface AdvertResponse {

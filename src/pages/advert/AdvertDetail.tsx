@@ -70,8 +70,6 @@ function AdvertDetail() {
     }
   }, [user]);
 
-  const isOwner = user?.id === advert?.owner._id;
-
   const locale = i18n.language === "es-ES" ? es : enUS;
   const date = advert?.updatedAt ? new Date(advert.updatedAt) : new Date();
   const timeAgo = formatDistanceToNow(date, { locale });
@@ -213,7 +211,7 @@ function AdvertDetail() {
                   <span>{t("per hour")}</span>
                 </div>
               </div>
-              {isOwner && (
+              {advert?.isOwner && (
                 <div className="mb-6 flex gap-4">
                   <button
                     className="btn btn-destructive"
@@ -250,7 +248,7 @@ function AdvertDetail() {
 
             {isLogged && (
               <div className="flex flex-col gap-4">
-                {isOwner ? (
+                {advert?.isOwner ? (
                   <Link className="btn btn-primary" to="/profile">
                     <span
                       className="material-symbols-outlined"
