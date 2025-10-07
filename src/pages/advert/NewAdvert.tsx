@@ -61,6 +61,7 @@ function NewAdvertPage() {
               </label>
               <div>
                 <input
+                  id="name"
                   type="text"
                   name="name"
                   placeholder={t("titlePlaceholder")}
@@ -75,6 +76,7 @@ function NewAdvertPage() {
               </label>
               <div className="flex w-full items-center overflow-hidden rounded-lg border border-gray-300">
                 <input
+                  id="price"
                   type="number"
                   name="price"
                   placeholder="0.00"

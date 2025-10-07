@@ -17,11 +17,7 @@ function AdvertCard({ advert }: { advert: Advert }) {
       aria-label={t("ariaAdvertName", { name: advert.name })}
     >
       <img
-        src={
-          advert.photo === "/uploads/undefined" || !advert.photo
-            ? PlaceholderImage
-            : `${API_BASE_URL}${advert.photo}`
-        }
+        src={advert.photo ? `${API_BASE_URL}${advert.photo}` : PlaceholderImage}
         className="h-48 w-full object-cover"
         alt={t("ariaAdvertPhoto", { name: advert.name })}
       />

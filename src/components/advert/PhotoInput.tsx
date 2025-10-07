@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import imageCompression from "browser-image-compression";
 
 interface PhotoInputProps {
   onInvalidFile?: () => void;
@@ -22,7 +23,7 @@ function PhotoInput({ onInvalidFile }: PhotoInputProps) {
     return () => URL.revokeObjectURL(objectUrl);
   }, [file]);
 
-  function handleFiles(files: FileList | null) {
+  async function handleFiles(files: FileList | null) {
     if (!files || !files.length) return;
     const selectedFile = files[0];
 
@@ -35,8 +36,30 @@ function PhotoInput({ onInvalidFile }: PhotoInputProps) {
       return;
     }
 
-    setError(null);
-    setFile(selectedFile);
+    try {
+      setError(null);
+
+      const compressedBlob = await imageCompression(selectedFile, {
+        maxSizeMB: 0.5,
+        maxWidthOrHeight: 1200,
+        useWebWorker: true,
+      });
+
+      // ✅ Convertimos el Blob a File para que DataTransfer lo acepte
+      const compressedFile = new File([compressedBlob], selectedFile.name, {
+        type: compressedBlob.type,
+        lastModified: Date.now(),
+      });
+
+      const dataTransfer = new DataTransfer();
+      dataTransfer.items.add(compressedFile);
+      if (inputRef.current) inputRef.current.files = dataTransfer.files;
+
+      setFile(compressedFile);
+    } catch (err) {
+      console.error("Error compressing image:", err);
+      setError(t("Error compressing the image. Please try again."));
+    }
   }
 
   function handleDrop(e: React.DragEvent<HTMLLabelElement>) {
