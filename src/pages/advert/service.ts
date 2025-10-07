@@ -11,7 +11,7 @@ export async function getAdverts(params?: Record<string, string>) {
 export const createAdvert = async (formData: FormData) => {
   const response = await client.post("/api/adverts", formData);
 
-  return response;
+  return response.data;
 };
 
 export async function getAdvertsCategories() {
