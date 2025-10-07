@@ -15,6 +15,7 @@ import App from "./app";
 //STATIC-FILES
 import "./styles/index.css";
 import "./utils/i18n.ts";
+import ThemeProvider from "./utils/theme/theme-provider.tsx";
 
 const router = createBrowserRouter([{ path: "*", element: <App /> }]);
 
@@ -39,7 +40,9 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ErrorBoundary>
       <Provider store={store}>
-        <RouterProvider router={router} />
+        <ThemeProvider>
+          <RouterProvider router={router} />
+        </ThemeProvider>
       </Provider>
     </ErrorBoundary>
   </StrictMode>,

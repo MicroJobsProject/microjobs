@@ -1,4 +1,5 @@
 //DEPENDENCIES
+import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from ".";
 
 //NATIVE
@@ -155,6 +156,34 @@ export function useUiResetError() {
   return function () {
     return dispatch(uiResetError());
   };
+}
+
+export function useTheme() {
+  const initialTheme = (): "light" | "dark" => {
+    const stored = localStorage.getItem("theme") as "light" | "dark" | null;
+    if (stored) {
+      return stored;
+    }
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light";
+  };
+  const [theme, setTheme] = useState<"light" | "dark">(initialTheme);
+  function toggleTheme() {
+    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+  }
+  useEffect(() => {
+    const root = window.document.documentElement;
+    if (theme === "dark") {
+      root.classList.add("dark");
+      root.classList.remove("light");
+    } else {
+      root.classList.add("light");
+      root.classList.remove("dark");
+    }
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+  return { theme, setTheme, toggleTheme };
 }
 
 // ERROR............................................
