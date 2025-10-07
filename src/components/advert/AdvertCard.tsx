@@ -3,7 +3,10 @@ import { useTranslation } from "react-i18next";
 
 // NATIVE
 import type { Advert } from "../../pages/advert/types";
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+import { API_BASE_URL } from "../../config/constants";
+
+//ASSETS
+import PlaceholderImage from "/placeholder.png";
 
 function AdvertCard({ advert }: { advert: Advert }) {
   const { t } = useTranslation("advert-card");
@@ -16,7 +19,7 @@ function AdvertCard({ advert }: { advert: Advert }) {
       <img
         src={
           advert.photo === "/uploads/undefined" || !advert.photo
-            ? "/src/assets/placeholder.png"
+            ? PlaceholderImage
             : `${API_BASE_URL}${advert.photo}`
         }
         className="h-48 w-full object-cover"

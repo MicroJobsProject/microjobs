@@ -37,3 +37,18 @@ export const getAdvertById = async (advertId: string) => {
 
   return response.data;
 };
+
+// CONTACT OWNER OF AN ADVERT
+export async function sendContactMessage(
+  advertId: string,
+  data: {
+    senderName: string;
+    senderEmail: string;
+    subject: string;
+    message: string;
+    username?: string;
+  },
+): Promise<{ success: boolean; message: string }> {
+  const response = await client.post(`/api/contact/${advertId}`, data);
+  return response.data;
+}

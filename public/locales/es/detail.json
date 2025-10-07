@@ -2,5 +2,9 @@
   "updatedAgo": "Publicado hace {{time}}",
   "per hour": "por hora",
   "Description": "Descripción",
-  "Contact Information": "Información de contacto"
+  "Contact Information": "Información de contacto",
+  "My Profile": "Mi Perfil",
+  "Confirm Deletion": "Confirmar eliminación",
+  "This action cannot be undone.": "Esta acción no se puede deshacer.",
+  "placeholder": "Imagen por defecto"
 }

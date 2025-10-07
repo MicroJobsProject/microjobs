@@ -40,6 +40,16 @@
   "Deleting...": "Borrando...",
   "User not found": "Usuario no encontrado",
 
+  "myAdverts": "Mis anuncios",
+  "selectAll": "Seleccionar todos",
+  "deselectAll": "Deselecionar todos",
+  "ariaSelectAdvert": "Select advert {{name}}",
+  "deleteSelected": "Borrar seleccionados",
+  "confirmDeletion": "Confirmar eliminación",
+  "confirmDeletionSingle": "Are you sure you want to delete this advert?",
+  "confirmDeletionMultiple": "¿Estás seguro de querer borrar {{count}} anuncios?",
+  "confirmDeletionWarning": "Esta acción no se puede deshacer",
+
   "Account Statistics": "Estadísticas de la cuenta",
   "Total Adverts": "Total de anuncios",
   "Adverts created with this account": "Anuncios creados en esta cuenta"

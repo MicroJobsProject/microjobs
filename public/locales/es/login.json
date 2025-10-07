@@ -24,5 +24,12 @@
   "Successfully logged in": "Inicio de sesión exitoso",
   "Server error while logging in": "Error en el servidor al iniciar sesión",
   "Successfully logged out": "Cierre de sesión exitoso",
-  "Server error while logging out": "Error en el servidor al cerrar sesión"
+  "Server error while logging out": "Error en el servidor al cerrar sesión",
+
+  "Page Not Found": "Página no encontrada",
+  "Internal Server Error": "Error interno en el servidor",
+  "Service Unavailable": "Servicio no disponible",
+  "Forbidden": "Prohibido",
+  "Bad Request": "Error en la petición",
+  "Error": "Error"
 }

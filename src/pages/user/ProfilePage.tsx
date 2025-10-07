@@ -21,7 +21,7 @@ import { changePassword, deleteAccount } from "./service";
 import UserAdvertsList from "../../components/user/UserAdvertsList";
 
 //ASSETS
-import PlaceholderImage from "../../assets/placeholder.png";
+import PlaceholderImage from "/placeholder.png";
 
 type Section = "profile" | "security" | "stats";
 
