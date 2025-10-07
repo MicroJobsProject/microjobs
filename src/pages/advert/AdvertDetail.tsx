@@ -174,7 +174,7 @@ function AdvertDetail() {
                   <h2 className="">{advert?.name}</h2>
                   <div className="flex flex-col items-start gap-2 md:flex-row md:items-center">
                     <span
-                      className="flex justify-center rounded-full bg-amber-300 px-3 py-0.5"
+                      className="flex justify-center rounded-full bg-amber-300 px-3 py-0.5 text-amber-900"
                       aria-label={t(
                         advert?.offer
                           ? "advert-card:ariaAdvertTypeOffer"
@@ -276,7 +276,7 @@ function AdvertDetail() {
                           id="senderName"
                           value={contactForm.senderName}
                           readOnly
-                          className="input bg-gray-100"
+                          className="input bg-neutral-500/10"
                         />
                       </div>
 
@@ -290,7 +290,7 @@ function AdvertDetail() {
                           id="senderEmail"
                           value={contactForm.senderEmail}
                           readOnly
-                          className="input bg-gray-100"
+                          className="input bg-neutral-500/10"
                         />
                       </div>
 

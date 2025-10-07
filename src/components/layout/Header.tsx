@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import AuthButton from "../auth/AuthButton";
 import Dropdown from "../ui/Dropdown";
 import LanguageSelector from "../ui/LanguageSelector";
-import { useAuth } from "../../store/hooks";
+import { useAuth, useTheme } from "../../store/hooks";
 
 //STATIC-FILES
 import AppLogo from "../icon/AppLogo";
@@ -17,6 +17,7 @@ function Header() {
   const isLogged = useAuth();
   const [showMenu, setShowMenu] = useState(false);
   const location = useLocation();
+  const { theme, toggleTheme } = useTheme();
   const { t } = useTranslation("header");
   const maxWidth = 640;
 
@@ -96,14 +97,25 @@ function Header() {
                   </Dropdown>
                 </li>
                 <li>
-                  <button className="btn btn-secondary">
+                  <button className="btn btn-secondary" onClick={toggleTheme}>
                     <span className="sr-only">{t("toggleTheme")}</span>
-                    <span
-                      className="material-symbols-outlined"
-                      aria-hidden="true"
-                    >
-                      nightlight
-                    </span>
+                    {theme === "dark" ? (
+                      <span
+                        className="material-symbols-outlined"
+                        aria-hidden="true"
+                        aria-label={t("Dark mode")}
+                      >
+                        nightlight
+                      </span>
+                    ) : (
+                      <span
+                        className="material-symbols-outlined"
+                        aria-hidden="true"
+                        aria-label={t("Light mode")}
+                      >
+                        sunny
+                      </span>
+                    )}
                   </button>
                 </li>
                 {isLogged && (
@@ -136,7 +148,7 @@ function Header() {
         {showMenu && (
           <>
             <div
-              className="fixed inset-0 top-18.5 z-900 bg-black/15"
+              className="fixed inset-0 top-18.5 z-900 bg-black/50"
               onClick={() => setShowMenu(false)}
             />
             <ul className="border-border bg-container absolute left-1/2 z-990 grid w-full -translate-x-1/2 gap-2 border border-b px-6 py-8 shadow-sm">

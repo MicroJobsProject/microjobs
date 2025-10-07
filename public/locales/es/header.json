@@ -6,5 +6,8 @@
   "profile": "Perfil",
   "login": "Iniciar Sesión",
   "logout": "Salir",
-  "register": "Regístrate"
+  "register": "Regístrate",
+
+  "darkMode": "Modo oscuro",
+  "lightMode": "Modo claro"
 }
