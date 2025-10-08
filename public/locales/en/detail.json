@@ -6,5 +6,7 @@
   "My Profile": "My Profile",
   "Confirm Deletion": "Confirm Deletion",
   "This action cannot be undone.": "This action cannot be undone.",
-  "placeholder": "placeholder image"
+  "placeholder": "placeholder image",
+
+  "Message sent successfully": "Message sent successfully"
 }

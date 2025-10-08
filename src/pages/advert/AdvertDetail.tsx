@@ -374,7 +374,7 @@ function AdvertDetail() {
 
       {successMessage && (
         <Alert
-          text={successMessage}
+          text={t(successMessage)}
           variant="success"
           onClick={() => uiResetErrorAction()}
         />
