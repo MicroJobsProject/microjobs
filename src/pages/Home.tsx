@@ -14,6 +14,7 @@ import Alert from "../components/ui/Alert";
 import AdvertFilter from "../components/advert/AdvertFilter";
 import type { Filter } from "./advert/types";
 import { seoNormalize } from "../utils/seoNormalize";
+import Spinner from "../components/ui/Spinner";
 
 export default function Home() {
   const { t } = useTranslation("home");
@@ -76,7 +77,7 @@ export default function Home() {
               {t("advertResults")}
             </h2>
             {pending ? (
-              <p>Loading...</p>
+              <Spinner />
             ) : adverts?.length ? (
               <ul className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {adverts.map((advert) => (

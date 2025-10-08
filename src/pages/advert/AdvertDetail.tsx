@@ -27,6 +27,7 @@ import Modal from "../../components/ui/Modal";
 //ASSETS
 import PlaceholderImage from "/placeholder.png";
 import { API_BASE_URL } from "../../config/constants";
+import Spinner from "../../components/ui/Spinner";
 
 function AdvertDetail() {
   const params = useParams();
@@ -149,7 +150,7 @@ function AdvertDetail() {
   return (
     <>
       <Page>
-        {pending && <p>Loading...</p>}
+        {pending && <Spinner />}
         <div className="grid grid-cols-1 items-start gap-y-8 lg:grid-cols-3 lg:gap-x-8">
           <div className="bg-container border-border col-span-2 overflow-hidden rounded-xl shadow-sm lg:col-span-2">
             <div className="relative">

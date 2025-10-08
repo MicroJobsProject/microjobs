@@ -20,6 +20,7 @@ import {
 import RegisterPage from "./pages/auth/RegisterPage";
 import { ErrorPages } from "./pages/error/ErrorPages";
 import { NetworkErrorOverlay } from "./pages/error/NetworkErrorOverlay";
+import Spinner from "./components/ui/Spinner";
 
 const LoginPage = lazy(() => import("./pages/auth/LoginPage"));
 const ForgotPasswordPage = lazy(
@@ -70,7 +71,7 @@ function App() {
 
   return (
     <>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<Spinner />}>
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route
