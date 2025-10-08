@@ -164,7 +164,7 @@ function AdvertDetail() {
                     ? t("advert-card:ariaAdvertPhoto", { name: advert.name })
                     : t("placeholder")
                 }
-                className="w-full object-cover"
+                className="h-120 w-full object-cover"
               />
             </div>
             <div className="p-6">
