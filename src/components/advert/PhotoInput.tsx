@@ -5,7 +5,7 @@ import imageCompression from "browser-image-compression";
 interface PhotoInputProps {
   onInvalidFile?: () => void;
   onFileSelect?: (file: File | null) => void;
-  onCompressingChange?: (isCompressing: boolean) => void; // 👈 nueva prop
+  onCompressingChange?: (isCompressing: boolean) => void;
 }
 
 function PhotoInput({
@@ -46,7 +46,7 @@ function PhotoInput({
     try {
       setError(null);
       setIsCompressing(true);
-      onCompressingChange?.(true); // 👈 avisa al padre
+      onCompressingChange?.(true);
 
       const compressedBlob = await imageCompression(selectedFile, {
         maxSizeMB: 0.5,
@@ -106,7 +106,6 @@ function PhotoInput({
         }`}
       >
         {isCompressing ? (
-          // 🌀 Spinner
           <div className="flex flex-col items-center justify-center text-gray-500">
             <div className="mb-2 h-10 w-10 animate-spin rounded-full border-4 border-gray-300 border-t-gray-600"></div>
             <span className="text-sm">{t("Compressing image...")}</span>

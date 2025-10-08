@@ -55,11 +55,6 @@ function NewAdvertPage() {
       data.append("photo", "");
     }
 
-    console.log(" Sending FormData:");
-    for (const [key, value] of data.entries()) {
-      console.log(`${key}:`, value);
-    }
-
     await dispatch(advertsCreate(data));
   }
 

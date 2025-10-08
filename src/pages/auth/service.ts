@@ -71,10 +71,6 @@ export async function login(
 
   setAuthorizationHeader(accessToken);
 
-  if (import.meta.env.DEV) {
-    console.log("Session saved:", storage.getSessionInfo());
-  }
-
   return response.data;
 }
 
@@ -97,10 +93,6 @@ export async function logout(): Promise<void> {
   } finally {
     storage.clearAuth();
     removeAuthorizationHeader();
-
-    if (import.meta.env.DEV) {
-      console.log("Session cleared");
-    }
   }
 }
 

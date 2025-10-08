@@ -21,7 +21,6 @@ function PriceInput({
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const input = e.target.value;
 
-    // Extrae solo números y punto decimal
     const numericValue = parseFloat(
       input.replace(/[^\d,.-]/g, "").replace(",", "."),
     );
@@ -30,7 +29,7 @@ function PriceInput({
       setDisplayValue(formatEuro(numericValue));
       onChange(numericValue);
     } else {
-      setDisplayValue(input); // deja lo que escribe si no es un número todavía
+      setDisplayValue(input);
     }
   }
 
