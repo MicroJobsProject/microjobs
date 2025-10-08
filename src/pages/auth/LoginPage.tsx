@@ -1,10 +1,10 @@
-//DEPENDENCIES
+// DEPENDENCIES
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import { Link } from "react-router";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 
-//NATIVE
+// NATIVE
 import { useLoginAction, useUiResetError } from "../../store/hooks";
 import { useAppSelector } from "../../store";
 import { getUi } from "../../store/selectors";

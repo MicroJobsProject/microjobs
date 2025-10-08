@@ -1,4 +1,4 @@
-//DEPENDENCIES
+// DEPENDENCIES
 import { combineReducers, createStore, applyMiddleware } from "redux";
 import { composeWithDevTools } from "@redux-devtools/extension";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,7 +6,7 @@ import type { createBrowserRouter } from "react-router";
 import * as thunk from "redux-thunk";
 import type { ThunkDispatch } from "redux-thunk";
 
-//NATIVE
+// NATIVE
 import type { Actions } from "./actions";
 import * as reducers from "./reducer";
 import * as auth from "../pages/auth/service";

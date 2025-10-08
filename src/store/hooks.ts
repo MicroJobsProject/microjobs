@@ -1,8 +1,8 @@
-//DEPENDENCIES
+// DEPENDENCIES
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from ".";
 
-//NATIVE
+// NATIVE
 import type { Credentials } from "../pages/auth/types";
 import type { UpdateProfileData } from "../pages/user/types";
 

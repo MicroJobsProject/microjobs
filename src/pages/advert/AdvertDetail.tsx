@@ -7,7 +7,7 @@ import clsx from "clsx";
 import { formatDistanceToNow } from "date-fns";
 import { enUS, es } from "date-fns/locale";
 
-//NATIVE
+// NATIVE
 import Page from "../../components/layout/Page";
 import {
   useAdvertDeleteAction,

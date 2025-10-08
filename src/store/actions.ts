@@ -1,9 +1,9 @@
-//DEPENDENCIES
+// DEPENDENCIES
 import type { AppThunk } from ".";
 import type { AxiosError } from "axios";
 import axios from "axios";
 
-//NATIVE
+// NATIVE
 import type { Credentials } from "../pages/auth/types";
 import type { User, UpdateProfileData, UserStats } from "../pages/user/types";
 import type {

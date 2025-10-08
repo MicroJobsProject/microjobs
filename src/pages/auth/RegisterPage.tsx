@@ -1,7 +1,7 @@
-//DEPENDENCIES
+// DEPENDENCIES
 import { useEffect, useState } from "react";
 
-//NATIVE
+// NATIVE
 import { useRegisterAction, useUiResetError } from "../../store/hooks";
 import { useAppSelector } from "../../store";
 import { getUi } from "../../store/selectors";

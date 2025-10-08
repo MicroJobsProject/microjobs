@@ -1,7 +1,7 @@
-//DEPENDENCIES
+// DEPENDENCIES
 import { client } from "../../api/client";
 
-//NATIVE
+// NATIVE
 import type {
   User,
   UpdateProfileData,

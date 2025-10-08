@@ -1,4 +1,4 @@
-//DEPENDENCIES
+// DEPENDENCIES
 import { useTranslation } from "react-i18next";
 // import { useLocation, useNavigate, useParams } from "react-router";
 import clsx from "clsx";
