@@ -102,7 +102,7 @@ function PhotoInput({
         className={`relative flex min-h-50 cursor-pointer items-center justify-center rounded-lg border border-dashed p-4 text-center transition-colors ${
           error
             ? "border-red-400 text-red-700"
-            : "border-gray-300 hover:bg-gray-100"
+            : "hover:bg-background border-gray-300"
         }`}
       >
         {isCompressing ? (
@@ -121,10 +121,13 @@ function PhotoInput({
             <button
               type="button"
               onClick={handleRemoveFile}
-              className="bg-opacity-80 hover:bg-opacity-100 absolute top-2 right-2 rounded-full bg-white p-1 shadow"
+              className="bg-opacity-80 hover:bg-opacity-100 absolute top-2 right-2 flex rounded-full bg-white p-1 shadow"
               aria-label="Remove selected photo"
             >
-              <span className="material-symbols-outlined text-xl text-gray-600">
+              <span
+                className="material-symbols-outlined text-xl text-gray-600"
+                translate="no"
+              >
                 close
               </span>
             </button>

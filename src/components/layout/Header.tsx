@@ -72,6 +72,7 @@ function Header() {
                     <span
                       className="material-symbols-outlined"
                       aria-hidden="true"
+                      translate="no"
                     >
                       {showMenu ? "close" : "menu"}
                     </span>
@@ -83,6 +84,7 @@ function Header() {
                       <span
                         className="material-symbols-outlined"
                         aria-hidden="true"
+                        translate="no"
                       >
                         add
                       </span>
@@ -104,6 +106,7 @@ function Header() {
                         className="material-symbols-outlined"
                         aria-hidden="true"
                         aria-label={t("Dark mode")}
+                        translate="no"
                       >
                         nightlight
                       </span>
@@ -112,6 +115,7 @@ function Header() {
                         className="material-symbols-outlined"
                         aria-hidden="true"
                         aria-label={t("Light mode")}
+                        translate="no"
                       >
                         sunny
                       </span>
@@ -125,6 +129,7 @@ function Header() {
                       <span
                         className="material-symbols-outlined"
                         aria-hidden="true"
+                        translate="no"
                       >
                         account_circle
                       </span>
@@ -158,6 +163,7 @@ function Header() {
                     <span
                       className="material-symbols-outlined"
                       aria-hidden="true"
+                      translate="no"
                     >
                       add
                     </span>

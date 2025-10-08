@@ -111,6 +111,7 @@ function ResetPasswordPage() {
                 <span
                   className="material-symbols-outlined text-success text-6xl"
                   aria-hidden="true"
+                  translate="no"
                 >
                   check_circle
                 </span>
@@ -154,6 +155,7 @@ function ResetPasswordPage() {
                       <span
                         className="material-symbols-outlined text-paragraph text-xl opacity-60"
                         aria-hidden="true"
+                        translate="no"
                       >
                         lock
                       </span>
@@ -180,6 +182,7 @@ function ResetPasswordPage() {
                       <span
                         className="material-symbols-outlined text-paragraph text-xl"
                         aria-hidden="true"
+                        translate="no"
                       >
                         {showPassword ? "visibility_off" : "visibility"}
                       </span>
@@ -201,7 +204,10 @@ function ResetPasswordPage() {
                   </label>
                   <div className="relative">
                     <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                      <span className="material-symbols-outlined text-paragraph text-xl opacity-60">
+                      <span
+                        className="material-symbols-outlined text-paragraph text-xl opacity-60"
+                        translate="no"
+                      >
                         lock
                       </span>
                     </div>
@@ -226,7 +232,10 @@ function ResetPasswordPage() {
                       }
                       className="absolute top-1/2 right-3 -translate-y-1/2"
                     >
-                      <span className="material-symbols-outlined text-paragraph text-xl">
+                      <span
+                        className="material-symbols-outlined text-paragraph text-xl"
+                        translate="no"
+                      >
                         {showConfirmPassword ? "visibility_off" : "visibility"}
                       </span>
                     </button>

@@ -25,7 +25,10 @@ export function NetworkErrorOverlay({ onRetry }: NetworkErrorOverlayProps) {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
       <div className="bg-container border-border mx-4 w-full max-w-md rounded-xl border p-8 shadow-lg">
         <div className="text-center">
-          <span className="material-symbols-outlined text-destructive mb-4 inline-block text-6xl">
+          <span
+            className="material-symbols-outlined text-destructive mb-4 inline-block text-6xl"
+            translate="no"
+          >
             wifi_off
           </span>
           <h2 className="text-heading mb-2 text-2xl font-bold">
@@ -36,7 +39,9 @@ export function NetworkErrorOverlay({ onRetry }: NetworkErrorOverlayProps) {
           </p>
 
           <button onClick={handleRetry} className="btn btn-primary w-full">
-            <span className="material-symbols-outlined mr-2">refresh</span>
+            <span className="material-symbols-outlined mr-2" translate="no">
+              refresh
+            </span>
             {t("Retry Connection")}
           </button>
         </div>

@@ -220,6 +220,7 @@ function AdvertDetail() {
                     <span
                       className="material-symbols-outlined"
                       aria-hidden="true"
+                      translate="no"
                     >
                       delete
                     </span>
@@ -253,6 +254,7 @@ function AdvertDetail() {
                     <span
                       className="material-symbols-outlined"
                       aria-hidden="true"
+                      translate="no"
                     >
                       account_circle
                     </span>

@@ -201,6 +201,7 @@ function ProfilePage() {
                     <span
                       className="material-symbols-outlined"
                       aria-hidden="true"
+                      translate="no"
                     >
                       account_circle
                     </span>
@@ -219,6 +220,7 @@ function ProfilePage() {
                     <span
                       className="material-symbols-outlined"
                       aria-hidden="true"
+                      translate="no"
                     >
                       lock
                     </span>
@@ -237,6 +239,7 @@ function ProfilePage() {
                     <span
                       className="material-symbols-outlined"
                       aria-hidden="true"
+                      translate="no"
                     >
                       bar_chart
                     </span>
@@ -251,6 +254,7 @@ function ProfilePage() {
                     <span
                       className="material-symbols-outlined"
                       aria-hidden="true"
+                      translate="no"
                     >
                       logout
                     </span>
@@ -282,6 +286,7 @@ function ProfilePage() {
                       <span
                         className="material-symbols-outlined text-paragraph text-base"
                         aria-hidden="true"
+                        translate="no"
                       >
                         add_a_photo
                       </span>
@@ -370,7 +375,10 @@ function ProfilePage() {
                               }
                               className="absolute top-1/2 right-3 -translate-y-1/2"
                             >
-                              <span className="material-symbols-outlined text-paragraph text-xl">
+                              <span
+                                className="material-symbols-outlined text-paragraph text-xl"
+                                translate="no"
+                              >
                                 {showCurrentPassword
                                   ? "visibility_off"
                                   : "visibility"}
@@ -411,7 +419,10 @@ function ProfilePage() {
                                 }
                                 className="absolute top-1/2 right-3 -translate-y-1/2"
                               >
-                                <span className="material-symbols-outlined text-paragraph text-xl">
+                                <span
+                                  className="material-symbols-outlined text-paragraph text-xl"
+                                  translate="no"
+                                >
                                   {showNewPassword
                                     ? "visibility_off"
                                     : "visibility"}
@@ -452,7 +463,10 @@ function ProfilePage() {
                                 }
                                 className="absolute top-1/2 right-3 -translate-y-1/2"
                               >
-                                <span className="material-symbols-outlined text-paragraph text-xl">
+                                <span
+                                  className="material-symbols-outlined text-paragraph text-xl"
+                                  translate="no"
+                                >
                                   {showConfirmPassword
                                     ? "visibility_off"
                                     : "visibility"}
@@ -553,7 +567,10 @@ function ProfilePage() {
                       onClick={() => setShowDeletePassword(!showDeletePassword)}
                       className="absolute top-1/2 right-3 -translate-y-1/2"
                     >
-                      <span className="material-symbols-outlined text-paragraph text-xl">
+                      <span
+                        className="material-symbols-outlined text-paragraph text-xl"
+                        translate="no"
+                      >
                         {showDeletePassword ? "visibility_off" : "visibility"}
                       </span>
                     </button>
@@ -604,6 +621,7 @@ function ProfilePage() {
                     <span
                       className="material-symbols-outlined text-primary text-5xl"
                       aria-hidden="true"
+                      translate="no"
                     >
                       campaign
                     </span>

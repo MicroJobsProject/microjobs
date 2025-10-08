@@ -45,6 +45,7 @@ function AdvertCard({ advert }: { advert: Advert }) {
           <span
             className="material-symbols-outlined mr-3 !text-4xl"
             aria-hidden="true"
+            translate="no"
           >
             account_circle
           </span>

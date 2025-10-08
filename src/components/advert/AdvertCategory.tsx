@@ -23,7 +23,9 @@ const AdvertCategory = ({ name, icon, ...props }: AdvertCategoryProps) => {
         htmlFor={name}
         className="input-radio-label flex grow flex-row items-center justify-start gap-2"
       >
-        <span className="material-symbols-outlined text-3xl">{icon}</span>
+        <span className="material-symbols-outlined text-3xl" translate="no">
+          {icon}
+        </span>
         {t(name)}
       </label>
     </div>

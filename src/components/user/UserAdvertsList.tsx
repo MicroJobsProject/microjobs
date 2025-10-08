@@ -134,6 +134,7 @@ export default function UserAdvertsList({ user }: UserAdvertsListProps) {
         <span
           className="material-symbols-outlined text-heading !text-7xl"
           aria-hidden="true"
+          translate="no"
         >
           campaign
         </span>
@@ -145,7 +146,11 @@ export default function UserAdvertsList({ user }: UserAdvertsListProps) {
           <p>{t("home:noAdvertsParagraph")}</p>
         </div>
         <Link to="/advert/new" className="btn btn-primary">
-          <span className="material-symbols-outlined" aria-hidden="true">
+          <span
+            className="material-symbols-outlined"
+            aria-hidden="true"
+            translate="no"
+          >
             add
           </span>
           <span>{t("home:newAdvert")}</span>
@@ -165,7 +170,11 @@ export default function UserAdvertsList({ user }: UserAdvertsListProps) {
                 onClick={handleSelectAll}
                 className="btn btn-secondary w-fit text-sm"
               >
-                <span className="material-symbols-outlined" aria-hidden="true">
+                <span
+                  className="material-symbols-outlined"
+                  aria-hidden="true"
+                  translate="no"
+                >
                   {selectedAdverts.size === adverts.length
                     ? "check_box"
                     : "check_box_outline_blank"}
@@ -184,7 +193,11 @@ export default function UserAdvertsList({ user }: UserAdvertsListProps) {
               onClick={() => handleDeleteClick()}
               className="btn btn-destructive w-full text-sm sm:w-auto"
             >
-              <span className="material-symbols-outlined" aria-hidden="true">
+              <span
+                className="material-symbols-outlined"
+                aria-hidden="true"
+                translate="no"
+              >
                 delete
               </span>
               <span>

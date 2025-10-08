@@ -193,7 +193,10 @@ function NewAdvertPage() {
             >
               {isCompressing ? (
                 <>
-                  <span className="material-symbols-outlined animate-spin">
+                  <span
+                    className="material-symbols-outlined animate-spin"
+                    translate="no"
+                  >
                     progress_activity
                   </span>
                   {t("Compressing image...")}
@@ -203,6 +206,7 @@ function NewAdvertPage() {
                   <span
                     className="material-symbols-outlined"
                     aria-hidden="true"
+                    translate="no"
                   >
                     add_circle
                   </span>

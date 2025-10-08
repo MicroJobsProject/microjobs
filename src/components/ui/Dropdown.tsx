@@ -40,7 +40,11 @@ export default function Dropdown({
         aria-expanded={open}
       >
         {typeof icon === "string" && (
-          <span className="material-symbols-outlined" aria-hidden="true">
+          <span
+            className="material-symbols-outlined"
+            aria-hidden="true"
+            translate="no"
+          >
             {icon}
           </span>
         )}

@@ -143,6 +143,7 @@ function AdvertFilter({ onSubmit, onReset }: FilterProps) {
                     <span
                       className="material-symbols-outlined -mb-0.5 !text-base"
                       aria-hidden="true"
+                      translate="no"
                     >
                       {category.icon}
                     </span>
@@ -204,7 +205,11 @@ function AdvertFilter({ onSubmit, onReset }: FilterProps) {
             className="btn btn-secondary"
             aria-label={t("applyFilters")}
           >
-            <span className="material-symbols-outlined" aria-hidden="true">
+            <span
+              className="material-symbols-outlined"
+              aria-hidden="true"
+              translate="no"
+            >
               search
             </span>
           </button>

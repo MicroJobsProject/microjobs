@@ -125,7 +125,11 @@ export function ErrorPages() {
               onClick={handleGoBack}
               className="btn btn-outlined w-full min-w-40 sm:w-auto"
             >
-              <span className="material-symbols-outlined" aria-hidden="true">
+              <span
+                className="material-symbols-outlined"
+                aria-hidden="true"
+                translate="no"
+              >
                 arrow_back
               </span>
               {t("Go Back")}
@@ -135,7 +139,11 @@ export function ErrorPages() {
             onClick={handleGoHome}
             className="btn btn-primary w-full min-w-40 sm:w-auto"
           >
-            <span className="material-symbols-outlined" aria-hidden="true">
+            <span
+              className="material-symbols-outlined"
+              aria-hidden="true"
+              translate="no"
+            >
               home
             </span>
             {t("Go Home")}

@@ -57,6 +57,7 @@ function ForgotPasswordPage() {
                 <span
                   className="material-symbols-outlined text-success text-6xl"
                   aria-hidden="true"
+                  translate="no"
                 >
                   mark_email_read
                 </span>
@@ -100,6 +101,7 @@ function ForgotPasswordPage() {
                       <span
                         className="material-symbols-outlined text-paragraph text-xl opacity-60"
                         aria-hidden="true"
+                        translate="no"
                       >
                         mail
                       </span>

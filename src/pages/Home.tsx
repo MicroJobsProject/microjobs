@@ -94,6 +94,7 @@ export default function Home() {
                 <span
                   className="material-symbols-outlined text-heading !text-7xl"
                   aria-hidden="true"
+                  translate="no"
                 >
                   search_off
                 </span>
@@ -109,6 +110,7 @@ export default function Home() {
                     <span
                       className="material-symbols-outlined"
                       aria-hidden="true"
+                      translate="no"
                     >
                       add
                     </span>

@@ -83,7 +83,10 @@ function LoginPage() {
                   </label>
                   <div className="relative">
                     <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                      <span className="material-symbols-outlined text-paragraph text-xl opacity-60">
+                      <span
+                        className="material-symbols-outlined text-paragraph text-xl opacity-60"
+                        translate="no"
+                      >
                         mail
                       </span>
                     </div>
@@ -115,7 +118,10 @@ function LoginPage() {
                   </label>
                   <div className="relative">
                     <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                      <span className="material-symbols-outlined text-paragraph text-xl opacity-60">
+                      <span
+                        className="material-symbols-outlined text-paragraph text-xl opacity-60"
+                        translate="no"
+                      >
                         lock
                       </span>
                     </div>
@@ -137,7 +143,10 @@ function LoginPage() {
                       onClick={() => setShowPassword(!showPassword)}
                       className="absolute top-1/2 right-3 -translate-y-1/2"
                     >
-                      <span className="material-symbols-outlined text-paragraph text-xl">
+                      <span
+                        className="material-symbols-outlined text-paragraph text-xl"
+                        translate="no"
+                      >
                         {showPassword ? "visibility_off" : "visibility"}
                       </span>
                     </button>

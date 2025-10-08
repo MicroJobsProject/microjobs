@@ -35,6 +35,7 @@ const Alert = ({ text, variant, ...props }: AlertProps) => {
             <span
               className="material-symbols-outlined mr-3 flex items-center justify-center"
               aria-hidden="true"
+              translate="no"
             >
               {icon}
             </span>
@@ -47,7 +48,10 @@ const Alert = ({ text, variant, ...props }: AlertProps) => {
           aria-label="Close"
         >
           <span className="sr-only">Close</span>
-          <span className="material-symbols-outlined !text-xl !font-medium">
+          <span
+            className="material-symbols-outlined !text-xl !font-medium"
+            translate="no"
+          >
             close
           </span>
         </button>
