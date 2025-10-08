@@ -1,7 +1,7 @@
-//DEPENDENCIES
+// DEPENDENCIES
 import { useNavigate } from "react-router";
 
-//NATIVE
+// NATIVE
 import Button from "../../components/ui/Button";
 import { useAuth, useLogoutAction } from "../../store/hooks";
 import { useTranslation } from "react-i18next";

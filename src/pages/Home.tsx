@@ -1,9 +1,9 @@
-//DEPENDENCIES
+// DEPENDENCIES
 import { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router";
 import { useTranslation } from "react-i18next";
 
-//NATIVE
+// NATIVE
 import Page from "../components/layout/Page";
 import { useAppSelector } from "../store";
 import { useAdvertsLoadAction, useUiResetError } from "../store/hooks";

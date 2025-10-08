@@ -1,10 +1,10 @@
-//DEPENDENCIES
+// DEPENDENCIES
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import { createBrowserRouter, RouterProvider } from "react-router";
 
-//NATIVE
+// NATIVE
 import configureStore from "./store";
 import storage from "./utils/storage";
 import { setAuthorizationHeader } from "./api/client";

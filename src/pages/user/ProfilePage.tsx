@@ -1,10 +1,10 @@
-//DEPENDENCIES
+// DEPENDENCIES
 import { useState, useEffect, type ChangeEvent, type FormEvent } from "react";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 import clsx from "clsx";
 
-//NATIVE
+// NATIVE
 import {
   useUser,
   useUserLoadAction,
@@ -20,7 +20,7 @@ import Modal from "../../components/ui/Modal";
 import { changePassword, deleteAccount } from "./service";
 import UserAdvertsList from "../../components/user/UserAdvertsList";
 
-//ASSETS
+// ASSETS
 import PlaceholderImage from "/placeholder.png";
 
 type Section = "profile" | "security" | "stats";
@@ -185,9 +185,68 @@ function ProfilePage() {
     <>
       <div className="wrapper">
         <h2 className="!mb-6">{t("Account Settings")}</h2>
+
         <div className="mb-6 grid grid-cols-1 gap-6 lg:grid-cols-4">
           <aside className="lg:col-span-1">
-            <nav className="bg-container border-border top-24 rounded-xl border p-4 shadow-sm">
+            <nav className="bg-container border-border sticky top-[5.5rem] z-10 mb-4 rounded-xl border shadow-sm sm:top-[7.5rem] lg:hidden">
+              <div className="grid grid-cols-3">
+                <button
+                  onClick={() => setActiveSection("profile")}
+                  className={`flex flex-col items-center justify-center gap-1 border-b-2 px-2 py-3 text-xs font-medium transition ${
+                    activeSection === "profile"
+                      ? "border-primary text-primary"
+                      : "text-paragraph hover:border-border hover:text-heading border-transparent"
+                  }`}
+                >
+                  <span
+                    className="material-symbols-outlined text-lg"
+                    aria-hidden="true"
+                    translate="no"
+                  >
+                    account_circle
+                  </span>
+                  <span className="xs:inline hidden">{t("Profile")}</span>
+                </button>
+
+                <button
+                  onClick={() => setActiveSection("security")}
+                  className={`flex flex-col items-center justify-center gap-1 border-b-2 px-2 py-3 text-xs font-medium transition ${
+                    activeSection === "security"
+                      ? "border-primary text-primary"
+                      : "text-paragraph hover:border-border hover:text-heading border-transparent"
+                  }`}
+                >
+                  <span
+                    className="material-symbols-outlined text-lg"
+                    aria-hidden="true"
+                    translate="no"
+                  >
+                    lock
+                  </span>
+                  <span className="xs:inline hidden">{t("Security")}</span>
+                </button>
+
+                <button
+                  onClick={() => setActiveSection("stats")}
+                  className={`flex flex-col items-center justify-center gap-1 border-b-2 px-2 py-3 text-xs font-medium transition ${
+                    activeSection === "stats"
+                      ? "border-primary text-primary"
+                      : "text-paragraph hover:border-border hover:text-heading border-transparent"
+                  }`}
+                >
+                  <span
+                    className="material-symbols-outlined text-lg"
+                    aria-hidden="true"
+                    translate="no"
+                  >
+                    bar_chart
+                  </span>
+                  <span className="xs:inline hidden">{t("Statistics")}</span>
+                </button>
+              </div>
+            </nav>
+
+            <nav className="bg-container border-border top-24 hidden rounded-xl border p-4 shadow-sm lg:sticky lg:block">
               <ul className="space-y-2">
                 <li>
                   <button
@@ -267,10 +326,10 @@ function ProfilePage() {
 
           <main className="lg:col-span-3">
             {activeSection === "profile" && (
-              <div className="bg-container border-border min-h-[500px] rounded-xl border p-8 shadow-sm">
+              <div className="bg-container border-border min-h-[500px] rounded-xl border p-4 shadow-sm sm:p-8">
                 <h3 className="mb-6">{t("Profile Information")}</h3>
 
-                <div className="flex items-center gap-6">
+                <div className="mb-6 flex flex-col items-center gap-6 sm:flex-row">
                   <div className="relative">
                     <img
                       src={PlaceholderImage}
@@ -292,11 +351,7 @@ function ProfilePage() {
                       </span>
                     </button>
                   </div>
-                  <div>
-                    <p className="text-heading text-xl font-semibold">
-                      {user.username}
-                    </p>
-                    <p className="text-paragraph">{user.email}</p>
+                  <div className="text-center sm:text-left">
                     {user.createdAt && (
                       <p className="text-paragraph text-sm">
                         {t("Member since")}{" "}
@@ -306,19 +361,37 @@ function ProfilePage() {
                   </div>
                 </div>
 
-                <div className="border-border mt-6 border-t pt-6">
+                <div className="border-border border-t pt-6">
                   <div className="grid gap-4 md:grid-cols-2">
                     <div>
-                      <label className="text-paragraph mb-2 block text-sm font-medium">
+                      <label
+                        htmlFor="username"
+                        className="text-paragraph mb-2 block text-sm font-medium"
+                      >
                         {t("Username")}
                       </label>
-                      <p className="text-heading">{user.username}</p>
+                      <input
+                        id="username"
+                        type="text"
+                        value={user.username}
+                        disabled
+                        className="input bg-background cursor-not-allowed"
+                      />
                     </div>
                     <div>
-                      <label className="text-paragraph mb-2 block text-sm font-medium">
+                      <label
+                        htmlFor="email"
+                        className="text-paragraph mb-2 block text-sm font-medium"
+                      >
                         {t("Email")}
                       </label>
-                      <p className="text-heading">{user.email}</p>
+                      <input
+                        id="email"
+                        type="email"
+                        value={user.email}
+                        disabled
+                        className="input bg-background cursor-not-allowed"
+                      />
                     </div>
                   </div>
                 </div>
@@ -327,8 +400,8 @@ function ProfilePage() {
 
             {activeSection === "security" && (
               <div className="bg-container border-border min-h-[500px] rounded-xl border shadow-sm">
-                <div className="border-border border-b p-8">
-                  <div className="mb-4 flex items-center justify-between">
+                <div className="border-border border-b p-4 sm:p-8">
+                  <div className="mb-4 flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
                     <div>
                       <h3 className="mb-1">{t("Change Password")}</h3>
                       <p className="text-paragraph text-sm">
@@ -337,7 +410,7 @@ function ProfilePage() {
                     </div>
                     <button
                       onClick={() => setShowChangePassword(!showChangePassword)}
-                      className="btn btn-outlined text-sm"
+                      className="btn btn-outlined w-full text-sm sm:w-auto"
                     >
                       {showChangePassword ? t("Cancel") : t("Change")}
                     </button>
@@ -485,7 +558,7 @@ function ProfilePage() {
                           <button
                             type="submit"
                             disabled={isProcessing}
-                            className={`btn btn-primary ${
+                            className={`btn btn-primary w-full sm:w-auto ${
                               isProcessing
                                 ? "cursor-not-allowed opacity-50"
                                 : ""
@@ -506,8 +579,8 @@ function ProfilePage() {
                   )}
                 </div>
 
-                <div className="p-8">
-                  <div className="flex items-center justify-between">
+                <div className="p-4 sm:p-8">
+                  <div className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
                     <div>
                       <h3 className="text-destructive mb-1">
                         {t("Delete Account")}
@@ -518,7 +591,7 @@ function ProfilePage() {
                     </div>
                     <button
                       onClick={() => setShowDeleteAccount(true)}
-                      className="btn btn-destructive text-sm"
+                      className="btn btn-destructive w-full text-sm sm:w-auto"
                     >
                       {t("Delete")}
                     </button>
@@ -580,7 +653,7 @@ function ProfilePage() {
                   )}
                 </div>
 
-                <div className="flex justify-end gap-3">
+                <div className="flex flex-col justify-end gap-3 sm:flex-row">
                   <button
                     type="button"
                     onClick={() => {
@@ -588,7 +661,7 @@ function ProfilePage() {
                       setDeletePassword("");
                       setDeleteError("");
                     }}
-                    className="btn btn-secondary"
+                    className="btn btn-outlined"
                   >
                     {t("Cancel")}
                   </button>
@@ -613,7 +686,7 @@ function ProfilePage() {
             </Modal>
 
             {activeSection === "stats" && (
-              <div className="bg-container border-border min-h-[500px] rounded-xl border p-8 shadow-sm">
+              <div className="bg-container border-border min-h-[500px] rounded-xl border p-4 shadow-sm sm:p-8">
                 <h3 className="mb-6">{t("Account Statistics")}</h3>
 
                 <div className="bg-background rounded-lg p-6">
@@ -642,6 +715,7 @@ function ProfilePage() {
             )}
           </main>
         </div>
+
         <UserAdvertsList user={user} />
       </div>
 

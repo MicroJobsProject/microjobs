@@ -1,9 +1,9 @@
-//DEPENDENCIES
+// DEPENDENCIES
 import { Link, NavLink, useLocation } from "react-router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-//NATIVE
+// NATIVE
 import AuthButton from "../auth/AuthButton";
 import Dropdown from "../ui/Dropdown";
 import LanguageSelector from "../ui/LanguageSelector";

@@ -1,7 +1,7 @@
-//DEPENDENCIES
+// DEPENDENCIES
 import axios from "axios";
 
-//NATIVE
+// NATIVE
 import storage from "../utils/storage";
 
 export const client = axios.create({

@@ -52,5 +52,8 @@
 
   "Account Statistics": "Account Statistics",
   "Total Adverts": "Total Adverts",
-  "Averts created with this account": "Adverts created with this account"
+  "Averts created with this account": "Adverts created with this account",
+
+  "viewDetail": "View Details",
+  "viewAdvertDetail": "View details of {{name}}"
 }

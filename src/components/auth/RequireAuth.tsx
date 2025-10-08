@@ -1,9 +1,9 @@
-//DEPENDENCIES
+// DEPENDENCIES
 import type { ReactNode } from "react";
 import { Navigate, useLocation } from "react-router";
 import { useEffect, useRef } from "react";
 
-//NATIVE
+// NATIVE
 import { useAuth } from "../../store/hooks";
 
 interface RequireAuthProps {

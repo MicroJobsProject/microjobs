@@ -1,7 +1,7 @@
-//DEPENDENCIES
+// DEPENDENCIES
 import type { AxiosError } from "axios";
 
-//NATIVE
+// NATIVE
 import type { User } from "../pages/user/types";
 import type { AdvertCategory, AdvertResponse } from "../pages/advert/types";
 import { type Actions, type ActionsRejected } from "./actions";

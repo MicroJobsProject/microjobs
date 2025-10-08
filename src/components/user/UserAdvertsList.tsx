@@ -1,11 +1,10 @@
-//DEPENDENCIES
+// DEPENDENCIES
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
 import clsx from "clsx";
 
-//NATIVE
-import { useAppSelector } from "../../store";
+// NATIVE
 import {
   useUserStatsLoadAction,
   useAdvertsLoadAction,
@@ -13,6 +12,7 @@ import {
   useAdvertsDeleteMultipleAction,
   useUiResetError,
 } from "../../store/hooks";
+import { useAppSelector } from "../../store";
 import { getAdverts, getPagination, getUi } from "../../store/selectors";
 import Pagination from "../advert/Pagination";
 import Alert from "../ui/Alert";
@@ -21,7 +21,7 @@ import type { User } from "../../pages/user/types";
 import { seoNormalize } from "../../utils/seoNormalize";
 import type { Advert } from "../../pages/advert/types";
 
-//ASSETS
+// ASSETS
 import PlaceholderImage from "/placeholder.png";
 import { API_BASE_URL } from "../../config/constants";
 
@@ -138,10 +138,10 @@ export default function UserAdvertsList({ user }: UserAdvertsListProps) {
         >
           campaign
         </span>
-        <h3 className="font-bold" role="heading">
+        <h3 className="text-center font-bold" role="heading">
           {t("home:noAdvertsTitle")}
         </h3>
-        <div className="text-center">
+        <div className="px-4 text-center">
           <p>{t("home:noAdvertsSubtitle")}</p>
           <p>{t("home:noAdvertsParagraph")}</p>
         </div>
@@ -217,67 +217,145 @@ export default function UserAdvertsList({ user }: UserAdvertsListProps) {
               <li
                 key={advert._id}
                 className={clsx(
-                  "bg-container border-border flex cursor-pointer overflow-hidden rounded-lg border transition-all hover:shadow-md",
+                  "bg-container border-border overflow-hidden rounded-lg border transition-all",
                   selectedAdverts.has(advert._id) && "ring-primary ring-2",
                 )}
-                onClick={(e) => handleAdvertClick(advert, e)}
               >
-                <div
-                  className="flex items-center justify-center self-stretch bg-cyan-500/10 px-6 transition-colors hover:bg-cyan-500/20"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleSelectAdvert(advert._id);
-                  }}
-                >
-                  <input
-                    type="checkbox"
-                    checked={selectedAdverts.has(advert._id)}
-                    onChange={() => handleSelectAdvert(advert._id)}
-                    onClick={(e) => e.stopPropagation()}
-                    className="text-primary focus:ring-primary border-border h-5 w-5 cursor-pointer rounded"
-                    aria-label={t("profile:ariaSelectAdvert", {
+                <div className="flex flex-col sm:hidden">
+                  <div
+                    className="hover:bg-border/50 cursor-pointer p-3 transition-colors"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleSelectAdvert(advert._id);
+                    }}
+                  >
+                    <img
+                      alt={t("advert-card:ariaAdvertPhoto", {
+                        name: advert.name,
+                      })}
+                      src={
+                        advert.photo
+                          ? `${API_BASE_URL}${advert.photo}`
+                          : PlaceholderImage
+                      }
+                      className="mb-3 h-32 w-full rounded-lg object-cover"
+                    />
+
+                    <h3 className="text-heading mb-1 text-sm font-semibold break-words">
+                      {advert.name}
+                    </h3>
+                    <p className="text-paragraph mb-2 line-clamp-2 text-xs break-words">
+                      {advert.description}
+                    </p>
+                    <div className="mb-2 flex flex-wrap items-center gap-2">
+                      <span className="rounded-full bg-amber-300 px-2 py-0.5 text-[10px] whitespace-nowrap text-amber-900">
+                        {advert.offer
+                          ? t("advert-card:advertTypeOffer")
+                          : t("advert-card:advertTypeNeed")}
+                      </span>
+                      <span className="text-heading max-w-[150px] truncate text-[10px] font-bold">
+                        {t(advert.category, {
+                          ns: "advert-category",
+                          defaultValue: advert.category,
+                        })}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <span className="text-primary text-base font-bold">
+                        {advert.price}€
+                      </span>
+                      <span className="text-paragraph text-[10px]">/hr</span>
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate(
+                        `/advert/${seoNormalize(advert.name)}/${advert._id}`,
+                      );
+                    }}
+                    className="bg-primary hover:bg-primary-hover flex w-full items-center justify-center gap-2 py-2 text-sm font-medium text-white transition-colors"
+                    aria-label={t("profile:viewAdvertDetail", {
                       name: advert.name,
                     })}
-                  />
+                  >
+                    <span>{t("profile:viewDetail")}</span>
+                    <span
+                      className="material-symbols-outlined text-lg"
+                      aria-hidden="true"
+                      translate="no"
+                    >
+                      arrow_forward
+                    </span>
+                  </button>
                 </div>
 
-                <img
-                  alt={t("advert-card:ariaAdvertPhoto", { name: advert.name })}
-                  src={
-                    advert.photo
-                      ? `${API_BASE_URL}${advert.photo}`
-                      : PlaceholderImage
-                  }
-                  className="my-4 ml-4 h-20 w-20 flex-shrink-0 rounded-lg object-cover"
-                />
-
-                <div className="mx-4 my-4 min-w-0 flex-1">
-                  <h3 className="text-heading mb-1 truncate font-semibold">
-                    {advert.name}
-                  </h3>
-                  <p className="text-paragraph mb-2 truncate text-sm">
-                    {advert.description}
-                  </p>
-                  <div className="flex items-center gap-3">
-                    <span className="rounded-full bg-amber-300 px-2 py-1 text-xs text-amber-900">
-                      {advert.offer
-                        ? t("advert-card:advertTypeOffer")
-                        : t("advert-card:advertTypeNeed")}
-                    </span>
-                    <span className="text-heading text-sm font-bold">
-                      {t(advert.category, {
-                        ns: "advert-category",
-                        defaultValue: advert.category,
+                <div
+                  className="hidden cursor-pointer transition-all hover:shadow-md sm:flex"
+                  onClick={(e) => handleAdvertClick(advert, e)}
+                >
+                  <div
+                    className="flex items-center justify-center self-stretch bg-cyan-500/10 px-4 transition-colors hover:bg-cyan-500/20 md:px-6"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleSelectAdvert(advert._id);
+                    }}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={selectedAdverts.has(advert._id)}
+                      onChange={() => handleSelectAdvert(advert._id)}
+                      onClick={(e) => e.stopPropagation()}
+                      className="text-primary focus:ring-primary border-border h-5 w-5 cursor-pointer rounded"
+                      aria-label={t("profile:ariaSelectAdvert", {
+                        name: advert.name,
                       })}
+                    />
+                  </div>
+
+                  <img
+                    alt={t("advert-card:ariaAdvertPhoto", {
+                      name: advert.name,
+                    })}
+                    src={
+                      advert.photo
+                        ? `${API_BASE_URL}${advert.photo}`
+                        : PlaceholderImage
+                    }
+                    className="my-4 ml-3 h-16 w-16 flex-shrink-0 rounded-lg object-cover md:ml-4 md:h-20 md:w-20"
+                  />
+
+                  <div className="mx-3 my-4 min-w-0 flex-1 md:mx-4">
+                    <h3 className="text-heading mb-1 truncate text-sm font-semibold md:text-base">
+                      {advert.name}
+                    </h3>
+                    <p className="text-paragraph mb-2 truncate text-xs md:text-sm">
+                      {advert.description}
+                    </p>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="rounded-full bg-amber-300 px-2 py-1 text-xs whitespace-nowrap text-amber-900">
+                        {advert.offer
+                          ? t("advert-card:advertTypeOffer")
+                          : t("advert-card:advertTypeNeed")}
+                      </span>
+                      <span className="text-heading truncate text-xs font-bold md:text-sm">
+                        {t(advert.category, {
+                          ns: "advert-category",
+                          defaultValue: advert.category,
+                        })}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="bg-background my-4 mr-3 flex flex-col items-center justify-center rounded-lg px-4 md:mr-4 md:px-6">
+                    <span className="text-primary text-lg font-bold whitespace-nowrap md:text-xl">
+                      {advert.price}€
+                    </span>
+                    <span className="text-paragraph text-xs md:text-sm">
+                      /hr
                     </span>
                   </div>
-                </div>
-
-                <div className="bg-background my-4 mr-4 flex flex-col items-center justify-center rounded-lg px-6">
-                  <span className="text-primary text-xl font-bold whitespace-nowrap">
-                    {advert.price}€
-                  </span>
-                  <span className="text-paragraph text-sm">/hr</span>
                 </div>
               </li>
             ))}
@@ -312,7 +390,7 @@ export default function UserAdvertsList({ user }: UserAdvertsListProps) {
             {t("profile:confirmDeletionWarning")}
           </p>
 
-          <div className="flex justify-end gap-3">
+          <div className="flex flex-col justify-end gap-3 sm:flex-row">
             <button
               onClick={() => {
                 setShowDeleteModal(false);
