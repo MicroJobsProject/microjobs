@@ -1,25 +1,16 @@
 // DEPENDENCIES
 import { useTranslation } from "react-i18next";
-// import { useLocation, useNavigate, useParams } from "react-router";
 import clsx from "clsx";
 
 function LanguageSelector() {
   const { i18n } = useTranslation();
-  // const { lang } = useParams();
-  // const location = useLocation();
-  // const navigate = useNavigate();
   const languages = [
     { code: "en-US", lang: "English" },
     { code: "es-ES", lang: "Español" },
   ];
 
   function handleChangeLanguage(newLanguage: string) {
-    //TODO: update URL path after language change
-    // const currentPath = location.pathname.replace(`/${lang}`, "");
-
     i18n.changeLanguage(newLanguage);
-
-    // navigate(`/${newLanguage}${currentPath}${location.search}`);
   }
 
   return (

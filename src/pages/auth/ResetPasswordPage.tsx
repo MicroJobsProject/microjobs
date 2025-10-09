@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 
 // NATIVE
 import { useResetPasswordAction, useAuth } from "../../store/hooks";
-import Alert from "../../components/ui/Alert"; // ✅ Importar Alert
+import Alert from "../../components/ui/Alert";
 import clsx from "clsx";
 
 interface ErrorResponse {
