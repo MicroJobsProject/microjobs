@@ -1,0 +1,14 @@
+{
+  "contactTitle": "Contact Now",
+  "name": "Username",
+  "email": "Email",
+  "subject": "Subject",
+  "subjectPlaceholder": "Your subject",
+  "message": "Message",
+  "messagePlaceholder": "Your message",
+  "sendingMessage": "Sending Message...",
+  "sendMessage": "Send Message",
+
+  "errorSubjectRequired": "Subject is required",
+  "errorMessageRequired": "Message is required"
+}

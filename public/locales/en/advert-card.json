@@ -1,0 +1,11 @@
+{
+  "ariaAdvertName": "Advert for {{name}}",
+  "ariaAdvertPhoto": "Photo for {{name}}",
+  "advertTypeOffer": "Offer Service",
+  "advertTypeNeed": "Need Service",
+  "ariaAdvertTypeOffer": "Type: Need a service",
+  "ariaAvertTypeNeed": "Type: Offer a service",
+  "ariaAdvertPrice": "Price: {{price}} euros per hour",
+  "ariaAdvertOwner": "Owner: {{owner}}",
+  "ariaAdvertDescription": "Description: {{description}}"
+}

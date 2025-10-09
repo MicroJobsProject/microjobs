@@ -1,0 +1,35 @@
+{
+  "Oops! Something went wrong on our end": "Oops! Something went wrong on our end",
+  "Internal Server Error!": "Internal server error!",
+  "There was an error processing your request. Please try again later. If you need immediate help, let us know.": "There was an error processing your request. Please try again later. If you need immediate help, let us know.",
+  "Internal server error. Please try again later.": "Internal server error. Please try again later.",
+  "Service temporarily unavailable. We are working on it.": "Service temporarily unavailable. We are working on it.",
+  "An unexpected error occurred on the server.": "An unexpected error occurred on the server.",
+  "Cannot connect to the server. Please check your internet connection or try again later.": "Cannot connect to the server. Please check your internet connection or try again later.",
+
+  "Not Found!": "Not Found!",
+  "This page took a day off": "This page took a day off",
+  "Sorry, the page you were looking for doesn't exist or has been removed.": "Sorry, the page you are looking for doesn't exist or has been moved.",
+  "Service Unavailable": "Service Unavailable",
+  "We're temporarily down for maintenance": "We're temporarily down for maintenance",
+  "Our service is temporarily unavailable. We're working on it and will be back shortly.": "Our service is temporarily unavailable. We're working on it and will be back shortly.",
+  "Unauthorized": "Unauthorized",
+  "Access denied": "Access denied",
+  "You need to be logged in to access this resource.": "You need to be logged in to access this resource.",
+  "Forbidden": "Forbidden",
+  "You shall not pass!": "You shall not pass!",
+  "You don't have permission to access this resource.": "You don't have permission to access this resource.",
+  "Error Code": "Error Code",
+
+  "Go Back": "Go Back",
+  "Go Home": "Go Home",
+
+  "No Internet Connection": "No Internet Connection",
+  "Please check your internet connection and try again.": "Please check your internet connection and try again.",
+  "Retry Connection": "Retry Connection",
+
+  "Page Not Found": "Page Not Found",
+  "Internal Server Error": "Internal Server Error",
+  "Bad Request": "Bad Request",
+  "Error": "Error"
+}

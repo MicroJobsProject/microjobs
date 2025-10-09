@@ -1,0 +1,31 @@
+{
+  "filterSearch": "Buscar",
+  "filterSearchPlaceholder": "Buscar por nombre",
+
+  "filterType": "Tipo",
+  "advertTypeAll": "Todos",
+  "advertTypeOffer": "Ofrece Servicio",
+  "advertTypeNeed": "Necesita Servicio",
+
+  "filterCategory": "Categorías",
+  "filterCategoryPlaceholder": "Seleccionar categorías",
+  "Caring": "Cuidados",
+  "Cleaning": "Limpieza",
+  "Electrician": "Electricista",
+  "Gardening": "Jardinería",
+  "Painting": "Pintura",
+  "Personal Training": "Cuidado Personal",
+  "Pets": "Mascotas",
+  "Plumbing": "Fontanería",
+  "Private Classes": "Clases Particulares",
+  "Technology": "Tecnología",
+  "Transport": "Transporte",
+  "Video & Photography": "Video y Fotografía",
+
+  "filterPrice": "Rango de precio",
+  "filterPriceMin": "Precio Mín.",
+  "filterPriceMax": "Precio Máx.",
+
+  "applyFilters": "Aplicar filtros seleccionados",
+  "reset": "Reiniciar"
+}

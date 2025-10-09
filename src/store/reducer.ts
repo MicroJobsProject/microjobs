@@ -1,0 +1,226 @@
+// DEPENDENCIES
+import type { AxiosError } from "axios";
+
+// NATIVE
+import type { User } from "../pages/user/types";
+import type { AdvertCategory, AdvertResponse } from "../pages/advert/types";
+import { type Actions, type ActionsRejected } from "./actions";
+
+// TYPES===================================================================================================
+export interface ErrorState {
+  criticalError: AxiosError | null;
+}
+
+export type State = {
+  auth: boolean;
+  ui: {
+    pending: boolean;
+    error: Error | null;
+    successMessage: string | null;
+  };
+  adverts: { loaded: boolean; data: AdvertResponse };
+  categories: AdvertCategory[];
+  user: {
+    data: User | null;
+    loaded: boolean;
+  };
+  userStats: {
+    advertCount: number;
+    loaded: boolean;
+  };
+  error: ErrorState;
+};
+
+// DEFAULT STATE=========================================================================================
+const defaultState: State = {
+  auth: false,
+  ui: {
+    pending: false,
+    error: null,
+    successMessage: null,
+  },
+  adverts: {
+    loaded: false,
+    data: { results: [], total: 0, page: 1, totalAdverts: 0, totalPages: 1 },
+  },
+  categories: [],
+  user: {
+    data: null,
+    loaded: false,
+  },
+  userStats: {
+    advertCount: 0,
+    loaded: false,
+  },
+  error: { criticalError: null },
+};
+
+// REDUCERS===================================================================================================
+// AUTH............................................................
+export function auth(
+  state = defaultState.auth,
+  action: Actions,
+): State["auth"] {
+  switch (action.type) {
+    case "auth/login/fulfilled":
+    case "auth/register/fulfilled":
+      return true;
+    case "auth/logout":
+      return false;
+    default:
+      return state;
+  }
+}
+
+// USER............................................................
+export function user(
+  state = defaultState.user,
+  action: Actions,
+): State["user"] {
+  switch (action.type) {
+    case "user/load/fulfilled":
+    case "user/update/fulfilled":
+      return { ...state, loaded: true, data: action.payload };
+    case "auth/logout":
+      return { data: null, loaded: false };
+    default:
+      return state;
+  }
+}
+
+// USER STATS........................................................
+export function userStats(
+  state = defaultState.userStats,
+  action: Actions,
+): State["userStats"] {
+  switch (action.type) {
+    case "user/stats/fulfilled":
+      return { loaded: true, advertCount: action.payload.advertCount };
+    case "auth/logout":
+      return { advertCount: 0, loaded: false };
+    default:
+      return state;
+  }
+}
+
+// ADVERTS..........................................................
+export function adverts(
+  state = defaultState.adverts,
+  action: Actions,
+): State["adverts"] {
+  if (action.type === "adverts/load/fulfilled") {
+    return { ...state, loaded: true, data: action.payload };
+  }
+  if (action.type === "adverts/detail/fulfilled") {
+    return {
+      ...state,
+      loaded: true,
+      data: { ...state.data, results: [action.payload] },
+    };
+  }
+
+  if (action.type === "adverts/delete/fulfilled") {
+    const filteredResults = state.data.results.filter(
+      (advert) => !action.payload.includes(advert._id),
+    );
+
+    return {
+      ...state,
+      data: {
+        ...state.data,
+        results: filteredResults,
+        total: filteredResults.length,
+        totalAdverts: state.data.totalAdverts - action.payload.length,
+      },
+    };
+  }
+
+  return state;
+}
+
+// CATEGORIES......................................................
+export function categories(
+  state = defaultState.categories,
+  action: Actions,
+): State["categories"] {
+  if (action.type === "adverts/categories/fulfilled") {
+    return action.payload;
+  }
+  return state;
+}
+
+// UI & ERROR HANDLING======================================================================================
+// Helper to check if action is a rejected action
+function isRejectedAction(action: Actions): action is ActionsRejected {
+  return action.type.endsWith("/rejected");
+}
+
+// UI............................................................
+export function ui(state = defaultState.ui, action: Actions): State["ui"] {
+  if (
+    action.type === "auth/login/pending" ||
+    action.type === "auth/register/pending" ||
+    action.type === "auth/forgotPassword/pending" ||
+    action.type === "auth/resetPassword/pending" ||
+    action.type === "user/load/pending" ||
+    action.type === "user/update/pending" ||
+    action.type === "user/stats/pending" ||
+    action.type === "adverts/load/pending" ||
+    action.type === "adverts/detail/pending" ||
+    action.type === "adverts/delete/pending" ||
+    action.type === "contact/send/pending"
+  ) {
+    return { pending: true, error: null, successMessage: null };
+  }
+  if (
+    action.type === "auth/login/fulfilled" ||
+    action.type === "auth/register/fulfilled" ||
+    action.type === "auth/resetPassword/fulfilled" ||
+    action.type === "user/load/fulfilled" ||
+    action.type === "user/update/fulfilled" ||
+    action.type === "user/stats/fulfilled" ||
+    action.type === "adverts/load/fulfilled" ||
+    action.type === "adverts/detail/fulfilled" ||
+    action.type === "adverts/delete/fulfilled"
+  ) {
+    return { pending: false, error: null, successMessage: null };
+  }
+  if (
+    action.type === "auth/forgotPassword/fulfilled" ||
+    action.type === "contact/send/fulfilled"
+  ) {
+    return {
+      pending: false,
+      error: null,
+      successMessage: action.payload.message,
+    };
+  }
+  if (isRejectedAction(action)) {
+    return { pending: false, error: action.payload, successMessage: null };
+  }
+  if (action.type === "ui/reset-error") {
+    return { ...state, error: null, successMessage: null };
+  }
+  if (action.type === "error/setCritical") {
+    return { pending: false, error: null, successMessage: null };
+  }
+  return state;
+}
+
+// ERROR.........................................................
+export function error(state = defaultState.error, action: Actions): ErrorState {
+  switch (action.type) {
+    case "error/setCritical":
+      return {
+        ...state,
+        criticalError: action.payload,
+      };
+    case "error/clearCritical":
+      return {
+        ...state,
+        criticalError: null,
+      };
+    default:
+      return state;
+  }
+}

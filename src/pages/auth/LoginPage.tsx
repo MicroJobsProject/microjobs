@@ -1,0 +1,255 @@
+// DEPENDENCIES
+import { useState, type ChangeEvent, type FormEvent } from "react";
+import { Link } from "react-router";
+import axios from "axios";
+import { useTranslation } from "react-i18next";
+
+// NATIVE
+import { useLoginAction, useUiResetError } from "../../store/hooks";
+import { useAppSelector } from "../../store";
+import { getUi } from "../../store/selectors";
+import { isValidEmail } from "../../utils/validation";
+import Alert from "../../components/ui/Alert";
+
+function LoginPage() {
+  const loginAction = useLoginAction();
+  const uiResetErrorAction = useUiResetError();
+  const { pending: isFetching, error } = useAppSelector(getUi);
+  const { t } = useTranslation("login");
+
+  const [credentials, setCredentials] = useState({
+    email: "",
+    password: "",
+    rememberMe: false,
+  });
+
+  const [emailError, setEmailError] = useState<string>("");
+  const [passwordError, setPasswordError] = useState<string>("");
+  const [showPassword, setShowPassword] = useState(false);
+
+  const { email, password, rememberMe } = credentials;
+  const isDisabled = !email || !password || isFetching;
+
+  function handleChange(event: ChangeEvent<HTMLInputElement>) {
+    const { name, value, type, checked } = event.target;
+    setCredentials((prevCredentials) => ({
+      ...prevCredentials,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+
+    if (name === "email" && emailError) {
+      setEmailError("");
+    }
+    if (name === "password" && passwordError) {
+      setPasswordError("");
+    }
+  }
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!isValidEmail(email)) {
+      setEmailError(t("errorValidEmail"));
+      return;
+    }
+
+    if (password.length < 6) {
+      setPasswordError(t("errorPasswordTooShort"));
+      return;
+    }
+
+    await loginAction({ email, password, rememberMe });
+  }
+
+  return (
+    <>
+      <div className="wrapper">
+        <div className="flex items-center justify-center">
+          <div className="w-full max-w-md">
+            <div className="bg-container border-border rounded-xl border p-8 shadow-sm">
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="text-center">
+                  <h2>{t("loginTo")}</h2>
+                  <p className="text-paragraph text-left">
+                    {t("loginToSubtitle")}
+                  </p>
+                </div>
+
+                <div className="space-y-2">
+                  <label
+                    htmlFor="email"
+                    className="text-heading block text-sm font-medium"
+                  >
+                    {t("email")}
+                  </label>
+                  <div className="relative">
+                    <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                      <span
+                        className="material-symbols-outlined text-paragraph text-xl opacity-60"
+                        translate="no"
+                      >
+                        mail
+                      </span>
+                    </div>
+                    <input
+                      id="email"
+                      type="email"
+                      name="email"
+                      placeholder={t("emailPlaceholder")}
+                      value={email}
+                      onChange={handleChange}
+                      className={`bg-container text-paragraph placeholder:text-paragraph/60 block w-full rounded-lg border py-2 pr-3 pl-10 text-sm focus:ring-1 focus:outline-none ${
+                        emailError
+                          ? "border-destructive focus:border-destructive focus:ring-destructive"
+                          : "border-border focus:border-primary focus:ring-primary"
+                      }`}
+                    />
+                  </div>
+                  {emailError && (
+                    <p className="text-destructive text-sm">{emailError}</p>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <label
+                    htmlFor="password"
+                    className="text-heading block text-sm font-medium"
+                  >
+                    {t("password")}
+                  </label>
+                  <div className="relative">
+                    <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                      <span
+                        className="material-symbols-outlined text-paragraph text-xl opacity-60"
+                        translate="no"
+                      >
+                        lock
+                      </span>
+                    </div>
+                    <input
+                      id="password"
+                      type={showPassword ? "text" : "password"}
+                      name="password"
+                      placeholder={t("passwordPlaceholder")}
+                      value={password}
+                      onChange={handleChange}
+                      className={`bg-container text-paragraph placeholder:text-paragraph/60 block w-full rounded-lg border py-2 pr-10 pl-10 text-sm focus:ring-1 focus:outline-none ${
+                        passwordError
+                          ? "border-destructive focus:border-destructive focus:ring-destructive"
+                          : "border-border focus:border-primary focus:ring-primary"
+                      }`}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute top-1/2 right-3 -translate-y-1/2"
+                    >
+                      <span
+                        className="material-symbols-outlined text-paragraph text-xl"
+                        translate="no"
+                      >
+                        {showPassword ? "visibility_off" : "visibility"}
+                      </span>
+                    </button>
+                  </div>
+                  {passwordError && (
+                    <p className="text-destructive text-sm">{passwordError}</p>
+                  )}
+                </div>
+
+                {/* ACTUALIZADO: Link a forgot-password */}
+                <div className="text-left">
+                  <Link
+                    to="/forgot-password"
+                    className="text-paragraph hover:text-heading text-sm font-medium transition-colors"
+                  >
+                    {t("forgotPassword")}
+                  </Link>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={isDisabled}
+                  className={`btn btn-primary w-full ${isDisabled ? "cursor-not-allowed opacity-50" : ""}`}
+                >
+                  {isFetching ? (
+                    <div className="flex items-center gap-2">
+                      <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+                      {t("loginFetching")}
+                    </div>
+                  ) : (
+                    t("login")
+                  )}
+                </button>
+
+                <div className="flex items-center justify-between">
+                  <label
+                    htmlFor="rememberMe"
+                    className="text-paragraph text-sm font-medium"
+                  >
+                    {t("remember")}
+                  </label>
+                  <div className="relative">
+                    <input
+                      id="rememberMe"
+                      type="checkbox"
+                      name="rememberMe"
+                      checked={rememberMe}
+                      onChange={handleChange}
+                      className="sr-only"
+                    />
+                    <div
+                      className={`block h-6 w-11 cursor-pointer rounded-full transition-colors ${
+                        rememberMe ? "bg-primary" : "bg-border"
+                      }`}
+                      onClick={() =>
+                        handleChange({
+                          target: {
+                            name: "rememberMe",
+                            type: "checkbox",
+                            checked: !rememberMe,
+                          },
+                        } as ChangeEvent<HTMLInputElement>)
+                      }
+                    >
+                      <div
+                        className={`absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white shadow-sm transition-transform ${
+                          rememberMe ? "translate-x-5" : "translate-x-0"
+                        }`}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="text-center">
+                  <p className="text-paragraph text-sm">
+                    {t("signUpParagraph")}{" "}
+                    <Link
+                      to="/register"
+                      className="text-primary hover:text-primary-hover font-medium transition-colors"
+                    >
+                      {t("signUpLink")}
+                    </Link>
+                  </p>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {error && (
+        <Alert
+          text={t(
+            axios.isAxiosError(error)
+              ? error.response?.data?.error || error.message
+              : error.message,
+          )}
+          variant="error"
+          onClick={() => uiResetErrorAction()}
+        />
+      )}
+    </>
+  );
+}
+
+export default LoginPage;
